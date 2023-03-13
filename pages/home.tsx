@@ -4,6 +4,7 @@ import { CommonLayout } from '@/components/layout/common-layout';
 import { HomeLayout } from '@/components/layout/home-layout';
 import { ReactElement, ReactNode } from 'react';
 import HomeMainFeedContainer from '@/components/home/home-main-feed-container';
+import { toast } from 'react-hot-toast';
 
 const jojojacky = 'JoJoJacKy';
 const password = 'qwerty';
@@ -30,6 +31,7 @@ export default function Home() {
         });
 
         console.log(response);
+        toast('User Logged In!');
     };
 
     return (
@@ -53,7 +55,7 @@ export default function Home() {
                 )}
                 {!artwork_data && artwork_loading && <div>ARTWORK LOADING</div>}
                 {artwork_data && (
-                    <div className="flex flex-col w-44">
+                    <div className="flex flex-col">
                         <p>{artwork_data.artwork.artwork?.uploader.username}</p>
                         <p>{artwork_data.artwork.artwork?.title}</p>
                         {artwork_data.artwork.artwork?.imageUrls.map((url) => (

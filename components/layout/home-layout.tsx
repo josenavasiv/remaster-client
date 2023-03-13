@@ -9,7 +9,7 @@ type HomeLayoutProps = {
 export function HomeLayout({ children }: HomeLayoutProps): JSX.Element {
     return (
         <div className="flex">
-            <div className="flex flex-col w-96">
+            <div className="flex flex-col max-w-xl px-5">
                 <Navbar />
                 <>{children}</>
             </div>

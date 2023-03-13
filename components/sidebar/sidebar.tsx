@@ -1,7 +1,9 @@
-import React from 'react';
+import { useWindowSize } from 'react-use';
 
 type SideBarProps = {};
 
 export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
-    return <div className="w-24">SideBar</div>;
+    const { width } = useWindowSize();
+
+    return <>{width < 770 ? null : <div className="sidebar w-20">REMASTER</div>}</>;
 }

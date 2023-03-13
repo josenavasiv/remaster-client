@@ -1,5 +1,9 @@
+import { useWindowSize } from 'react-use';
+
 interface UserPanelProps {}
 
 export default function UserPanel(UserPanelProps: UserPanelProps): JSX.Element {
-    return <div className="flex flex-col w-56">UserPanel</div>;
+    const { width } = useWindowSize();
+
+    return <>{width < 1100 ? null : <div className="flex flex-col w-44">UserPanel</div>}</>;
 }

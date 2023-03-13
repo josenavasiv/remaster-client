@@ -30,3 +30,10 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
+.sidebar {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-size: 4rem;
+    font-weight: 900;
+}
