@@ -186,6 +186,7 @@ export type Query = {
   __typename?: 'Query';
   artwork: ArtworkPayload;
   hello?: Maybe<Scalars['String']>;
+  userLoggedIn: UserPayload;
 };
 
 
@@ -234,12 +235,120 @@ export type UsersSuggestedPayload = {
   user: Array<User>;
 };
 
+export type UserLoginMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type UserLoginMutation = { __typename?: 'Mutation', userLogin: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, email: string, avatarUrl: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type ArtworkQueryVariables = Exact<{
+  artworkId: Scalars['ID'];
+}>;
+
+
+export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string>, description: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string } } | null } };
+
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HelloQuery = { __typename?: 'Query', hello?: string | null };
 
+export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type UserLoggedInQuery = { __typename?: 'Query', userLoggedIn: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+
+export const UserLoginDocument = gql`
+    mutation userLogin($username: String!, $password: String!) {
+  userLogin(username: $username, password: $password) {
+    user {
+      id
+      username
+      email
+      avatarUrl
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type UserLoginMutationFn = Apollo.MutationFunction<UserLoginMutation, UserLoginMutationVariables>;
+
+/**
+ * __useUserLoginMutation__
+ *
+ * To run a mutation, you first call `useUserLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userLoginMutation, { data, loading, error }] = useUserLoginMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useUserLoginMutation(baseOptions?: Apollo.MutationHookOptions<UserLoginMutation, UserLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserLoginMutation, UserLoginMutationVariables>(UserLoginDocument, options);
+      }
+export type UserLoginMutationHookResult = ReturnType<typeof useUserLoginMutation>;
+export type UserLoginMutationResult = Apollo.MutationResult<UserLoginMutation>;
+export type UserLoginMutationOptions = Apollo.BaseMutationOptions<UserLoginMutation, UserLoginMutationVariables>;
+export const ArtworkDocument = gql`
+    query artwork($artworkId: ID!) {
+  artwork(artworkID: $artworkId) {
+    artwork {
+      id
+      uploader {
+        id
+        username
+        avatarUrl
+      }
+      title
+      imageUrls
+      description
+      isLikedByLoggedInUser
+    }
+  }
+}
+    `;
+
+/**
+ * __useArtworkQuery__
+ *
+ * To run a query within a React component, call `useArtworkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArtworkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useArtworkQuery({
+ *   variables: {
+ *      artworkId: // value for 'artworkId'
+ *   },
+ * });
+ */
+export function useArtworkQuery(baseOptions: Apollo.QueryHookOptions<ArtworkQuery, ArtworkQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ArtworkQuery, ArtworkQueryVariables>(ArtworkDocument, options);
+      }
+export function useArtworkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ArtworkQuery, ArtworkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ArtworkQuery, ArtworkQueryVariables>(ArtworkDocument, options);
+        }
+export type ArtworkQueryHookResult = ReturnType<typeof useArtworkQuery>;
+export type ArtworkLazyQueryHookResult = ReturnType<typeof useArtworkLazyQuery>;
+export type ArtworkQueryResult = Apollo.QueryResult<ArtworkQuery, ArtworkQueryVariables>;
 export const HelloDocument = gql`
     query hello {
   hello
@@ -272,3 +381,44 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const UserLoggedInDocument = gql`
+    query UserLoggedIn {
+  userLoggedIn {
+    user {
+      id
+      username
+      avatarUrl
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserLoggedInQuery__
+ *
+ * To run a query within a React component, call `useUserLoggedInQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserLoggedInQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserLoggedInQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserLoggedInQuery(baseOptions?: Apollo.QueryHookOptions<UserLoggedInQuery, UserLoggedInQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserLoggedInQuery, UserLoggedInQueryVariables>(UserLoggedInDocument, options);
+      }
+export function useUserLoggedInLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserLoggedInQuery, UserLoggedInQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserLoggedInQuery, UserLoggedInQueryVariables>(UserLoggedInDocument, options);
+        }
+export type UserLoggedInQueryHookResult = ReturnType<typeof useUserLoggedInQuery>;
+export type UserLoggedInLazyQueryHookResult = ReturnType<typeof useUserLoggedInLazyQuery>;
+export type UserLoggedInQueryResult = Apollo.QueryResult<UserLoggedInQuery, UserLoggedInQueryVariables>;

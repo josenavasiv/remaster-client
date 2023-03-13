@@ -1,0 +1,14 @@
+mutation userLogin($username: String!, $password: String!) {
+    userLogin(username: $username, password: $password) {
+        user {
+            id
+            username
+            email
+            avatarUrl
+			# artworks # Eventually will get their 3 recent artworks
+        }
+        errors {
+            message
+        }
+    }
+}

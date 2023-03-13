@@ -1,0 +1,12 @@
+query UserLoggedIn {
+    userLoggedIn {
+        user {
+            id
+            username
+            avatarUrl
+        }
+        errors {
+            message
+        }
+    }
+}
