@@ -5,6 +5,7 @@ import { HomeLayout } from '@/components/layout/home-layout';
 import { ReactElement, ReactNode } from 'react';
 import HomeMainFeedContainer from '@/components/home/home-main-feed-container';
 import { toast } from 'react-hot-toast';
+import ArtworkFeed from '@/components/artwork/artwork-polaroid';
 
 const jojojacky = 'JoJoJacKy';
 const password = 'qwerty';
@@ -56,23 +57,16 @@ export default function Home() {
                 {!artwork_data && artwork_loading && <div>ARTWORK LOADING</div>}
                 {artwork_data && (
                     <div className="flex flex-col">
-                        <p>{artwork_data.artwork.artwork?.uploader.username}</p>
-                        <p>{artwork_data.artwork.artwork?.title}</p>
-                        {artwork_data.artwork.artwork?.imageUrls.map((url) => (
-                            <img src={url}></img>
-                        ))}
-                        {artwork_data.artwork.artwork?.imageUrls.map((url) => (
-                            <img src={url}></img>
-                        ))}
-                        {artwork_data.artwork.artwork?.imageUrls.map((url) => (
-                            <img src={url}></img>
-                        ))}
-                        <p>{artwork_data.artwork.artwork?.description}</p>
-                        {artwork_data.artwork.artwork?.isLikedByLoggedInUser ? (
-                            <p>LIKED BY USER</p>
-                        ) : (
-                            <p>NOT LIKED BY USER</p>
-                        )}
+                        <ArtworkFeed
+                            likesCount={0}
+                            createdAt="BLGO"
+                            title={artwork_data.artwork.artwork?.title!}
+                            description={artwork_data.artwork.artwork?.description!}
+                            id={artwork_data.artwork.artwork?.id!}
+                            imageUrls={artwork_data.artwork.artwork?.imageUrls!}
+                            uploader={artwork_data.artwork.artwork?.uploader!}
+                            // topComment="BROMAN"
+                        />
                     </div>
                 )}
             </HomeMainFeedContainer>

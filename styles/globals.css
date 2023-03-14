@@ -18,8 +18,6 @@
 html,
 body {
     width: 100vw;
-    /* max-width: 100vw; */
-    /* overflow-x: hidden; */
 }
 
 body {
@@ -32,8 +30,9 @@ a {
 }
 
 .sidebar {
-    writing-mode: vertical-rl;
+    writing-mode: vertical-lr;
     text-orientation: upright;
     font-size: 4rem;
     font-weight: 900;
+    text-align: center;
 }

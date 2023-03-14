@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import SideBar from '../sidebar/sidebar';
 import { Toaster } from 'react-hot-toast';
-import MobileNavbar from '../navbar/mobile-navbar';
+import UserPanel from '../user/user-panel';
 
 type CommonLayoutProps = {
     children: ReactNode;
@@ -9,9 +9,10 @@ type CommonLayoutProps = {
 
 export function CommonLayout({ children }: CommonLayoutProps): JSX.Element {
     return (
-        <div className="flex w-mega-max justify-center h-screen">
+        <div className="flex justify-center h-screen max-w-[900px] mx-auto">
             <SideBar />
             <>{children}</>
+            <UserPanel />
             <Toaster />
         </div>
     );
