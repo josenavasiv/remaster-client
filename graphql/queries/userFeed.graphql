@@ -1,0 +1,31 @@
+query userFeed($limit: Int, $cursor: Int) {
+    userFeed(limit: $limit, cursor: $cursor) {
+        artworks {
+            id
+            title
+            description
+            imageUrls
+            likesCount
+            createdAt
+            topComment {
+                id
+                comment
+                commenter {
+                    id
+                    username
+                    avatarUrl
+                }
+            }
+            uploader {
+                id
+                username
+                avatarUrl
+            }
+            isLikedByLoggedInUser
+        }
+        hasMore
+        errors {
+            message
+        }
+    }
+}

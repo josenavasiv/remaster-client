@@ -2,15 +2,34 @@ query artwork($artworkId: ID!) {
     artwork(artworkID: $artworkId) {
         artwork {
             id
+            title
+            description
+            imageUrls
+            createdAt
+            likesCount
+            isLikedByLoggedInUser
             uploader {
                 id
                 username
                 avatarUrl
             }
-            title
-            imageUrls
-            description
-            isLikedByLoggedInUser
+            comments {
+                id
+                comment
+                parentComment {
+                    id
+                }
+                likesCount
+                isLikedByLoggedInUser
+                commenter {
+                    id
+                    username
+                    avatarUrl
+                }
+            }
+        }
+        errors {
+            message
         }
     }
 }

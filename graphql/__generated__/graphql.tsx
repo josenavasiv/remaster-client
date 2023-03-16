@@ -27,6 +27,7 @@ export type Artwork = Node & {
   likesCount: Scalars['Int'];
   tags: Array<Tag>;
   title: Scalars['String'];
+  topComment?: Maybe<Comment>;
   updatedAt: Scalars['String'];
   uploader: User;
 };
@@ -40,6 +41,7 @@ export type ArtworkPayload = {
 export type ArtworksPaginatedPayload = {
   __typename?: 'ArtworksPaginatedPayload';
   artworks: Array<Artwork>;
+  errors: Array<Error>;
   hasMore: Scalars['Boolean'];
 };
 
@@ -75,11 +77,17 @@ export type Follow = {
 
 export type Like = {
   __typename?: 'Like';
-  artwork: Artwork;
+  artwork?: Maybe<Artwork>;
   comment?: Maybe<Comment>;
   id: Scalars['ID'];
   likeableType: LikeableType;
   user: User;
+};
+
+export type LikePayload = {
+  __typename?: 'LikePayload';
+  errors: Array<Error>;
+  like?: Maybe<Like>;
 };
 
 export enum LikeableType {
@@ -96,6 +104,10 @@ export type Mutation = {
   commentDelete: CommentPayload;
   commentReply: CommentPayload;
   commentUpdate: CommentPayload;
+  likeArtworkCreate: LikePayload;
+  likeArtworkDelete: LikePayload;
+  likeCommentCreate: LikePayload;
+  likeCommentDelete: LikePayload;
   userLogin: UserPayload;
   userLogout: Scalars['Boolean'];
   userRegister: UserPayload;
@@ -146,6 +158,28 @@ export type MutationCommentUpdateArgs = {
 };
 
 
+export type MutationLikeArtworkCreateArgs = {
+  artworkID: Scalars['ID'];
+};
+
+
+export type MutationLikeArtworkDeleteArgs = {
+  artworkID: Scalars['ID'];
+  likeID: Scalars['ID'];
+};
+
+
+export type MutationLikeCommentCreateArgs = {
+  commentID: Scalars['ID'];
+};
+
+
+export type MutationLikeCommentDeleteArgs = {
+  commentID: Scalars['ID'];
+  likeID: Scalars['ID'];
+};
+
+
 export type MutationUserLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -186,12 +220,25 @@ export type Query = {
   __typename?: 'Query';
   artwork: ArtworkPayload;
   hello?: Maybe<Scalars['String']>;
+  user: UserPayload;
+  userFeed: ArtworksPaginatedPayload;
   userLoggedIn: UserPayload;
 };
 
 
 export type QueryArtworkArgs = {
   artworkID: Scalars['ID'];
+};
+
+
+export type QueryUserArgs = {
+  userID: Scalars['ID'];
+};
+
+
+export type QueryUserFeedArgs = {
+  cursor?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 export type Tag = Node & {
@@ -218,6 +265,7 @@ export type User = Node & {
   following: Array<Follow>;
   id: Scalars['ID'];
   isFollowedByLoggedInUser?: Maybe<Scalars['Boolean']>;
+  likedArtworks: Array<Artwork>;
   likes: Array<Like>;
   notifications: Array<Notification>;
   username: Scalars['String'];
@@ -248,12 +296,20 @@ export type ArtworkQueryVariables = Exact<{
 }>;
 
 
-export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string>, description: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string } } | null } };
+export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, parentComment?: { __typename?: 'Comment', id: string } | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HelloQuery = { __typename?: 'Query', hello?: string | null };
+
+export type UserFeedQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>;
+  cursor?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UserFeedQuery = { __typename?: 'Query', userFeed: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, topComment?: { __typename?: 'Comment', id: string, comment: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } } | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string } }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -308,15 +364,34 @@ export const ArtworkDocument = gql`
   artwork(artworkID: $artworkId) {
     artwork {
       id
+      title
+      description
+      imageUrls
+      createdAt
+      likesCount
+      isLikedByLoggedInUser
       uploader {
         id
         username
         avatarUrl
       }
-      title
-      imageUrls
-      description
-      isLikedByLoggedInUser
+      comments {
+        id
+        comment
+        parentComment {
+          id
+        }
+        likesCount
+        isLikedByLoggedInUser
+        commenter {
+          id
+          username
+          avatarUrl
+        }
+      }
+    }
+    errors {
+      message
     }
   }
 }
@@ -381,6 +456,68 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const UserFeedDocument = gql`
+    query userFeed($limit: Int, $cursor: Int) {
+  userFeed(limit: $limit, cursor: $cursor) {
+    artworks {
+      id
+      title
+      description
+      imageUrls
+      likesCount
+      createdAt
+      topComment {
+        id
+        comment
+        commenter {
+          id
+          username
+          avatarUrl
+        }
+      }
+      uploader {
+        id
+        username
+        avatarUrl
+      }
+      isLikedByLoggedInUser
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserFeedQuery__
+ *
+ * To run a query within a React component, call `useUserFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserFeedQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useUserFeedQuery(baseOptions?: Apollo.QueryHookOptions<UserFeedQuery, UserFeedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserFeedQuery, UserFeedQueryVariables>(UserFeedDocument, options);
+      }
+export function useUserFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserFeedQuery, UserFeedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserFeedQuery, UserFeedQueryVariables>(UserFeedDocument, options);
+        }
+export type UserFeedQueryHookResult = ReturnType<typeof useUserFeedQuery>;
+export type UserFeedLazyQueryHookResult = ReturnType<typeof useUserFeedLazyQuery>;
+export type UserFeedQueryResult = Apollo.QueryResult<UserFeedQuery, UserFeedQueryVariables>;
 export const UserLoggedInDocument = gql`
     query UserLoggedIn {
   userLoggedIn {
