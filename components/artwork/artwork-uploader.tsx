@@ -6,12 +6,12 @@ type ArtworkUploaderProps = Pick<User, 'id' | 'username' | 'avatarUrl'>;
 
 export default function ArtworkUploader({ id, username, avatarUrl }: ArtworkUploaderProps) {
     return (
-        <Link className="flex gap-3 w-44" href={`/${username}`}>
+        <Link className="flex gap-3 w-44" href={`/user/${username}`}>
             <Image
                 src={avatarUrl}
                 width={42}
                 height={42}
-                alt={`${username}'s Profile`}
+                alt={`${username}'s Avatar`}
                 className="rounded-full my-auto"
             />
             <span className="font-bold my-auto">{username}</span>

@@ -54,6 +54,7 @@ export type Comment = Node & {
   isLikedByLoggedInUser?: Maybe<Scalars['Boolean']>;
   likesCount: Scalars['Int'];
   parentComment?: Maybe<Comment>;
+  parentCommentId?: Maybe<Scalars['ID']>;
   replies: Array<Comment>;
 };
 
@@ -232,7 +233,7 @@ export type QueryArtworkArgs = {
 
 
 export type QueryUserArgs = {
-  userID: Scalars['ID'];
+  username: Scalars['String'];
 };
 
 
@@ -296,12 +297,19 @@ export type ArtworkQueryVariables = Exact<{
 }>;
 
 
-export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, parentComment?: { __typename?: 'Comment', id: string } | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, parentCommentId?: string | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HelloQuery = { __typename?: 'Query', hello?: string | null };
+
+export type UserQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string, isFollowedByLoggedInUser?: boolean | null, artworks: Array<{ __typename?: 'Artwork', id: string, imageUrls: Array<string>, likesCount: number, title: string, description: string }> } | null } };
 
 export type UserFeedQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -378,9 +386,6 @@ export const ArtworkDocument = gql`
       comments {
         id
         comment
-        parentComment {
-          id
-        }
         likesCount
         isLikedByLoggedInUser
         commenter {
@@ -388,6 +393,7 @@ export const ArtworkDocument = gql`
           username
           avatarUrl
         }
+        parentCommentId
       }
     }
     errors {
@@ -456,6 +462,53 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const UserDocument = gql`
+    query user($username: String!) {
+  user(username: $username) {
+    user {
+      id
+      username
+      avatarUrl
+      artworks {
+        id
+        imageUrls
+        likesCount
+        title
+        description
+      }
+      isFollowedByLoggedInUser
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UserFeedDocument = gql`
     query userFeed($limit: Int, $cursor: Int) {
   userFeed(limit: $limit, cursor: $cursor) {

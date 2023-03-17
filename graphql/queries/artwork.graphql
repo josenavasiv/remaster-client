@@ -16,9 +16,6 @@ query artwork($artworkId: ID!) {
             comments {
                 id
                 comment
-                parentComment {
-                    id
-                }
                 likesCount
                 isLikedByLoggedInUser
                 commenter {
@@ -26,6 +23,7 @@ query artwork($artworkId: ID!) {
                     username
                     avatarUrl
                 }
+                parentCommentId
             }
         }
         errors {

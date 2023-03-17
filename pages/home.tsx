@@ -5,10 +5,7 @@ import { HomeLayout } from '@/components/layout/home-layout';
 import { ReactElement, ReactNode } from 'react';
 import HomeMainFeedContainer from '@/components/home/home-main-feed-container';
 import { toast } from 'react-hot-toast';
-import ArtworkContainer from '@/components/artwork/artwork-container';
-
-const jojojacky = 'JoJoJacKy';
-const password = 'qwerty';
+import ArtworkFeed from '@/components/artwork/artwork-feed';
 
 export default function Home() {
     const { data, loading, error } = useUserFeedQuery();
@@ -25,7 +22,8 @@ export default function Home() {
                 {data?.userFeed.artworks &&
                     !error &&
                     data?.userFeed.artworks.map((artwork) => (
-                        <ArtworkContainer
+                        <ArtworkFeed
+                            key={artwork.id}
                             title={artwork.title}
                             id={artwork.id}
                             imageUrls={artwork.imageUrls}

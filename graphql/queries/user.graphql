@@ -1,0 +1,17 @@
+query user($username: String!) {
+    user(username: $username) {
+        user {
+            id
+            username
+            avatarUrl
+            artworks {
+                id
+                imageUrls
+                likesCount
+                title
+                description
+            }
+            isFollowedByLoggedInUser
+        }
+    }
+}
