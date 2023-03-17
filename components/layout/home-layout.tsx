@@ -8,7 +8,7 @@ type HomeLayoutProps = {
 export function HomeLayout({ children }: HomeLayoutProps): JSX.Element {
     return (
         <>
-            <div className="flex flex-col w-full max-w-xl">
+            <div className="flex flex-col w-full">
                 <>{children}</>
             </div>
             <UserPanel />
