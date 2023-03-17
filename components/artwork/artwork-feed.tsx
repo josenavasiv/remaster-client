@@ -4,20 +4,20 @@ import ArtworkDescription from './artwork-description';
 import { Artwork, User, Comment } from '@/graphql/__generated__/graphql';
 import { getRelativeDate } from '@/lib/relativeTime';
 
-export type ArtworkFeedProps = Pick<
-    Artwork,
-    'id' | 'imageUrls' | 'title' | 'description' | 'isLikedByLoggedInUser' | 'likesCount' | 'createdAt'
-> & {
-    uploader: Pick<User, 'id' | 'username' | 'avatarUrl'>;
-} & {
-    topComment: Pick<Comment, 'id' | 'comment'>;
-};
+// export type ArtworkFeedProps = Pick<
+//     Artwork,
+//     'id' | 'imageUrls' | 'title' | 'description' | 'isLikedByLoggedInUser' | 'likesCount' | 'createdAt'
+// > & {
+//     uploader: Pick<User, 'id' | 'username' | 'avatarUrl'>;
+// } & {
+//     topComment: Pick<Comment, 'id' | 'comment'>;
+// };
 
-type ArtworkFeedType = {
+type ArtworkFeedProps = {
     id: string;
     title: string;
     description: string;
-    imageUrls: string;
+    imageUrls: string[];
     isLikedByLoggedInUser?: boolean | null | undefined;
     likesCount: number;
     createdAt: string;
@@ -26,10 +26,16 @@ type ArtworkFeedType = {
         username: string;
         avatarUrl: string;
     };
-    topComment: {
+    recentComments: {
         id: string;
         comment: string;
-    };
+        isLikedByLoggedInUser?: boolean | null | undefined;
+        commenter: {
+            id: string;
+            username: string;
+            avatarUrl: string;
+        };
+    }[];
 };
 
 export default function ArtworkFeed({
@@ -38,7 +44,7 @@ export default function ArtworkFeed({
     title,
     description,
     uploader,
-    topComment,
+    recentComments,
     isLikedByLoggedInUser,
     likesCount,
     createdAt,
@@ -51,11 +57,11 @@ export default function ArtworkFeed({
                     <span className="font-extrabold">{title}</span>
                     <ArtworkCarouselImage imageUrls={imageUrls} />
                     <ArtworkDescription description={description} />
-                    <p>{topComment?.comment ?? 'Top Comment N/A'}</p>
+                    <p>{recentComments.length > 0 ? 'RECENT COMMENTS' : 'N/A'}</p>
                     <div className="font-extrabold text-xs">
                         <p>{likesCount ?? 'N/A'} Likes</p>
                         <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>
-                        <p>{isLikedByLoggedInUser ? 'TRUE' : 'FALSE'}</p>
+                        <p>{isLikedByLoggedInUser == null ? 'CANT LIKE OWN' : 'FALSE'}</p>
                     </div>
                 </div>
             </div>

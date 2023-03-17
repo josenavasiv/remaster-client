@@ -25,6 +25,7 @@ export type Artwork = Node & {
   isLikedByLoggedInUser?: Maybe<Scalars['Boolean']>;
   likes: Array<Like>;
   likesCount: Scalars['Int'];
+  recentComments: Array<Comment>;
   tags: Array<Tag>;
   title: Scalars['String'];
   topComment?: Maybe<Comment>;
@@ -319,7 +320,7 @@ export type UserFeedQueryVariables = Exact<{
 }>;
 
 
-export type UserFeedQuery = { __typename?: 'Query', userFeed: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, topComment?: { __typename?: 'Comment', id: string, comment: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } } | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string } }>, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type UserFeedQuery = { __typename?: 'Query', userFeed: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, isLikedByLoggedInUser?: boolean | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -536,7 +537,13 @@ export const UserFeedDocument = gql`
       imageUrls
       likesCount
       createdAt
-      topComment {
+      uploader {
+        id
+        username
+        avatarUrl
+      }
+      isLikedByLoggedInUser
+      recentComments {
         id
         comment
         commenter {
@@ -544,13 +551,8 @@ export const UserFeedDocument = gql`
           username
           avatarUrl
         }
+        isLikedByLoggedInUser
       }
-      uploader {
-        id
-        username
-        avatarUrl
-      }
-      isLikedByLoggedInUser
     }
     hasMore
     errors {

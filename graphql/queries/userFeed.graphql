@@ -7,7 +7,13 @@ query userFeed($limit: Int, $cursor: Int) {
             imageUrls
             likesCount
             createdAt
-            topComment {
+            uploader {
+                id
+                username
+                avatarUrl
+            }
+            isLikedByLoggedInUser
+            recentComments {
                 id
                 comment
                 commenter {
@@ -15,13 +21,8 @@ query userFeed($limit: Int, $cursor: Int) {
                     username
                     avatarUrl
                 }
+                isLikedByLoggedInUser
             }
-            uploader {
-                id
-                username
-                avatarUrl
-            }
-            isLikedByLoggedInUser
         }
         hasMore
         errors {

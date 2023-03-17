@@ -31,7 +31,7 @@ export default function Home() {
                             likesCount={artwork.likesCount}
                             createdAt={artwork.createdAt}
                             uploader={artwork.uploader}
-                            topComment={artwork.topComment!}
+                            recentComments={artwork.recentComments!}
                         />
                     ))}
                 {/* Eventually will be moved into an infinite scroll component */}

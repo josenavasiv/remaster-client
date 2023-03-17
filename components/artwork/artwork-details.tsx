@@ -37,7 +37,7 @@ export default function ArtworkDetails({
     errors,
 }: ArtworkDetailsProps) {
     return (
-        <div className="flex flex-col mx-auto">
+        <div className="flex flex-col mx-auto pb-20">
             <div className="flex flex-col lg:flex-row gap-3 mb-5 ">
                 <ArtworkCarouselImage imageUrls={imageUrls} />
                 <div className="flex flex-col gap-2 lg:w-96">

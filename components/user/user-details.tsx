@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 type UserDetailsTypes = {
     username: string;
-    isFollowedByLoggedInUser: boolean;
+    isFollowedByLoggedInUser: boolean | null | undefined;
     avatarUrl: string;
 };
 
@@ -22,7 +22,7 @@ export default function UserDetails({ username, isFollowedByLoggedInUser, avatar
             />
             <div className="flex gap-2">
                 <span className="font-bold">{username}</span>
-                {isFollowedByLoggedInUser ? <span>FOLLOWING</span> : <span>NOT FOLLOWING</span>}
+                {isFollowedByLoggedInUser == null ? <span>CANT FOLLOW OWN</span> : <span>NOT FOLLOWING</span>}
             </div>
         </div>
     );
