@@ -1,5 +1,4 @@
-import React from 'react';
-import { CommentType } from './artwork-details';
+import { CommentType } from './artwork-comment';
 import ArtworkComment from './artwork-comment';
 
 type ArtworkDetailsCommentsProps = { comments: CommentType[] };

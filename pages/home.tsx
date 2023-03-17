@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 import ArtworkFeed from '@/components/artwork/artwork-feed';
 
 export default function Home() {
-    const { data, loading, error } = useUserFeedQuery();
+    const { data, loading, error, fetchMore } = useUserFeedQuery({ notifyOnNetworkStatusChange: true });
     return (
         <>
             <Head>
@@ -34,6 +34,20 @@ export default function Home() {
                             topComment={artwork.topComment!}
                         />
                     ))}
+                {data && data?.userFeed.hasMore && (
+                    <button
+                        onClick={() => {
+                            fetchMore({
+                                variables: {
+                                    limit: 10,
+                                    cursor: parseInt(data.userFeed.artworks[data.userFeed.artworks.length - 1].id),
+                                },
+                            });
+                        }}
+                    >
+                        Load More Posts
+                    </button>
+                )}
             </HomeMainFeedContainer>
         </>
     );

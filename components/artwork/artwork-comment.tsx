@@ -1,5 +1,20 @@
 import ArtworkCommentReply from './artwork-comment-reply';
-import { CommentType } from './artwork-details';
+import { ReplyType } from './artwork-comment-reply';
+
+export type CommentType = {
+    id: string;
+    comment: string;
+    likesCount: number;
+    isLikedByLoggedInUser?: boolean | null | undefined;
+    commenter: {
+        id: string;
+        username: string;
+        avatarUrl: string;
+    };
+    replies: ReplyType[];
+    createdAt: string;
+    updatedAt: string;
+};
 
 type ArtworkCommentProps = {
     comment: CommentType;

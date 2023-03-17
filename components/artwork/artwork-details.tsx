@@ -3,6 +3,7 @@ import ArtworkCarouselImage from './artwork-carousel-image';
 import ArtworkUploader from './artwork-uploader';
 import ArtworkDetailsComments from './artwork-details-comments';
 import { getRelativeDate } from '@/lib/relativeTime';
+import { CommentType } from './artwork-comment';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -21,36 +22,6 @@ type ArtworkDetailsProps = {
     errors?: {
         message: string;
     }[];
-};
-
-export type CommentType = {
-    id: string;
-    comment: string;
-    likesCount: number;
-    isLikedByLoggedInUser?: boolean | null | undefined;
-    commenter: {
-        id: string;
-        username: string;
-        avatarUrl: string;
-    };
-    replies: ReplyType[];
-    createdAt: string;
-    updatedAt: string;
-};
-
-export type ReplyType = {
-    id: string;
-    comment: string;
-    commenter: {
-        id: string;
-        username: string;
-        avatarUrl: string;
-    };
-    parentCommentId?: string | null | undefined;
-    isLikedByLoggedInUser?: boolean | null | undefined;
-    likesCount: number;
-    createdAt: string;
-    updatedAt: string;
 };
 
 export default function ArtworkDetails({
