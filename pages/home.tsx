@@ -34,8 +34,10 @@ export default function Home() {
                             topComment={artwork.topComment!}
                         />
                     ))}
+                {/* Eventually will be moved into an infinite scroll component */}
                 {data && data?.userFeed.hasMore && (
                     <button
+                        className="w-26 mx-auto text-pink-500 bg-black px-2 py-1 rounded-md"
                         onClick={() => {
                             fetchMore({
                                 variables: {
