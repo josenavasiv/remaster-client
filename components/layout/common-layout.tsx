@@ -9,12 +9,13 @@ type CommonLayoutProps = {
 
 export function CommonLayout({ children }: CommonLayoutProps): JSX.Element {
     return (
-        <div className="flex">
+        <div className="flex ">
             <SideBar />
-            <div className="flex justify-center h-screen w-full max-w-[900px] mx-auto p-4 pb-16 sm:pb-0  pt-16 sm:pt-8">
+            <div className="flex justify-center h-screen w-full max-w-[900px] mx-auto p-4 pb-16 sm:pb-0 pt-16 sm:pt-8">
                 <>{children}</>
                 <Toaster />
             </div>
+
             <MobileNavbar />
         </div>
     );

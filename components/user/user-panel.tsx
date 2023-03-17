@@ -1,5 +1,5 @@
 interface UserPanelProps {}
 
 export default function UserPanel(UserPanelProps: UserPanelProps): JSX.Element {
-    return <div className="flex flex-col w-56 hidden bg-slate-500 lg:block">UserPanel</div>;
+    return <div className="w-56 h-full hidden sm:block">UserPanel</div>;
 }

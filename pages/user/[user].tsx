@@ -27,7 +27,7 @@ export default function User() {
                         <UserDetails
                             username={data.user.user.username}
                             avatarUrl={data.user.user.avatarUrl}
-                            isFollowedByLoggedInUser={data?.user.user.isFollowedByLoggedInUser}
+                            isFollowedByLoggedInUser={data?.user.user.isFollowedByLoggedInUser ?? false}
                         />
                         <UserArtworks artworks={data.user.user.artworks} />
                     </>
