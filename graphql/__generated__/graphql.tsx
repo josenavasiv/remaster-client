@@ -50,12 +50,14 @@ export type Comment = Node & {
   artwork: Artwork;
   comment: Scalars['String'];
   commenter: User;
+  createdAt: Scalars['String'];
   id: Scalars['ID'];
   isLikedByLoggedInUser?: Maybe<Scalars['Boolean']>;
   likesCount: Scalars['Int'];
   parentComment?: Maybe<Comment>;
   parentCommentId?: Maybe<Scalars['ID']>;
   replies: Array<Comment>;
+  updatedAt: Scalars['String'];
 };
 
 export type CommentPayload = {
@@ -297,7 +299,7 @@ export type ArtworkQueryVariables = Exact<{
 }>;
 
 
-export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, parentCommentId?: string | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, isLikedByLoggedInUser?: boolean | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -393,7 +395,22 @@ export const ArtworkDocument = gql`
           username
           avatarUrl
         }
-        parentCommentId
+        replies {
+          id
+          comment
+          commenter {
+            id
+            username
+            avatarUrl
+          }
+          parentCommentId
+          isLikedByLoggedInUser
+          likesCount
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
     }
     errors {

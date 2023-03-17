@@ -1,13 +1,14 @@
 import React from 'react';
-import { CommentsType } from './artwork-details';
+import { CommentType } from './artwork-details';
+import ArtworkComment from './artwork-comment';
 
-type ArtworkDetailsCommentsProps = { comments: CommentsType[] };
+type ArtworkDetailsCommentsProps = { comments: CommentType[] };
 
 export default function ArtworkDetailsComments({ comments }: ArtworkDetailsCommentsProps) {
     return (
         <div className="flex flex-col">
             {comments.map((comment) => (
-                <div key={comment.id}>{comment.comment}</div>
+                <ArtworkComment key={comment.id} comment={comment} />
             ))}
         </div>
     );

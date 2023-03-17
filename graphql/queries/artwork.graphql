@@ -23,7 +23,22 @@ query artwork($artworkId: ID!) {
                     username
                     avatarUrl
                 }
-                parentCommentId
+                replies {
+                    id
+                    comment
+                    commenter {
+                        id
+                        username
+                        avatarUrl
+                    }
+                    parentCommentId
+                    isLikedByLoggedInUser
+                    likesCount
+                    createdAt
+                    updatedAt
+                }
+                createdAt
+                updatedAt
             }
         }
         errors {

@@ -12,7 +12,7 @@ type ArtworkDetailsProps = {
     createdAt: string;
     likesCount: number;
     isLikedByLoggedInUser?: boolean | null | undefined;
-    comments: CommentsType[];
+    comments: CommentType[];
     uploader: {
         id: string;
         username: string;
@@ -23,17 +23,34 @@ type ArtworkDetailsProps = {
     }[];
 };
 
-export type CommentsType = {
+export type CommentType = {
     id: string;
     comment: string;
     likesCount: number;
     isLikedByLoggedInUser?: boolean | null | undefined;
-    parentCommentId?: string | null | undefined;
     commenter: {
         id: string;
         username: string;
         avatarUrl: string;
     };
+    replies: ReplyType[];
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type ReplyType = {
+    id: string;
+    comment: string;
+    commenter: {
+        id: string;
+        username: string;
+        avatarUrl: string;
+    };
+    parentCommentId?: string | null | undefined;
+    isLikedByLoggedInUser?: boolean | null | undefined;
+    likesCount: number;
+    createdAt: string;
+    updatedAt: string;
 };
 
 export default function ArtworkDetails({
@@ -50,9 +67,9 @@ export default function ArtworkDetails({
 }: ArtworkDetailsProps) {
     return (
         <div className="flex flex-col mx-auto">
-            <div className="flex flex-col md:flex-row gap-3 mb-5 ">
+            <div className="flex flex-col lg:flex-row gap-3 mb-5 ">
                 <ArtworkCarouselImage imageUrls={imageUrls} />
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 lg:w-96">
                     <ArtworkUploader {...uploader} />
                     <span className="font-bold">{title}</span>
                     <span className="">{description}</span>
@@ -61,7 +78,7 @@ export default function ArtworkDetails({
                     {isLikedByLoggedInUser ? <span>FOLLOWING</span> : <span>NOT FOLLOWING</span>}
                 </div>
             </div>
-            <div className="">awdnaid nawdi nadin ADNa </div>
+            <div className="">OTHER ARTWORKS BY THE UPLOADER</div>
         </div>
     );
 }
