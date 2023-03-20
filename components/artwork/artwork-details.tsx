@@ -1,9 +1,9 @@
 import React from 'react';
-import ArtworkCarouselImage from './artwork-carousel-image';
 import ArtworkUploader from './artwork-uploader';
 import ArtworkDetailsComments from './artwork-details-comments';
 import { getRelativeDate } from '@/lib/relativeTime';
 import { CommentType } from './artwork-comment';
+import ArtworkCarousel from './artwork-carousel';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -39,7 +39,7 @@ export default function ArtworkDetails({
     return (
         <div className="flex flex-col mx-auto pb-20">
             <div className="flex flex-col lg:flex-row gap-3 mb-5 ">
-                <ArtworkCarouselImage imageUrls={imageUrls} />
+                <ArtworkCarousel imageUrls={imageUrls} />
                 <div className="flex flex-col gap-2 lg:w-96 max-w-[350px]">
                     <ArtworkUploader {...uploader} />
                     <span className="font-bold">{title}</span>

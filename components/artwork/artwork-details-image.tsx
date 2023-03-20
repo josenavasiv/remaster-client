@@ -1,13 +1,13 @@
 import Image from 'next/image';
 
-interface ArtworkCarouselImageProps {
+interface ArtworkDetailsImageProps {
     imageUrls: string[];
 }
 
-export default function ArtworkCarouselImage({ imageUrls }: ArtworkCarouselImageProps): JSX.Element {
+export default function ArtworkDetailsImage({ imageUrls }: ArtworkDetailsImageProps): JSX.Element {
     return (
-        <div className="w-[350px] h-[526px] rounded-lg bg-black relative">
-            <Image src={imageUrls[0]} alt="" fill={true} className="object-contain rounded-lg" />
+        <div className="w-[350px] h-[526px] bg-black relative">
+            <Image src={imageUrls[0]} alt="" fill={true} className="object-contain" />
         </div>
         // <img
         //     src={imageUrls[0]}

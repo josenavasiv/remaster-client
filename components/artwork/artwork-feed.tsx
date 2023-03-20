@@ -1,6 +1,7 @@
 import ArtworkUploader from './artwork-uploader';
-import ArtworkCarouselImage from './artwork-carousel-image';
+import ArtworkCarouselImage from './artwork-details-image';
 import ArtworkDescription from './artwork-description';
+import ArtworkCarousel from './artwork-carousel';
 // import { Artwork, User, Comment } from '@/graphql/__generated__/graphql';
 import { getRelativeDate } from '@/lib/relativeTime';
 
@@ -55,7 +56,7 @@ export default function ArtworkFeed({
             <div className="mt-2">
                 <div className="flex flex-col gap-1 h-full">
                     <span className="font-extrabold">{title}</span>
-                    <ArtworkCarouselImage imageUrls={imageUrls} />
+                    <ArtworkCarousel imageUrls={imageUrls} />
                     <ArtworkDescription description={description} />
                     <p>{recentComments.length > 0 ? 'RECENT COMMENTS' : 'N/A'}</p>
                     <div className="font-extrabold text-xs">
