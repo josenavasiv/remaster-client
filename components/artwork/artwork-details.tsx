@@ -40,13 +40,13 @@ export default function ArtworkDetails({
         <div className="flex flex-col mx-auto pb-20">
             <div className="flex flex-col lg:flex-row gap-3 mb-5 ">
                 <ArtworkCarouselImage imageUrls={imageUrls} />
-                <div className="flex flex-col gap-2 lg:w-96">
+                <div className="flex flex-col gap-2 lg:w-96 max-w-[350px]">
                     <ArtworkUploader {...uploader} />
                     <span className="font-bold">{title}</span>
                     <span className="">{description}</span>
                     <span className="">{getRelativeDate(createdAt)}</span>
                     <ArtworkDetailsComments comments={comments} />
-                    {isLikedByLoggedInUser ? <span>FOLLOWING</span> : <span>NOT FOLLOWING</span>}
+                    <p>{isLikedByLoggedInUser == null ? <span>CANT LIKE OWN</span> : <span>NOT LIKED</span>}</p>
                 </div>
             </div>
             <div className="">OTHER ARTWORKS BY THE UPLOADER</div>

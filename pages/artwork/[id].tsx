@@ -9,7 +9,10 @@ import { useArtworkQuery } from '@/graphql/__generated__/graphql';
 export default function Artwork() {
     const router = useRouter();
     const { id } = router.query;
-    const { data, loading, error } = useArtworkQuery({ variables: { artworkId: id as string } });
+    const { data, loading, error } = useArtworkQuery({
+        variables: { artworkId: id as string },
+        fetchPolicy: 'cache-and-network',
+    });
 
     return (
         <>

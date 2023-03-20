@@ -3,5 +3,5 @@ interface ArtworkDescriptionProps {
 }
 
 export default function ArtworkDescription({ description }: ArtworkDescriptionProps): JSX.Element {
-    return <div>{description}</div>;
+    return <div className="">{description}</div>;
 }

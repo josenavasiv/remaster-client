@@ -1,0 +1,12 @@
+mutation userRegister($username: String!, $email: String!, $password: String!) {
+    userRegister(username: $username, email: $email, password: $password) {
+        user {
+            id
+            username
+            avatarUrl
+        }
+        errors {
+            message
+        }
+    }
+}

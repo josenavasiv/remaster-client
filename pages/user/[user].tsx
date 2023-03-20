@@ -10,7 +10,10 @@ import { useUserQuery } from '@/graphql/__generated__/graphql';
 export default function User() {
     const router = useRouter();
     const { user } = router.query;
-    const { data, loading, error } = useUserQuery({ variables: { username: user as string } });
+    const { data, loading, error } = useUserQuery({
+        variables: { username: user as string },
+        fetchPolicy: 'cache-and-network',
+    });
 
     return (
         <>

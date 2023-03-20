@@ -8,7 +8,10 @@ import { toast } from 'react-hot-toast';
 import ArtworkFeed from '@/components/artwork/artwork-feed';
 
 export default function Home() {
-    const { data, loading, error, fetchMore } = useUserFeedQuery({ notifyOnNetworkStatusChange: true });
+    const { data, loading, error, fetchMore } = useUserFeedQuery({
+        notifyOnNetworkStatusChange: true,
+        fetchPolicy: 'cache-and-network',
+    });
     return (
         <>
             <Head>
@@ -32,6 +35,7 @@ export default function Home() {
                             createdAt={artwork.createdAt}
                             uploader={artwork.uploader}
                             recentComments={artwork.recentComments!}
+                            isLikedByLoggedInUser={artwork.isLikedByLoggedInUser}
                         />
                     ))}
                 {/* Eventually will be moved into an infinite scroll component */}

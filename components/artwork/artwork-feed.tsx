@@ -1,7 +1,7 @@
 import ArtworkUploader from './artwork-uploader';
 import ArtworkCarouselImage from './artwork-carousel-image';
 import ArtworkDescription from './artwork-description';
-import { Artwork, User, Comment } from '@/graphql/__generated__/graphql';
+// import { Artwork, User, Comment } from '@/graphql/__generated__/graphql';
 import { getRelativeDate } from '@/lib/relativeTime';
 
 // export type ArtworkFeedProps = Pick<
@@ -61,7 +61,7 @@ export default function ArtworkFeed({
                     <div className="font-extrabold text-xs">
                         <p>{likesCount ?? 'N/A'} Likes</p>
                         <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>
-                        <p>{isLikedByLoggedInUser == null ? 'CANT LIKE OWN' : 'FALSE'}</p>
+                        <p>{isLikedByLoggedInUser == null ? <span>CANT LIKE OWN</span> : <span>NOT LIKED</span>}</p>
                     </div>
                 </div>
             </div>
