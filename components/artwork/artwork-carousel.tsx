@@ -25,8 +25,17 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
                         alt={`${imageUrl}`}
                         width={350}
                         height={526}
-                        className="object-contain bg-black"
+                        className="object-contain bg-black aspect-square"
+                        priority
                     />
+                    // <Image
+                    //     key={imageUrl}
+                    //     src={imageUrl}
+                    //     alt={`${imageUrl}`}
+                    //     width={350}
+                    //     height={526}
+                    //     className="object-contain bg-black"
+                    // />
                 ))}
             </div>
             <div className="absolute inset-0 flex items-center justify-between">

@@ -24,5 +24,8 @@ mutation artworkCreate($title: String!, $description: String!, $imageUrls: [Stri
                 isLikedByLoggedInUser
             }
         }
+        errors {
+            message
+        }
     }
 }

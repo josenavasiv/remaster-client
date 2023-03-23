@@ -293,7 +293,7 @@ export type ArtworkCreateMutationVariables = Exact<{
 }>;
 
 
-export type ArtworkCreateMutation = { __typename?: 'Mutation', artworkCreate: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, isLikedByLoggedInUser?: boolean | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null } };
+export type ArtworkCreateMutation = { __typename?: 'Mutation', artworkCreate: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, isLikedByLoggedInUser?: boolean | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type UserLoginMutationVariables = Exact<{
   username: Scalars['String'];
@@ -371,6 +371,9 @@ export const ArtworkCreateDocument = gql`
         }
         isLikedByLoggedInUser
       }
+    }
+    errors {
+      message
     }
   }
 }

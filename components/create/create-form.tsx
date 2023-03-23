@@ -1,19 +1,24 @@
-import { UserFeedDocument, UserFeedQuery, useArtworkCreateMutation } from '@/graphql/__generated__/graphql';
+import { useArtworkCreateMutation } from '@/graphql/__generated__/graphql';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import TextField from '../input/text-field';
 import validator from 'validator';
 import CreatePreviews from './create-previews';
+import toast from 'react-hot-toast';
 
-type CreateFormProps = {};
+type CreateFormProps = {
+    closeModal: () => void;
+};
 
 // This includes the image uploading, previews, and everything
-export default function CreateForm({}: CreateFormProps) {
+export default function CreateForm({ closeModal }: CreateFormProps) {
     const router = useRouter();
     const [artworkCreate, { data, loading, error }] = useArtworkCreateMutation();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [imageFiles, setImageFiles] = useState<FileList>(); // Drill into preview component
+    // Will move into a custom hook for uploadToStorage
+    const [isStoring, SetIsStoring] = useState(false);
 
     const [errors, setErrors] = useState({
         title: false,
@@ -32,7 +37,9 @@ export default function CreateForm({}: CreateFormProps) {
         });
 
         if (isValidTitle && isValidDescription && imageFiles) {
+            SetIsStoring(true);
             const { urls } = await uploadImageBlobsToStorage(imageFiles);
+            SetIsStoring(false);
 
             const response = await artworkCreate({
                 variables: {
@@ -40,45 +47,24 @@ export default function CreateForm({}: CreateFormProps) {
                     description,
                     imageUrls: urls,
                 },
-                update: (cache, { data }) => {
-                    // WANT TO USE THE CACHE UPDATE
-                    // if (data) {
-                    //     const UFQ = cache.readQuery<UserFeedQuery>({ query: UserFeedDocument });
-                    //     console.log('UFQ');
-                    //     console.log(UFQ);
-                    //     UFQ?.userFeed.artworks;
-                    //     const UFQUserFeed = console.log('DATA');
-                    //     console.log(data);
-                    //     cache.writeQuery<UserFeedQuery>({
-                    //         query: UserFeedDocument,
-                    //         data: {
-                    //             userFeed: {
-                    //                 errors: UFQ?.userFeed.errors!,
-                    //                 artworks: [{ ...data?.artworkCreate.artwork!, __typename: 'Artwork' }],
-                    //                 hasMore: UFQ?.userFeed.hasMore!,
-                    //             },
-                    //         },
-                    //     });
-                    //     const UFQ2 = cache.readQuery<UserFeedQuery>({ query: UserFeedDocument });
-                    //     console.log(UFQ2);
-                    // }
-                },
+                refetchQueries: ['userFeed'],
             });
 
-            // if (response.data?.artworkCreate?.errors && response.data.userLogin.errors.length > 0) {
-            //     response.data.userLogin.errors.forEach((error) => {
-            //         toast.error(error.message);
-            //     });
-            // } else {
-            //     toast.success('SUCCESSFULLY LOGGED IN!');
-            //     router.push('/');
-            // }
+            if (response.data?.artworkCreate?.errors && response.data.artworkCreate.errors.length > 0) {
+                response.data.artworkCreate.errors.forEach((error) => {
+                    toast.error(error.message);
+                });
+            } else {
+                toast.success(`Created ${data?.artworkCreate.artwork?.title}!`);
+                closeModal();
+            }
         }
     };
 
     // console.log(imageFiles); Re-renders due to useState of TextField
 
     // Returns array of urls
+    // Create into a custom hook
     const uploadImageBlobsToStorage = async (imageFiles: FileList): Promise<{ urls: string[] }> => {
         // UPLOAD IMAGES TO BACKEND ON FORM SUBMISSION
         const imageBlobs = new FormData();
@@ -123,7 +109,15 @@ export default function CreateForm({}: CreateFormProps) {
                         errorMessage="Description is invalid"
                         required={true}
                     />
-                    <input type="submit" value="Create Artwork" className="w-full bg-cyan-600 py-2" />
+                    {!isStoring && !loading && (
+                        <input
+                            type="submit"
+                            value="Create Artwork"
+                            className="w-full bg-cyan-600 py-2"
+                            disabled={isStoring || loading}
+                        />
+                    )}
+                    {(isStoring || loading) && <div>LOADING...</div>}
                 </div>
             </form>
         </div>
