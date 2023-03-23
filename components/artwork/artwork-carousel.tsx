@@ -20,7 +20,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
             >
                 {imageUrls.map((imageUrl, i) => (
                     <Image
-                        key={i}
+                        key={imageUrl}
                         src={imageUrl}
                         alt={`${imageUrl}`}
                         width={350}
@@ -42,6 +42,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
                 <div className="flex items-center justify-center gap-2">
                     {imageUrls.map((_, index) => (
                         <div
+                            key={index}
                             className={`transition-all w-2 h-2 bg-white rounded-full ${
                                 current === index ? 'p-1' : 'bg-opacity-50'
                             }`}

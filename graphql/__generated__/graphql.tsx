@@ -286,6 +286,15 @@ export type UsersSuggestedPayload = {
   user: Array<User>;
 };
 
+export type ArtworkCreateMutationVariables = Exact<{
+  title: Scalars['String'];
+  description: Scalars['String'];
+  imageUrls: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type ArtworkCreateMutation = { __typename?: 'Mutation', artworkCreate: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, isLikedByLoggedInUser?: boolean | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null } };
+
 export type UserLoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -336,6 +345,64 @@ export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 export type UserLoggedInQuery = { __typename?: 'Query', userLoggedIn: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 
+export const ArtworkCreateDocument = gql`
+    mutation artworkCreate($title: String!, $description: String!, $imageUrls: [String!]!) {
+  artworkCreate(title: $title, description: $description, imageUrls: $imageUrls) {
+    artwork {
+      id
+      title
+      description
+      imageUrls
+      likesCount
+      createdAt
+      uploader {
+        id
+        username
+        avatarUrl
+      }
+      isLikedByLoggedInUser
+      recentComments {
+        id
+        comment
+        commenter {
+          id
+          username
+          avatarUrl
+        }
+        isLikedByLoggedInUser
+      }
+    }
+  }
+}
+    `;
+export type ArtworkCreateMutationFn = Apollo.MutationFunction<ArtworkCreateMutation, ArtworkCreateMutationVariables>;
+
+/**
+ * __useArtworkCreateMutation__
+ *
+ * To run a mutation, you first call `useArtworkCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useArtworkCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [artworkCreateMutation, { data, loading, error }] = useArtworkCreateMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      imageUrls: // value for 'imageUrls'
+ *   },
+ * });
+ */
+export function useArtworkCreateMutation(baseOptions?: Apollo.MutationHookOptions<ArtworkCreateMutation, ArtworkCreateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ArtworkCreateMutation, ArtworkCreateMutationVariables>(ArtworkCreateDocument, options);
+      }
+export type ArtworkCreateMutationHookResult = ReturnType<typeof useArtworkCreateMutation>;
+export type ArtworkCreateMutationResult = Apollo.MutationResult<ArtworkCreateMutation>;
+export type ArtworkCreateMutationOptions = Apollo.BaseMutationOptions<ArtworkCreateMutation, ArtworkCreateMutationVariables>;
 export const UserLoginDocument = gql`
     mutation userLogin($username: String!, $password: String!) {
   userLogin(username: $username, password: $password) {

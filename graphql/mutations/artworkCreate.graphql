@@ -1,0 +1,28 @@
+mutation artworkCreate($title: String!, $description: String!, $imageUrls: [String!]!) {
+    artworkCreate(title: $title, description: $description, imageUrls: $imageUrls) {
+        artwork {
+            id
+            title
+            description
+            imageUrls
+            likesCount
+            createdAt
+            uploader {
+                id
+                username
+                avatarUrl
+            }
+            isLikedByLoggedInUser
+            recentComments {
+                id
+                comment
+                commenter {
+                    id
+                    username
+                    avatarUrl
+                }
+                isLikedByLoggedInUser
+            }
+        }
+    }
+}
