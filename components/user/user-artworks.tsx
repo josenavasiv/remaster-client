@@ -12,7 +12,14 @@ export default function UserArtworks({ artworks }: UserArtworkProps) {
             {artworks.map((artwork) => (
                 <Link key={artwork.id} href={`/artwork/${artwork.id}`}>
                     <div className="relative w-full aspect-square">
-                        <Image src={artwork.imageUrls[0]} fill={true} alt={artwork.title} className="object-cover " />
+                        <Image
+                            src={artwork.imageUrls[0]}
+                            fill={true}
+                            alt={artwork.title}
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            priority
+                        />
                     </div>
                 </Link>
             ))}

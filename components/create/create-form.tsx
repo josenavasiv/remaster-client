@@ -2,6 +2,7 @@ import { useArtworkCreateMutation } from '@/graphql/__generated__/graphql';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import TextField from '../input/text-field';
+import TextAreaField from '../input/textarea-field';
 import validator from 'validator';
 import CreatePreviews from './create-previews';
 import toast from 'react-hot-toast';
@@ -87,39 +88,40 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
     return (
         <div className="w-[350px] sm:w-[700px] bg-gray-500 p-5">
             <p className="text-center">CREATE ARTWORK</p>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <div className="flex-1">
                     <CreatePreviews imageFiles={imageFiles} setImageFiles={setImageFiles} />
                 </div>
+                <form onSubmit={handleSubmit} className="flex-1 ">
+                    <div className="flex flex-col">
+                        <TextField
+                            setValue={setTitle}
+                            label="Title"
+                            placeholder="Title"
+                            error={errors.title}
+                            errorMessage="Title is invalid"
+                            required={true}
+                        />
+                        <TextAreaField
+                            setValue={setDescription}
+                            label="Description"
+                            placeholder="Description"
+                            error={errors.description}
+                            errorMessage="Description is invalid"
+                            required={true}
+                        />
 
-                <div className="flex-1 flex flex-col">
-                    <TextField
-                        setValue={setTitle}
-                        label="Title"
-                        placeholder="Title"
-                        error={errors.title}
-                        errorMessage="Title is invalid"
-                        required={true}
-                    />
-                    <TextField
-                        setValue={setDescription}
-                        label="Description"
-                        placeholder="Description"
-                        error={errors.description}
-                        errorMessage="Description is invalid"
-                        required={true}
-                    />
-                    {!isStoring && !loading && (
                         <input
                             type="submit"
                             value="Create Artwork"
-                            className="w-full bg-cyan-600 py-2"
+                            className="w-full bg-cyan-400 py-2 disabled:bg-cyan-900"
                             disabled={isStoring || loading}
                         />
-                    )}
-                    {(isStoring || loading) && <div>LOADING...</div>}
-                </div>
-            </form>
+
+                        {(isStoring || loading) && <div>LOADING...</div>}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
