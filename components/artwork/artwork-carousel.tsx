@@ -20,7 +20,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
             >
                 {imageUrls.map((imageUrl, i) => (
                     <Image
-                        key={imageUrl}
+                        key={i}
                         src={imageUrl}
                         alt={`${imageUrl}`}
                         width={350}

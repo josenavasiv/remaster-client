@@ -5,7 +5,7 @@ export const linkifyTags = (word: string) => {
     if (word.startsWith('#')) {
         const tag = word.substring(1);
         return (
-            <Link className="text-pink-500" href={`/tags/${tag}/`}>
+            <Link className="text-pink-500 font-bold" href={`/tags/${tag}/`}>
                 #{tag}
             </Link>
         );

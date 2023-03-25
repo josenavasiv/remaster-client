@@ -4,6 +4,7 @@ import ArtworkDetailsComments from './artwork-details-comments';
 import { getRelativeDate } from '@/lib/relativeTime';
 import { CommentType } from './artwork-comment';
 import ArtworkCarousel from './artwork-carousel';
+import ArtworkDescription from './artwork-description';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -42,8 +43,8 @@ export default function ArtworkDetails({
                 <ArtworkCarousel imageUrls={imageUrls} />
                 <div className="flex flex-col gap-2 lg:w-96 max-w-[350px]">
                     <ArtworkUploader {...uploader} />
-                    <span className="font-bold">{title}</span>
-                    <span className="">{description}</span>
+                    <span className="font-extrabold">{title}</span>
+                    <ArtworkDescription description={description} />
                     <span className="">{getRelativeDate(createdAt)}</span>
                     <ArtworkDetailsComments comments={comments} />
                     <p>{isLikedByLoggedInUser == null ? <span>CANT LIKE OWN</span> : <span>NOT LIKED</span>}</p>

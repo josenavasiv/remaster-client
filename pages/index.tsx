@@ -8,10 +8,12 @@ import { toast } from 'react-hot-toast';
 import ArtworkFeed from '@/components/artwork/artwork-feed';
 
 export default function Home() {
-    const { data, loading, error, fetchMore } = useUserFeedQuery({
+    const { data, loading, error, fetchMore, refetch } = useUserFeedQuery({
         notifyOnNetworkStatusChange: true,
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'network-only',
+        nextFetchPolicy: 'cache-first',
     });
+
     return (
         <>
             <Head>
@@ -22,6 +24,7 @@ export default function Home() {
             </Head>
             <HomeMainFeedContainer>
                 {!data && loading && <div>ARTWORKS LOADING</div>}
+                <button onClick={() => refetch()}>Check For New Posts</button>
                 {data?.userFeed.artworks &&
                     !error &&
                     data?.userFeed.artworks.map((artwork) => (

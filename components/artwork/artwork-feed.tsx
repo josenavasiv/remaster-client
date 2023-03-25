@@ -51,7 +51,7 @@ export default function ArtworkFeed({
     createdAt,
 }: ArtworkFeedProps) {
     return (
-        <div className="w-[350px] mx-auto mb-7">
+        <div className="w-[350px] mx-auto mb-7 ">
             <ArtworkUploader {...uploader} />
             <div className="mt-2">
                 <div className="flex flex-col gap-1 h-full">

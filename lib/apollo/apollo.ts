@@ -16,7 +16,7 @@ const cache = new InMemoryCache({
                     merge(
                         existing: ArtworksPaginatedPayload | undefined,
                         incoming: ArtworksPaginatedPayload
-                    ): ArtworksPaginatedPayload {
+                    ): ArtworksPaginatedPayload | undefined {
                         return {
                             ...incoming,
                             artworks: [...(existing?.artworks || []), ...incoming.artworks],

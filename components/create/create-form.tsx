@@ -30,7 +30,7 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
         e.preventDefault();
 
         const isValidTitle = validator.isLength(title, { min: 3, max: 30 });
-        const isValidDescription = validator.isLength(description, { min: 5, max: 300 });
+        const isValidDescription = validateDescription(description);
 
         setErrors({
             title: !isValidTitle,
@@ -56,7 +56,7 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
                     toast.error(error.message);
                 });
             } else {
-                toast.success(`Created ${data?.artworkCreate.artwork?.title}!`);
+                toast.success(`Created ${response.data?.artworkCreate.artwork?.title}`);
                 closeModal();
             }
         }
@@ -85,8 +85,12 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
         return imageUrls;
     };
 
+    const validateDescription = (desc: string): Boolean => {
+        return validator.isLength(description, { min: 5, max: 300 }) && (desc.match(/#/g) || []).length <= 10;
+    };
+
     return (
-        <div className="w-[350px] sm:w-[700px] bg-gray-500 p-5">
+        <div className="w-[350px] sm:w-[750px] bg-gray-500 p-5">
             <p className="text-center">CREATE ARTWORK</p>
             <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <div className="flex-1">
@@ -110,14 +114,12 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
                             errorMessage="Description is invalid"
                             required={true}
                         />
-
                         <input
                             type="submit"
                             value="Create Artwork"
                             className="w-full bg-cyan-400 py-2 disabled:bg-cyan-900"
                             disabled={isStoring || loading}
                         />
-
                         {(isStoring || loading) && <div>LOADING...</div>}
                     </div>
                 </form>
