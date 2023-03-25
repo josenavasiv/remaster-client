@@ -1,0 +1,10 @@
+mutation LikeArtworkDelete($likeId: ID!, $artworkId: ID!) {
+    likeArtworkDelete(likeID: $likeId, artworkID: $artworkId) {
+        like {
+            id
+        }
+        errors {
+            message
+        }
+    }
+}

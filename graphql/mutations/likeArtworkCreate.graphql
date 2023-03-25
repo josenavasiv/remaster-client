@@ -1,0 +1,10 @@
+mutation likeArtworkCreate($artworkId: ID!) {
+    likeArtworkCreate(artworkID: $artworkId) {
+        like {
+            id
+        }
+        errors {
+            message
+        }
+    }
+}
