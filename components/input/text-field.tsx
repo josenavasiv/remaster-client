@@ -5,6 +5,7 @@ type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
     error?: boolean;
     errorMessage?: string;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
+    className?: string;
 };
 
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(

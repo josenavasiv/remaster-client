@@ -5,6 +5,7 @@ import { getRelativeDate } from '@/lib/relativeTime';
 import { CommentType } from './artwork-comment';
 import ArtworkCarousel from './artwork-carousel';
 import ArtworkDescription from './artwork-description';
+import CommentInput from '../comment/comment-input';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -47,6 +48,7 @@ export default function ArtworkDetails({
                     <ArtworkDescription description={description} />
                     <span className="">{getRelativeDate(createdAt)}</span>
                     <ArtworkDetailsComments comments={comments} />
+                    <CommentInput artworkId={id} />
                     <p>{isLikedByLoggedInUser == null ? <span>CANT LIKE OWN</span> : <span>NOT LIKED</span>}</p>
                 </div>
             </div>

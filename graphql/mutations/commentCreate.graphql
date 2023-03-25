@@ -1,0 +1,31 @@
+mutation commentCreate($artworkId: ID!, $comment: String!) {
+    commentCreate(artworkID: $artworkId, comment: $comment) {
+        comment {
+            id
+            comment
+            likesCount
+            isLikedByLoggedInUser
+            commenter {
+                id
+                username
+                avatarUrl
+            }
+            replies {
+                id
+                comment
+                commenter {
+                    id
+                    username
+                    avatarUrl
+                }
+                parentCommentId
+                isLikedByLoggedInUser
+                likesCount
+                createdAt
+                updatedAt
+            }
+            createdAt
+            updatedAt
+        }
+    }
+}

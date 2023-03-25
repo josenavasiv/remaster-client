@@ -295,6 +295,14 @@ export type ArtworkCreateMutationVariables = Exact<{
 
 export type ArtworkCreateMutation = { __typename?: 'Mutation', artworkCreate: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: boolean | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, isLikedByLoggedInUser?: boolean | null, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type CommentCreateMutationVariables = Exact<{
+  artworkId: Scalars['ID'];
+  comment: Scalars['String'];
+}>;
+
+
+export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, isLikedByLoggedInUser?: boolean | null, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, isLikedByLoggedInUser?: boolean | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string } }> } | null } };
+
 export type UserLoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -406,6 +414,66 @@ export function useArtworkCreateMutation(baseOptions?: Apollo.MutationHookOption
 export type ArtworkCreateMutationHookResult = ReturnType<typeof useArtworkCreateMutation>;
 export type ArtworkCreateMutationResult = Apollo.MutationResult<ArtworkCreateMutation>;
 export type ArtworkCreateMutationOptions = Apollo.BaseMutationOptions<ArtworkCreateMutation, ArtworkCreateMutationVariables>;
+export const CommentCreateDocument = gql`
+    mutation commentCreate($artworkId: ID!, $comment: String!) {
+  commentCreate(artworkID: $artworkId, comment: $comment) {
+    comment {
+      id
+      comment
+      likesCount
+      isLikedByLoggedInUser
+      commenter {
+        id
+        username
+        avatarUrl
+      }
+      replies {
+        id
+        comment
+        commenter {
+          id
+          username
+          avatarUrl
+        }
+        parentCommentId
+        isLikedByLoggedInUser
+        likesCount
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export type CommentCreateMutationFn = Apollo.MutationFunction<CommentCreateMutation, CommentCreateMutationVariables>;
+
+/**
+ * __useCommentCreateMutation__
+ *
+ * To run a mutation, you first call `useCommentCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCommentCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [commentCreateMutation, { data, loading, error }] = useCommentCreateMutation({
+ *   variables: {
+ *      artworkId: // value for 'artworkId'
+ *      comment: // value for 'comment'
+ *   },
+ * });
+ */
+export function useCommentCreateMutation(baseOptions?: Apollo.MutationHookOptions<CommentCreateMutation, CommentCreateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CommentCreateMutation, CommentCreateMutationVariables>(CommentCreateDocument, options);
+      }
+export type CommentCreateMutationHookResult = ReturnType<typeof useCommentCreateMutation>;
+export type CommentCreateMutationResult = Apollo.MutationResult<CommentCreateMutation>;
+export type CommentCreateMutationOptions = Apollo.BaseMutationOptions<CommentCreateMutation, CommentCreateMutationVariables>;
 export const UserLoginDocument = gql`
     mutation userLogin($username: String!, $password: String!) {
   userLogin(username: $username, password: $password) {
