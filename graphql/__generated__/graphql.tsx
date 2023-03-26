@@ -303,6 +303,15 @@ export type CommentCreateMutationVariables = Exact<{
 
 export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type CommentReplyMutationVariables = Exact<{
+  artworkId: Scalars['ID'];
+  comment: Scalars['String'];
+  parentCommentId: Scalars['ID'];
+}>;
+
+
+export type CommentReplyMutation = { __typename?: 'Mutation', commentReply: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, parentCommentId?: string | null, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
 export type LikeArtworkCreateMutationVariables = Exact<{
   artworkId: Scalars['ID'];
 }>;
@@ -340,7 +349,7 @@ export type ArtworkQueryVariables = Exact<{
 }>;
 
 
-export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -500,6 +509,69 @@ export function useCommentCreateMutation(baseOptions?: Apollo.MutationHookOption
 export type CommentCreateMutationHookResult = ReturnType<typeof useCommentCreateMutation>;
 export type CommentCreateMutationResult = Apollo.MutationResult<CommentCreateMutation>;
 export type CommentCreateMutationOptions = Apollo.BaseMutationOptions<CommentCreateMutation, CommentCreateMutationVariables>;
+export const CommentReplyDocument = gql`
+    mutation commentReply($artworkId: ID!, $comment: String!, $parentCommentId: ID!) {
+  commentReply(
+    artworkID: $artworkId
+    comment: $comment
+    parentCommentID: $parentCommentId
+  ) {
+    comment {
+      id
+      comment
+      commenter {
+        id
+        username
+        avatarUrl
+      }
+      likesCount
+      parentCommentId
+      parentComment {
+        id
+        commenter {
+          username
+        }
+      }
+      createdAt
+      updatedAt
+      isLikedByLoggedInUser {
+        id
+      }
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type CommentReplyMutationFn = Apollo.MutationFunction<CommentReplyMutation, CommentReplyMutationVariables>;
+
+/**
+ * __useCommentReplyMutation__
+ *
+ * To run a mutation, you first call `useCommentReplyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCommentReplyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [commentReplyMutation, { data, loading, error }] = useCommentReplyMutation({
+ *   variables: {
+ *      artworkId: // value for 'artworkId'
+ *      comment: // value for 'comment'
+ *      parentCommentId: // value for 'parentCommentId'
+ *   },
+ * });
+ */
+export function useCommentReplyMutation(baseOptions?: Apollo.MutationHookOptions<CommentReplyMutation, CommentReplyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CommentReplyMutation, CommentReplyMutationVariables>(CommentReplyDocument, options);
+      }
+export type CommentReplyMutationHookResult = ReturnType<typeof useCommentReplyMutation>;
+export type CommentReplyMutationResult = Apollo.MutationResult<CommentReplyMutation>;
+export type CommentReplyMutationOptions = Apollo.BaseMutationOptions<CommentReplyMutation, CommentReplyMutationVariables>;
 export const LikeArtworkCreateDocument = gql`
     mutation likeArtworkCreate($artworkId: ID!) {
   likeArtworkCreate(artworkID: $artworkId) {
@@ -699,6 +771,12 @@ export const ArtworkDocument = gql`
           updatedAt
           isLikedByLoggedInUser {
             id
+          }
+          parentComment {
+            id
+            commenter {
+              username
+            }
           }
         }
         createdAt

@@ -36,6 +36,12 @@ query artwork($artworkId: ID!) {
                     isLikedByLoggedInUser {
                         id
                     }
+                    parentComment {
+                        id
+                        commenter {
+                            username
+                        }
+                    }
                 }
                 createdAt
                 updatedAt

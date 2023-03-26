@@ -3,6 +3,7 @@ import { ReplyType } from './artwork-comment-reply';
 import { useState } from 'react';
 import { LikeType } from './artwork-feed';
 import { getRelativeDate } from '@/lib/relativeTime';
+import CommentReplyInput from '../comment/comment-reply-input';
 
 export type CommentType = {
     id: string;
@@ -21,10 +22,12 @@ export type CommentType = {
 
 type ArtworkCommentProps = {
     comment: CommentType;
+    artworkId: string;
 };
 
-export default function ArtworkComment({ comment }: ArtworkCommentProps): JSX.Element {
+export default function ArtworkComment({ comment, artworkId }: ArtworkCommentProps): JSX.Element {
     const [showReplies, setShowReplies] = useState(false);
+    const [isReplying, setIsReplying] = useState(false);
 
     return (
         <div className="">
@@ -38,6 +41,9 @@ export default function ArtworkComment({ comment }: ArtworkCommentProps): JSX.El
             <div className="flex gap-2 font-medium text-[0.7rem] pb-2 text-black/60">
                 <p>{comment.likesCount ?? 'N/A'} Likes</p>
                 <p>{getRelativeDate(comment.createdAt) ?? 'N/A'}</p>
+                <button className="text-[0.7rem]" onClick={() => setIsReplying(!isReplying)}>
+                    {isReplying ? 'Cancel Reply' : 'Reply'}
+                </button>
                 {comment.replies.length > 0 && (
                     <button className="text-[0.7rem]" onClick={() => setShowReplies(!showReplies)}>
                         {showReplies ? 'Hide' : 'Show'} Replies ({comment.replies.length})
@@ -48,9 +54,17 @@ export default function ArtworkComment({ comment }: ArtworkCommentProps): JSX.El
             {showReplies && (
                 <div className="flex flex-col gap-2 pb-2 ml-8">
                     {comment?.replies.map((reply) => (
-                        <ArtworkCommentReply key={reply.id} reply={reply} />
+                        <ArtworkCommentReply key={reply.id} reply={reply} artworkId={artworkId} />
                     ))}
                 </div>
+            )}
+
+            {isReplying && (
+                <CommentReplyInput
+                    artworkId={artworkId}
+                    parentCommentId={comment.id}
+                    parentComment={{ id: comment.id, commenter: { username: comment.commenter.username } }}
+                />
             )}
         </div>
     );
