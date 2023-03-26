@@ -3,8 +3,11 @@ import { useState } from 'react';
 import CommentDelete from '../comment/comment-delete';
 import CommentEdit from '../comment/comment-edit';
 import CommentEditInput from '../comment/comment-edit-input';
+import CommentLike from '../comment/comment-like';
 import CommentReply from '../comment/comment-reply';
 import CommentReplyInput from '../comment/comment-reply-input';
+import CommentUnlike from '../comment/comment-unlike';
+import { LikeType } from './artwork-feed';
 
 export type ReplyType = {
     id: string;
@@ -16,7 +19,7 @@ export type ReplyType = {
     };
     parentCommentId?: string | null | undefined;
     parentComment?: parentCommentType | null | undefined;
-    isLikedByLoggedInUser?: boolean | null | undefined;
+    isLikedByLoggedInUser?: LikeType | null | undefined;
     likesCount: number;
     createdAt: string;
     updatedAt: string;
@@ -46,16 +49,22 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
                     <span className="font-bold">@{reply.parentComment?.commenter.username} </span>
                     <span>{reply.comment}</span>
                 </div>
-                <span>{reply.isLikedByLoggedInUser ? 'H' : 'h'}</span>
+                <span className="self-center">
+                    {reply.isLikedByLoggedInUser == null ? (
+                        <CommentLike commentId={reply.id} commenterId={reply.commenter.id} />
+                    ) : (
+                        <CommentUnlike
+                            commentId={reply.id}
+                            commenterId={reply.commenter.id}
+                            likeId={reply.isLikedByLoggedInUser.id}
+                        />
+                    )}
+                </span>
             </div>
-            <div className="flex gap-2 font-medium text-[0.7rem] text-black/60">
+            <div className="flex gap-2 text-[0.7rem] text-black/60">
                 <p>{reply.likesCount ?? 'N/A'} Likes</p>
                 <p>{getRelativeDate(reply.createdAt) ?? 'N/A'}</p>
-                <CommentReply
-                    isReplying={isReplying}
-                    setIsReplying={setIsReplying}
-                    commenterId={reply.commenter.id}
-                />
+                <CommentReply isReplying={isReplying} setIsReplying={setIsReplying} commenterId={reply.commenter.id} />
                 <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={reply.commenter.id} />
                 <CommentDelete commentId={reply.id} commenterId={reply.commenter.id} />
             </div>
@@ -70,7 +79,7 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
                     }}
                 />
             )}
-			{isEditing && <CommentEditInput commentId={reply.id} comment={reply.comment} />}
+            {isEditing && <CommentEditInput commentId={reply.id} comment={reply.comment} />}
         </div>
     );
 }

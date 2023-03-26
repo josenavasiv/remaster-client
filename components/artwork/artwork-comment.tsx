@@ -57,7 +57,7 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                     )}
                 </span>
             </div>
-            <div className="flex gap-1.5  text-[0.7rem] pb-2 text-black/60">
+            <div className="flex gap-1.5 text-[0.7rem] pb-2 text-black/60">
                 <p>{comment.likesCount ?? 'N/A'} Likes</p>
                 <p>{getRelativeDate(comment.createdAt) ?? 'N/A'}</p>
                 <CommentReply
