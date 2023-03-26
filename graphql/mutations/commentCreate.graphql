@@ -4,7 +4,6 @@ mutation commentCreate($artworkId: ID!, $comment: String!) {
             id
             comment
             likesCount
-            isLikedByLoggedInUser
             commenter {
                 id
                 username
@@ -19,13 +18,21 @@ mutation commentCreate($artworkId: ID!, $comment: String!) {
                     avatarUrl
                 }
                 parentCommentId
-                isLikedByLoggedInUser
                 likesCount
                 createdAt
                 updatedAt
+                isLikedByLoggedInUser {
+                    id
+                }
             }
             createdAt
             updatedAt
+            isLikedByLoggedInUser {
+                id
+            }
+        }
+        errors {
+            message
         }
     }
 }

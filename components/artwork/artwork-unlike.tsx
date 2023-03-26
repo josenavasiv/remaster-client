@@ -1,11 +1,14 @@
 import { useLikeArtworkDeleteMutation } from '@/graphql/__generated__/graphql';
+import useUser from '@/lib/hooks/useUser';
 
 type ArtworkUnlikeProps = {
     artworkId: string;
     likeId: string;
+    uploaderId: string;
 };
 
-export default function ArtworkUnlike({ artworkId, likeId }: ArtworkUnlikeProps) {
+export default function ArtworkUnlike({ artworkId, likeId, uploaderId }: ArtworkUnlikeProps) {
+    const user = useUser();
     const [likeArtworkDelete, { data, loading, error }] = useLikeArtworkDeleteMutation();
 
     const handleUnlike = async (): Promise<void> => {
@@ -19,9 +22,11 @@ export default function ArtworkUnlike({ artworkId, likeId }: ArtworkUnlikeProps)
         }
     };
 
+    if (!user || user.id === uploaderId) return null;
+
     return (
-        <button onClick={handleUnlike} className="bg-blue text-white font-extrabold">
-            Unlike
+        <button onClick={handleUnlike} className="bg-fuchsia-400 px-2 py-1 rounded-lg font-extrabold">
+            Liked!
         </button>
     );
 }

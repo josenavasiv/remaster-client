@@ -23,7 +23,10 @@ type ArtworkCommentProps = {
 export default function ArtworkComment({ comment }: ArtworkCommentProps): JSX.Element {
     return (
         <>
-            <div>{comment.comment}</div>
+            <div>
+                <span className="font-bold">{comment.commenter.username} </span>
+                {comment.comment}
+            </div>
             <div className="flex flex-col indent-8">
                 {comment?.replies.map((reply) => (
                     <ArtworkCommentReply key={reply.id} reply={reply} />

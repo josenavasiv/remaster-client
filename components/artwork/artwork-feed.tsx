@@ -19,7 +19,7 @@ type ArtworkFeedProps = {
     title: string;
     description: string;
     imageUrls: string[];
-    isLikedByLoggedInUser?: boolean | null | undefined;
+    isLikedByLoggedInUser?: LikeType | null | undefined;
     likesCount: number;
     createdAt: string;
     uploader: {
@@ -33,13 +33,17 @@ type ArtworkFeedProps = {
 export type RecentCommentType = {
     id: string;
     comment: string;
-    isLikedByLoggedInUser?: boolean | null | undefined;
+    isLikedByLoggedInUser?: LikeType | null | undefined;
     commenter: {
         id: string;
         username: string;
         avatarUrl: string;
     };
 };
+
+export type LikeType = {
+	id: string;
+}
 
 export default function ArtworkFeed({
     id,

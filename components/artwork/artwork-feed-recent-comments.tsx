@@ -12,7 +12,7 @@ export default function ArtworkFeedRecentComments({ recentComments }: ArtworkFee
                 .map((recentComment) => (
                     <div key={recentComment.id} className="flex ">
                         <p>
-                            <Link href={`/user/${recentComment.commenter.username}`} className="font-medium">
+                            <Link href={`/user/${recentComment.commenter.username}`} className="font-bold">
                                 {recentComment.commenter.username}
                             </Link>{' '}
                             {recentComment.comment}

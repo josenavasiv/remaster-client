@@ -6,6 +6,9 @@ import { CommentType } from './artwork-comment';
 import ArtworkCarousel from './artwork-carousel';
 import ArtworkDescription from './artwork-description';
 import CommentInput from '../comment/comment-input';
+import { LikeType } from './artwork-feed';
+import ArtworkLike from './artwork-like';
+import ArtworkUnlike from './artwork-unlike';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -14,7 +17,7 @@ type ArtworkDetailsProps = {
     imageUrls: string[];
     createdAt: string;
     likesCount: number;
-    isLikedByLoggedInUser?: boolean | null | undefined;
+    isLikedByLoggedInUser?: LikeType | null | undefined;
     comments: CommentType[];
     uploader: {
         id: string;
@@ -49,7 +52,13 @@ export default function ArtworkDetails({
                     <span className="">{getRelativeDate(createdAt)}</span>
                     <ArtworkDetailsComments comments={comments} />
                     <CommentInput artworkId={id} />
-                    <p>{isLikedByLoggedInUser == null ? <span>CANT LIKE OWN</span> : <span>NOT LIKED</span>}</p>
+                    <div>
+                        {isLikedByLoggedInUser == null ? (
+                            <ArtworkLike artworkId={id} uploaderId={uploader.id} />
+                        ) : (
+                            <ArtworkUnlike artworkId={id} likeId={isLikedByLoggedInUser.id} uploaderId={uploader.id} />
+                        )}
+                    </div>
                 </div>
             </div>
             <div className="">OTHER ARTWORKS BY THE UPLOADER</div>

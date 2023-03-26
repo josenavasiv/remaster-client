@@ -12,7 +12,6 @@ mutation artworkCreate($title: String!, $description: String!, $imageUrls: [Stri
                 username
                 avatarUrl
             }
-            isLikedByLoggedInUser
             recentComments {
                 id
                 comment
@@ -21,7 +20,12 @@ mutation artworkCreate($title: String!, $description: String!, $imageUrls: [Stri
                     username
                     avatarUrl
                 }
-                isLikedByLoggedInUser
+                isLikedByLoggedInUser {
+                    id
+                }
+            }
+            isLikedByLoggedInUser {
+                id
             }
         }
         errors {
