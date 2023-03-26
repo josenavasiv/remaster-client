@@ -13,7 +13,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
     const next = () => setCurrent((current) => (current === imageUrls.length - 1 ? 0 : current + 1));
 
     return (
-        <div className="overflow-hidden relative">
+        <div className="overflow-hidden relative rounded-md">
             <div
                 style={{ transform: `translateX(-${current * 100}%)` }}
                 className="flex transition-transform ease-out duration-500 w-[350px] h-[526px]"

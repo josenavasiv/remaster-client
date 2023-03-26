@@ -90,18 +90,18 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
     };
 
     return (
-        <div className="w-[350px] sm:w-[750px] bg-gray-500 p-5">
-            <p className="text-center">CREATE ARTWORK</p>
+        <div className="w-[350px] sm:w-[750px] bg-gray-200 p-5 rounded-xl">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-                <div className="flex-1">
+                <div className="flex-1 self-center">
                     <CreatePreviews imageFiles={imageFiles} setImageFiles={setImageFiles} />
                 </div>
-                <form onSubmit={handleSubmit} className="flex-1 ">
-                    <div className="flex flex-col">
+                <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
+                    <p className="">CREATE ARTWORK</p>
+                    <div className="flex flex-col text-left">
                         <TextField
                             setValue={setTitle}
                             label="Title"
-                            placeholder="Title"
+                            placeholder="Title your masterpiece!"
                             error={errors.title}
                             errorMessage="Title is invalid"
                             required={true}
@@ -109,7 +109,7 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
                         <TextAreaField
                             setValue={setDescription}
                             label="Description"
-                            placeholder="Description"
+                            placeholder="Describe your artworks!"
                             error={errors.description}
                             errorMessage="Description is invalid"
                             required={true}
@@ -117,7 +117,7 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
                         <input
                             type="submit"
                             value="Create Artwork"
-                            className="w-full bg-cyan-400 py-2 disabled:bg-cyan-900"
+                            className="w-full bg-violet-400 py-2 disabled:bg-violet-900 font-medium rounded-md hover:cursor-pointer"
                             disabled={isStoring || loading}
                         />
                         {(isStoring || loading) && <div>LOADING...</div>}

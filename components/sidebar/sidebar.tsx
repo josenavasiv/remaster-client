@@ -20,7 +20,7 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                     CREATE NEW ARTWORK
                 </button>
                 <Modal isOpen={isOpen} closeModal={closeModal}>
-                    <div className="flex flex-col text-center bg-cyan-200">
+                    <div className="flex flex-col text-center">
                         <CreateForm closeModal={closeModal} />
                     </div>
                 </Modal>

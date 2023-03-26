@@ -58,7 +58,7 @@ export default function LoginForm({}: LoginFormProps) {
     };
 
     return (
-        <div className="w-[350px] bg-gray-500 p-5">
+        <div className="w-[350px] bg-gray-200 p-5 rounded-xl">
             <p className="text-center">REMASTER</p>
             <form onSubmit={onLogin} className="flex flex-col gap-2">
                 <TextField
@@ -78,7 +78,11 @@ export default function LoginForm({}: LoginFormProps) {
                     errorMessage="Password is invalid"
                     required={true}
                 />
-                <input type="submit" value="Login" className="w-full bg-cyan-600 py-2" />
+                <input
+                    type="submit"
+                    value="Login"
+                    className="w-full bg-violet-400 py-2 disabled:bg-violet-900 font-medium rounded-md hover:cursor-pointer"
+                />
             </form>
         </div>
     );

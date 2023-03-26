@@ -6,7 +6,7 @@ import { NextPage } from 'next';
 import { ReactElement, ReactNode } from 'react';
 import localFont from 'next/font/local';
 
-const tommysoft = localFont({
+export const tommysoft = localFont({
     src: [
         {
             path: '../public/fonts/TommySoftThin.otf',

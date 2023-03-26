@@ -12,14 +12,14 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     ({ type, label, placeholder, setValue, error, errorMessage, required }: TextFieldProps, ref) => {
         return (
             <div className="flex flex-col">
-                {label ?? <label>{label}</label>}
+                {label && <label className="font-bold">{label}</label>}
                 <input
                     type={type}
                     onChange={setValue ? (e) => setValue(e.target.value) : undefined}
                     placeholder={placeholder}
                     ref={ref ?? undefined}
                     required={required}
-                    className="p-5"
+                    className="w-full bg-transparent pt-2 pb-1 border-b-2 border-violet-300"
                 />
                 <span className="text-red-500 py-3 text-xs font-bold">{error && errorMessage}</span>
             </div>
