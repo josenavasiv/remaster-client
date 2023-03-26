@@ -10,7 +10,7 @@ type CommentReplyProps = {
 export default function CommentReply({ isReplying, setIsReplying, commenterId }: CommentReplyProps) {
     const user = useUser();
 
-    if (!user || commenterId !== user.id) return null;
+    if (!user) return null;
 
     return (
         <button className="text-[0.7rem]" onClick={() => setIsReplying(!isReplying)}>

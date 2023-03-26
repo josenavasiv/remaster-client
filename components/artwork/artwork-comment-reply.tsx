@@ -1,6 +1,9 @@
 import { getRelativeDate } from '@/lib/relativeTime';
 import { useState } from 'react';
 import CommentDelete from '../comment/comment-delete';
+import CommentEdit from '../comment/comment-edit';
+import CommentEditInput from '../comment/comment-edit-input';
+import CommentReply from '../comment/comment-reply';
 import CommentReplyInput from '../comment/comment-reply-input';
 
 export type ReplyType = {
@@ -33,6 +36,7 @@ export type parentCommentType = {
 
 export default function ArtworkCommentReply({ reply, artworkId }: ArtworkCommentReplyProps): JSX.Element {
     const [isReplying, setIsReplying] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     return (
         <div>
@@ -47,9 +51,12 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
             <div className="flex gap-2 font-medium text-[0.7rem] text-black/60">
                 <p>{reply.likesCount ?? 'N/A'} Likes</p>
                 <p>{getRelativeDate(reply.createdAt) ?? 'N/A'}</p>
-                <button className="text-[0.7rem]" onClick={() => setIsReplying(!isReplying)}>
-                    {isReplying ? 'Cancel Reply' : 'Reply'}
-                </button>
+                <CommentReply
+                    isReplying={isReplying}
+                    setIsReplying={setIsReplying}
+                    commenterId={reply.commenter.id}
+                />
+                <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={reply.commenter.id} />
                 <CommentDelete commentId={reply.id} commenterId={reply.commenter.id} />
             </div>
             {isReplying && (
@@ -63,6 +70,7 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
                     }}
                 />
             )}
+			{isEditing && <CommentEditInput commentId={reply.id} comment={reply.comment} />}
         </div>
     );
 }
