@@ -45,20 +45,27 @@ export default function ArtworkDetails({
         <div className="flex flex-col mx-auto pb-20">
             <div className="flex flex-col lg:flex-row gap-3 mb-5">
                 <ArtworkCarousel imageUrls={imageUrls} />
-                <div className="flex flex-col gap-2 lg:w-96 max-w-[350px] relative">
-                    <ArtworkUploader {...uploader} />
-                    <span className="font-extrabold">{title}</span>
+                <div className="flex flex-col gap-2 lg:w-96 max-w-[350px] h-[526px]">
+                    <div className="flex justify-between">
+                        <ArtworkUploader {...uploader} />
+                        <div className="self-center">
+                            {isLikedByLoggedInUser == null ? (
+                                <ArtworkLike artworkId={id} uploaderId={uploader.id} />
+                            ) : (
+                                <ArtworkUnlike
+                                    artworkId={id}
+                                    likeId={isLikedByLoggedInUser.id}
+                                    uploaderId={uploader.id}
+                                />
+                            )}
+                        </div>
+                    </div>
+
+                    <span className="font-extrabold text-lg">{title}</span>
                     <ArtworkDescription description={description} />
-                    <span className="">{getRelativeDate(createdAt)}</span>
+                    <span className="text-xs font-bold text-black/60">{getRelativeDate(createdAt)}</span>
                     <ArtworkDetailsComments comments={comments} />
                     <CommentInput artworkId={id} />
-                    <div>
-                        {isLikedByLoggedInUser == null ? (
-                            <ArtworkLike artworkId={id} uploaderId={uploader.id} />
-                        ) : (
-                            <ArtworkUnlike artworkId={id} likeId={isLikedByLoggedInUser.id} uploaderId={uploader.id} />
-                        )}
-                    </div>
                 </div>
             </div>
             <div className="">OTHER ARTWORKS BY THE UPLOADER</div>

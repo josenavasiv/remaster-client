@@ -42,8 +42,8 @@ export type RecentCommentType = {
 };
 
 export type LikeType = {
-	id: string;
-}
+    id: string;
+};
 
 export default function ArtworkFeed({
     id,
@@ -61,7 +61,7 @@ export default function ArtworkFeed({
             <ArtworkUploader {...uploader} />
             <div className="mt-2">
                 <div className="flex flex-col gap-1 h-full">
-                    <span className="font-extrabold">{title}</span>
+                    <span className="font-extrabold text-lg">{title}</span>
                     <ArtworkCarousel imageUrls={imageUrls} />
                     <div className="font-extrabold text-xs">
                         <p>{likesCount ?? 'N/A'} Likes</p>
