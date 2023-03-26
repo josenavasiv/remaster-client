@@ -1,0 +1,10 @@
+mutation likeCommentCreate($commentId: ID!) {
+    likeCommentCreate(commentID: $commentId) {
+        like {
+            id
+        }
+        errors {
+            message
+        }
+    }
+}

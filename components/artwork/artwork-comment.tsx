@@ -9,6 +9,8 @@ import useUser from '@/lib/hooks/useUser';
 import CommentEdit from '../comment/comment-edit';
 import CommentReply from '../comment/comment-reply';
 import CommentEditInput from '../comment/comment-edit-input';
+import CommentLike from '../comment/comment-like';
+import CommentUnlike from '../comment/comment-unlike';
 
 export type CommentType = {
     id: string;
@@ -43,7 +45,17 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                     <span className="font-bold">{comment.commenter.username} </span>
                     <span>{comment.comment}</span>
                 </div>
-                <span>{comment.isLikedByLoggedInUser ? 'H' : 'h'}</span>
+                <span className="self-center">
+                    {comment.isLikedByLoggedInUser == null ? (
+                        <CommentLike commentId={comment.id} commenterId={comment.commenter.id} />
+                    ) : (
+                        <CommentUnlike
+                            commentId={comment.id}
+                            commenterId={comment.commenter.id}
+                            likeId={comment.isLikedByLoggedInUser.id}
+                        />
+                    )}
+                </span>
             </div>
             <div className="flex gap-1.5  text-[0.7rem] pb-2 text-black/60">
                 <p>{comment.likesCount ?? 'N/A'} Likes</p>

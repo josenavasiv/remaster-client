@@ -58,6 +58,7 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
             } else {
                 toast.success(`Created ${response.data?.artworkCreate.artwork?.title}`);
                 closeModal();
+                router.push(`/artwork/${response.data?.artworkCreate.artwork?.id}`);
             }
         }
     };

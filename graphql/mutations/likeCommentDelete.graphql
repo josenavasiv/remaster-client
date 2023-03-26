@@ -1,0 +1,10 @@
+mutation likeCommentDelete($likeId: ID!, $commentId: ID!) {
+    likeCommentDelete(likeID: $likeId, commentID: $commentId) {
+        like {
+            id
+        }
+        errors {
+            message
+        }
+    }
+}

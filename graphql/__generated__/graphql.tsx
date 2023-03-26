@@ -342,6 +342,21 @@ export type LikeArtworkDeleteMutationVariables = Exact<{
 
 export type LikeArtworkDeleteMutation = { __typename?: 'Mutation', likeArtworkDelete: { __typename?: 'LikePayload', like?: { __typename?: 'Like', id: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type LikeCommentCreateMutationVariables = Exact<{
+  commentId: Scalars['ID'];
+}>;
+
+
+export type LikeCommentCreateMutation = { __typename?: 'Mutation', likeCommentCreate: { __typename?: 'LikePayload', like?: { __typename?: 'Like', id: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type LikeCommentDeleteMutationVariables = Exact<{
+  likeId: Scalars['ID'];
+  commentId: Scalars['ID'];
+}>;
+
+
+export type LikeCommentDeleteMutation = { __typename?: 'Mutation', likeCommentDelete: { __typename?: 'LikePayload', like?: { __typename?: 'Like', id: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
 export type UserLoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -743,6 +758,83 @@ export function useLikeArtworkDeleteMutation(baseOptions?: Apollo.MutationHookOp
 export type LikeArtworkDeleteMutationHookResult = ReturnType<typeof useLikeArtworkDeleteMutation>;
 export type LikeArtworkDeleteMutationResult = Apollo.MutationResult<LikeArtworkDeleteMutation>;
 export type LikeArtworkDeleteMutationOptions = Apollo.BaseMutationOptions<LikeArtworkDeleteMutation, LikeArtworkDeleteMutationVariables>;
+export const LikeCommentCreateDocument = gql`
+    mutation likeCommentCreate($commentId: ID!) {
+  likeCommentCreate(commentID: $commentId) {
+    like {
+      id
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type LikeCommentCreateMutationFn = Apollo.MutationFunction<LikeCommentCreateMutation, LikeCommentCreateMutationVariables>;
+
+/**
+ * __useLikeCommentCreateMutation__
+ *
+ * To run a mutation, you first call `useLikeCommentCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeCommentCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeCommentCreateMutation, { data, loading, error }] = useLikeCommentCreateMutation({
+ *   variables: {
+ *      commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useLikeCommentCreateMutation(baseOptions?: Apollo.MutationHookOptions<LikeCommentCreateMutation, LikeCommentCreateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeCommentCreateMutation, LikeCommentCreateMutationVariables>(LikeCommentCreateDocument, options);
+      }
+export type LikeCommentCreateMutationHookResult = ReturnType<typeof useLikeCommentCreateMutation>;
+export type LikeCommentCreateMutationResult = Apollo.MutationResult<LikeCommentCreateMutation>;
+export type LikeCommentCreateMutationOptions = Apollo.BaseMutationOptions<LikeCommentCreateMutation, LikeCommentCreateMutationVariables>;
+export const LikeCommentDeleteDocument = gql`
+    mutation likeCommentDelete($likeId: ID!, $commentId: ID!) {
+  likeCommentDelete(likeID: $likeId, commentID: $commentId) {
+    like {
+      id
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type LikeCommentDeleteMutationFn = Apollo.MutationFunction<LikeCommentDeleteMutation, LikeCommentDeleteMutationVariables>;
+
+/**
+ * __useLikeCommentDeleteMutation__
+ *
+ * To run a mutation, you first call `useLikeCommentDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeCommentDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeCommentDeleteMutation, { data, loading, error }] = useLikeCommentDeleteMutation({
+ *   variables: {
+ *      likeId: // value for 'likeId'
+ *      commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useLikeCommentDeleteMutation(baseOptions?: Apollo.MutationHookOptions<LikeCommentDeleteMutation, LikeCommentDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeCommentDeleteMutation, LikeCommentDeleteMutationVariables>(LikeCommentDeleteDocument, options);
+      }
+export type LikeCommentDeleteMutationHookResult = ReturnType<typeof useLikeCommentDeleteMutation>;
+export type LikeCommentDeleteMutationResult = Apollo.MutationResult<LikeCommentDeleteMutation>;
+export type LikeCommentDeleteMutationOptions = Apollo.BaseMutationOptions<LikeCommentDeleteMutation, LikeCommentDeleteMutationVariables>;
 export const UserLoginDocument = gql`
     mutation userLogin($username: String!, $password: String!) {
   userLogin(username: $username, password: $password) {
