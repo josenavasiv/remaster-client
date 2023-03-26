@@ -1,5 +1,6 @@
 import { getRelativeDate } from '@/lib/relativeTime';
 import { useState } from 'react';
+import CommentDelete from '../comment/comment-delete';
 import CommentReplyInput from '../comment/comment-reply-input';
 
 export type ReplyType = {
@@ -49,12 +50,14 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
                 <button className="text-[0.7rem]" onClick={() => setIsReplying(!isReplying)}>
                     {isReplying ? 'Cancel Reply' : 'Reply'}
                 </button>
+                <CommentDelete commentId={reply.id} commenterId={reply.commenter.id} />
             </div>
             {isReplying && (
                 <CommentReplyInput
                     artworkId={artworkId}
                     parentCommentId={reply.parentCommentId!} // Store reply under the original parent's comment
-                    parentComment={{ // Essentially replying to this comment -> Notifcations later
+                    parentComment={{
+                        // Essentially replying to this comment -> Notifcations later
                         id: reply.id,
                         commenter: { username: reply.commenter.username },
                     }}

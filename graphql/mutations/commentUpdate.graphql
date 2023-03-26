@@ -1,0 +1,11 @@
+mutation commentUpdate($commentId: ID!, $comment: String!) {
+    commentUpdate(commentID: $commentId, comment: $comment) {
+        comment {
+            id
+            comment
+        }
+        errors {
+            message
+        }
+    }
+}

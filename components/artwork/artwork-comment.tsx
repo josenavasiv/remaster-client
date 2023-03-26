@@ -4,6 +4,11 @@ import { useState } from 'react';
 import { LikeType } from './artwork-feed';
 import { getRelativeDate } from '@/lib/relativeTime';
 import CommentReplyInput from '../comment/comment-reply-input';
+import CommentDelete from '../comment/comment-delete';
+import useUser from '@/lib/hooks/useUser';
+import CommentEdit from '../comment/comment-edit';
+import CommentReply from '../comment/comment-reply';
+import CommentEditInput from '../comment/comment-edit-input';
 
 export type CommentType = {
     id: string;
@@ -26,8 +31,10 @@ type ArtworkCommentProps = {
 };
 
 export default function ArtworkComment({ comment, artworkId }: ArtworkCommentProps): JSX.Element {
+    const user = useUser();
     const [showReplies, setShowReplies] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     return (
         <div className="">
@@ -38,17 +45,21 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                 </div>
                 <span>{comment.isLikedByLoggedInUser ? 'H' : 'h'}</span>
             </div>
-            <div className="flex gap-2 font-medium text-[0.7rem] pb-2 text-black/60">
+            <div className="flex gap-1.5 font-medium text-[0.7rem] pb-2 text-black/60">
                 <p>{comment.likesCount ?? 'N/A'} Likes</p>
                 <p>{getRelativeDate(comment.createdAt) ?? 'N/A'}</p>
-                <button className="text-[0.7rem]" onClick={() => setIsReplying(!isReplying)}>
-                    {isReplying ? 'Cancel Reply' : 'Reply'}
-                </button>
+                <CommentReply
+                    isReplying={isReplying}
+                    setIsReplying={setIsReplying}
+                    commenterId={comment.commenter.id}
+                />
                 {comment.replies.length > 0 && (
                     <button className="text-[0.7rem]" onClick={() => setShowReplies(!showReplies)}>
                         {showReplies ? 'Hide' : 'Show'} Replies ({comment.replies.length})
                     </button>
                 )}
+                <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={comment.commenter.id} />
+                <CommentDelete commentId={comment.id} commenterId={comment.commenter.id} />
             </div>
 
             {showReplies && (
@@ -66,6 +77,8 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                     parentComment={{ id: comment.id, commenter: { username: comment.commenter.username } }}
                 />
             )}
+
+            {isEditing && <CommentEditInput commentId={comment.id} comment={comment.comment} />}
         </div>
     );
 }
