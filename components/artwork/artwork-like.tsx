@@ -1,6 +1,7 @@
 import { useLikeArtworkCreateMutation } from '@/graphql/__generated__/graphql';
 import useUser from '@/lib/hooks/useUser';
 import toast from 'react-hot-toast';
+import { gql } from '@apollo/client';
 
 type ArtworkLikeProps = {
     artworkId: string;
@@ -15,7 +16,44 @@ export default function ArtworkLike({ artworkId, uploaderId }: ArtworkLikeProps)
         try {
             const response = await likeArtworkCreate({
                 variables: { artworkId },
-                refetchQueries: ['artwork'],
+                update: (cache, { data }) => {
+                    if (data?.likeArtworkCreate?.like?.id) {
+                        const artworkLikesData = cache.readFragment<{
+                            id: number;
+                            likesCount: number;
+                        }>({
+                            id: 'Artwork:' + artworkId,
+                            fragment: gql`
+                                fragment ___ on Artwork {
+                                    id
+                                    likesCount
+                                }
+                            `,
+                        });
+
+                        cache.writeFragment<{
+                            isLikedByLoggedInUser: {
+                                id: number;
+                            };
+                            likesCount: number;
+                        }>({
+                            id: 'Artwork:' + artworkId,
+                            fragment: gql`
+                                fragment _ on Artwork {
+                                    isLikedByLoggedInUser {
+                                        id
+                                    }
+                                    likesCount
+                                }
+                            `,
+                            data: {
+                                isLikedByLoggedInUser: { id: Number(data.likeArtworkCreate.like.id) },
+                                likesCount: artworkLikesData?.likesCount! + 1,
+                            },
+                        });
+                    }
+                },
+                // refetchQueries: ['artwork'],
             });
             toast.success(`Liked!`);
         } catch (error) {

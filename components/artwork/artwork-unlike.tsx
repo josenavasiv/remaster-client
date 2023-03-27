@@ -1,6 +1,7 @@
 import { useLikeArtworkDeleteMutation } from '@/graphql/__generated__/graphql';
 import useUser from '@/lib/hooks/useUser';
 import toast from 'react-hot-toast';
+import { gql } from '@apollo/client';
 
 type ArtworkUnlikeProps = {
     artworkId: string;
@@ -16,7 +17,38 @@ export default function ArtworkUnlike({ artworkId, likeId, uploaderId }: Artwork
         try {
             const response = await likeArtworkDelete({
                 variables: { artworkId, likeId },
-                refetchQueries: ['artwork'],
+                update: (cache, { data }) => {
+                    const artworkLikesData = cache.readFragment<{
+                        id: number;
+                        likesCount: number;
+                    }>({
+                        id: 'Artwork:' + artworkId,
+                        fragment: gql`
+                            fragment ____ on Artwork {
+                                id
+                                likesCount
+                            }
+                        `,
+                    });
+
+                    cache.writeFragment<{
+                        isLikedByLoggedInUser: null;
+                        likesCount: number;
+                    }>({
+                        id: 'Artwork:' + artworkId,
+                        fragment: gql`
+                            fragment __ on Artwork {
+                                isLikedByLoggedInUser
+                                likesCount
+                            }
+                        `,
+                        data: {
+                            isLikedByLoggedInUser: null,
+                            likesCount: artworkLikesData?.likesCount! - 1,
+                        },
+                    });
+                },
+                // refetchQueries: ['artwork'],
             });
             toast.success(`Unliked!`);
         } catch (error) {

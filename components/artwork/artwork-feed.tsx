@@ -5,6 +5,8 @@ import ArtworkCarousel from './artwork-carousel';
 import { getRelativeDate } from '@/lib/relativeTime';
 import ArtworkFeedRecentComments from './artwork-feed-recent-comments';
 import Link from 'next/link';
+import ArtworkLike from './artwork-like';
+import ArtworkUnlike from './artwork-unlike';
 // export type ArtworkFeedProps = Pick<
 //     Artwork,
 //     'id' | 'imageUrls' | 'title' | 'description' | 'isLikedByLoggedInUser' | 'likesCount' | 'createdAt'
@@ -63,10 +65,20 @@ export default function ArtworkFeed({
                 <div className="flex flex-col gap-1 h-full">
                     <span className="font-extrabold text-lg">{title}</span>
                     <ArtworkCarousel imageUrls={imageUrls} />
-                    <div className="font-extrabold text-xs">
+                    <div className="font-extrabold text-xs ">
                         <p>{likesCount ?? 'N/A'} Likes</p>
                         <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>
-                        <p>{isLikedByLoggedInUser == null ? <span>CANT LIKE OWN</span> : <span>NOT LIKED</span>}</p>
+                        <div className="self-center">
+                            {isLikedByLoggedInUser == null ? (
+                                <ArtworkLike artworkId={id} uploaderId={uploader.id} />
+                            ) : (
+                                <ArtworkUnlike
+                                    artworkId={id}
+                                    likeId={isLikedByLoggedInUser.id}
+                                    uploaderId={uploader.id}
+                                />
+                            )}
+                        </div>
                     </div>
                     <ArtworkDescription description={description} />
                     <ArtworkFeedRecentComments recentComments={recentComments} />
