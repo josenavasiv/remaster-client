@@ -4,6 +4,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import TextField from '../input/text-field';
 import validator from 'validator';
+import Link from 'next/link';
 
 type LoginFormProps = {};
 
@@ -59,7 +60,7 @@ export default function LoginForm({}: LoginFormProps) {
 
     return (
         <div className="w-[350px] bg-gray-200 p-5 rounded-xl">
-            <p className="text-center">REMASTER</p>
+            <p className="text-center">REMASTER LOGIN</p>
             <form onSubmit={onLogin} className="flex flex-col gap-2">
                 <TextField
                     setValue={setUsername}
@@ -84,6 +85,12 @@ export default function LoginForm({}: LoginFormProps) {
                     className="w-full bg-violet-400 py-2 disabled:bg-violet-900 font-medium rounded-md hover:cursor-pointer"
                 />
             </form>
+            <p className="text-center mt-4">
+                Need an account?{' '}
+                <Link className="font-bold text-violet-800" href={'/register'}>
+                    Register Here!
+                </Link>
+            </p>
         </div>
     );
 }

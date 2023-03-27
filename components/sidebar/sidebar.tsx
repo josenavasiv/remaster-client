@@ -14,9 +14,9 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
         <div className="flex w-0 shrink-0 sm:w-20 relative">
             <div className="fixed bottom-0 h-16 z-10 flex w-full gap-2 flex-row sm:flex-col bg-purple-300 sm:h-full sm:top-0 sm:w-20">
                 <Link href={'/'}>HOME</Link>
-                <Link href={'/login'}>LOGIN</Link>
-                <Link href={'/thelab'}>THELAB</Link>
                 {user && <p>LOGGED IN AS {user?.username}</p>}
+                {!user && <Link href={'/register'}>REGISTER</Link>}
+                {!user && <Link href={'/login'}>LOGIN</Link>}
                 <LogoutButton />
                 <button className="bg-purple-200" onClick={openModal}>
                     CREATE NEW ARTWORK

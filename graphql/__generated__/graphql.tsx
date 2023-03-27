@@ -190,6 +190,7 @@ export type MutationUserLoginArgs = {
 
 
 export type MutationUserRegisterArgs = {
+  avatarUrl?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
@@ -376,10 +377,11 @@ export type UserRegisterMutationVariables = Exact<{
   username: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
+  avatarUrl?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type UserRegisterMutation = { __typename?: 'Mutation', userRegister: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type UserRegisterMutation = { __typename?: 'Mutation', userRegister: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string, email: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type ArtworkQueryVariables = Exact<{
   artworkId: Scalars['ID'];
@@ -925,12 +927,18 @@ export type UserLogoutMutationHookResult = ReturnType<typeof useUserLogoutMutati
 export type UserLogoutMutationResult = Apollo.MutationResult<UserLogoutMutation>;
 export type UserLogoutMutationOptions = Apollo.BaseMutationOptions<UserLogoutMutation, UserLogoutMutationVariables>;
 export const UserRegisterDocument = gql`
-    mutation userRegister($username: String!, $email: String!, $password: String!) {
-  userRegister(username: $username, email: $email, password: $password) {
+    mutation userRegister($username: String!, $email: String!, $password: String!, $avatarUrl: String) {
+  userRegister(
+    username: $username
+    email: $email
+    password: $password
+    avatarUrl: $avatarUrl
+  ) {
     user {
       id
       username
       avatarUrl
+      email
     }
     errors {
       message
@@ -956,6 +964,7 @@ export type UserRegisterMutationFn = Apollo.MutationFunction<UserRegisterMutatio
  *      username: // value for 'username'
  *      email: // value for 'email'
  *      password: // value for 'password'
+ *      avatarUrl: // value for 'avatarUrl'
  *   },
  * });
  */
