@@ -3,6 +3,7 @@ import useUser from '@/lib/hooks/useUser';
 import Modal from '@/components/modal/modal';
 import { useModal } from '@/lib/hooks/useModal';
 import CreateForm from '../create/create-form';
+import LogoutButton from '../logout/logout-button';
 
 type SideBarProps = {};
 
@@ -15,7 +16,8 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                 <Link href={'/'}>HOME</Link>
                 <Link href={'/login'}>LOGIN</Link>
                 <Link href={'/thelab'}>THELAB</Link>
-                <p>LOGGED IN AS {user?.username}</p>
+                {user && <p>LOGGED IN AS {user?.username}</p>}
+                <LogoutButton />
                 <button className="bg-purple-200" onClick={openModal}>
                     CREATE NEW ARTWORK
                 </button>
