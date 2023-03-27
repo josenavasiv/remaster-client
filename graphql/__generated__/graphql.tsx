@@ -286,6 +286,8 @@ export type UsersSuggestedPayload = {
   user: Array<User>;
 };
 
+export type CommentFragment = { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null };
+
 export type ArtworkCreateMutationVariables = Exact<{
   title: Scalars['String'];
   description: Scalars['String'];
@@ -301,7 +303,7 @@ export type CommentCreateMutationVariables = Exact<{
 }>;
 
 
-export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type CommentDeleteMutationVariables = Exact<{
   commentId: Scalars['ID'];
@@ -406,7 +408,45 @@ export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UserLoggedInQuery = { __typename?: 'Query', userLoggedIn: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
-
+export const CommentFragmentDoc = gql`
+    fragment Comment on Comment {
+  id
+  comment
+  likesCount
+  commenter {
+    id
+    username
+    avatarUrl
+  }
+  replies {
+    id
+    comment
+    commenter {
+      id
+      username
+      avatarUrl
+    }
+    parentCommentId
+    likesCount
+    createdAt
+    updatedAt
+    isLikedByLoggedInUser {
+      id
+    }
+    parentComment {
+      id
+      commenter {
+        username
+      }
+    }
+  }
+  createdAt
+  updatedAt
+  isLikedByLoggedInUser {
+    id
+  }
+}
+    `;
 export const ArtworkCreateDocument = gql`
     mutation artworkCreate($title: String!, $description: String!, $imageUrls: [String!]!) {
   artworkCreate(title: $title, description: $description, imageUrls: $imageUrls) {
@@ -476,42 +516,14 @@ export const CommentCreateDocument = gql`
     mutation commentCreate($artworkId: ID!, $comment: String!) {
   commentCreate(artworkID: $artworkId, comment: $comment) {
     comment {
-      id
-      comment
-      likesCount
-      commenter {
-        id
-        username
-        avatarUrl
-      }
-      replies {
-        id
-        comment
-        commenter {
-          id
-          username
-          avatarUrl
-        }
-        parentCommentId
-        likesCount
-        createdAt
-        updatedAt
-        isLikedByLoggedInUser {
-          id
-        }
-      }
-      createdAt
-      updatedAt
-      isLikedByLoggedInUser {
-        id
-      }
+      ...Comment
     }
     errors {
       message
     }
   }
 }
-    `;
+    ${CommentFragmentDoc}`;
 export type CommentCreateMutationFn = Apollo.MutationFunction<CommentCreateMutation, CommentCreateMutationVariables>;
 
 /**
@@ -935,41 +947,7 @@ export const ArtworkDocument = gql`
         avatarUrl
       }
       comments {
-        id
-        comment
-        likesCount
-        commenter {
-          id
-          username
-          avatarUrl
-        }
-        replies {
-          id
-          comment
-          commenter {
-            id
-            username
-            avatarUrl
-          }
-          parentCommentId
-          likesCount
-          createdAt
-          updatedAt
-          isLikedByLoggedInUser {
-            id
-          }
-          parentComment {
-            id
-            commenter {
-              username
-            }
-          }
-        }
-        createdAt
-        updatedAt
-        isLikedByLoggedInUser {
-          id
-        }
+        ...Comment
       }
       isLikedByLoggedInUser {
         id
@@ -980,7 +958,7 @@ export const ArtworkDocument = gql`
     }
   }
 }
-    `;
+    ${CommentFragmentDoc}`;
 
 /**
  * __useArtworkQuery__

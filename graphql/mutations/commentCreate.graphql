@@ -1,35 +1,7 @@
 mutation commentCreate($artworkId: ID!, $comment: String!) {
     commentCreate(artworkID: $artworkId, comment: $comment) {
         comment {
-            id
-            comment
-            likesCount
-            commenter {
-                id
-                username
-                avatarUrl
-            }
-            replies {
-                id
-                comment
-                commenter {
-                    id
-                    username
-                    avatarUrl
-                }
-                parentCommentId
-                likesCount
-                createdAt
-                updatedAt
-                isLikedByLoggedInUser {
-                    id
-                }
-            }
-            createdAt
-            updatedAt
-            isLikedByLoggedInUser {
-                id
-            }
+            ...Comment
         }
         errors {
             message

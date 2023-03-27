@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useCommentCreateMutation } from '@/graphql/__generated__/graphql';
+import { CommentFragment, CommentFragmentDoc, useCommentCreateMutation } from '@/graphql/__generated__/graphql';
 import validator from 'validator';
+import { gql } from '@apollo/client';
 
 type CommentInputProps = {
     artworkId: string;
@@ -27,9 +28,45 @@ export default function CommentInput({ artworkId }: CommentInputProps) {
                     artworkId,
                     comment,
                 },
+                // update: (cache, { data }) => {
+                //     if (data?.commentCreate?.comment) {
+                //         const artworkCommentsData = cache.readFragment<{
+                //             id: number;
+                //             comments: CommentFragment[];
+                //         }>({
+                //             id: 'Artwork:' + artworkId,
+                //             fragment: gql`
+                //                 fragment ArtworkComments on Artwork {
+                //                     id
+                //                     comments {
+                //                         ...Comment
+                //                     }
+                //                 }
+                //                 ${CommentFragmentDoc}
+                //             `,
+                //             fragmentName: 'ArtworkComments',
+                //         });
+
+                //         console.log(artworkCommentsData?.comments);
+
+                //         cache.writeFragment<{ comments: CommentFragment[] }>({
+                //             id: 'Artwork:' + artworkId,
+                //             fragment: gql`
+                //                 fragment ArtworkComments on Artwork {
+                //                     id
+                //                     comments {
+                //                         ...Comment
+                //                     }
+                //                 }
+                //                 ${CommentFragmentDoc}
+                //             `,
+                //             fragmentName: 'ArtworkComments',
+                //             data: { comments: [data.commentCreate.comment, ...(artworkCommentsData?.comments || [])] },
+                //         });
+                //     }
+                // },
                 refetchQueries: ['artwork'],
             });
-            console.log(response.data?.commentCreate.comment);
             setComment('');
         } catch (error) {
             console.log(error);

@@ -1,0 +1,37 @@
+fragment Comment on Comment {
+    id
+    comment
+    likesCount
+    commenter {
+        id
+        username
+        avatarUrl
+    }
+    replies {
+        id
+        comment
+        commenter {
+            id
+            username
+            avatarUrl
+        }
+        parentCommentId
+        likesCount
+        createdAt
+        updatedAt
+        isLikedByLoggedInUser {
+            id
+        }
+        parentComment {
+            id
+            commenter {
+                username
+            }
+        }
+    }
+    createdAt
+    updatedAt
+    isLikedByLoggedInUser {
+        id
+    }
+}
