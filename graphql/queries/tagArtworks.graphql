@@ -1,0 +1,24 @@
+query TagArtworks($tagname: String!, $skip: Int, $take: Int) {
+    tagArtworks(tagname: $tagname, skip: $skip, take: $take) {
+        artworks {
+            id
+            title
+            description
+            imageUrls
+            likesCount
+            createdAt
+            isLikedByLoggedInUser {
+                id
+            }
+            uploader {
+                id
+                username
+                avatarUrl
+            }
+        }
+        hasMore
+        errors {
+            message
+        }
+    }
+}

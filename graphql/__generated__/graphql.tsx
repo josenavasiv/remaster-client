@@ -224,7 +224,10 @@ export type Query = {
   __typename?: 'Query';
   artwork: ArtworkPayload;
   hello?: Maybe<Scalars['String']>;
+  tagArtworks: ArtworksPaginatedPayload;
   user: UserPayload;
+  userExplore: ArtworksPaginatedPayload;
+  userExploreTags: TagsPayload;
   userFeed: ArtworksPaginatedPayload;
   userLoggedIn: UserPayload;
 };
@@ -235,8 +238,21 @@ export type QueryArtworkArgs = {
 };
 
 
+export type QueryTagArtworksArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  tagname: Scalars['String'];
+  take?: InputMaybe<Scalars['Int']>;
+};
+
+
 export type QueryUserArgs = {
   username: Scalars['String'];
+};
+
+
+export type QueryUserExploreArgs = {
+  cursor?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -257,6 +273,12 @@ export type TagPayload = {
   __typename?: 'TagPayload';
   errors: Array<Error>;
   tag?: Maybe<Tag>;
+};
+
+export type TagsPayload = {
+  __typename?: 'TagsPayload';
+  errors: Array<Error>;
+  tags: Array<Tag>;
 };
 
 export type User = Node & {
@@ -395,12 +417,34 @@ export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HelloQuery = { __typename?: 'Query', hello?: string | null };
 
+export type TagArtworksQueryVariables = Exact<{
+  tagname: Scalars['String'];
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type TagArtworksQuery = { __typename?: 'Query', tagArtworks: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string } }>, errors: Array<{ __typename?: 'Error', message: string }> } };
+
 export type UserQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
 export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string, isFollowedByLoggedInUser?: boolean | null, artworks: Array<{ __typename?: 'Artwork', id: string, imageUrls: Array<string>, likesCount: number, title: string, description: string }> } | null } };
+
+export type UserExploreQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>;
+  cursor?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UserExploreQuery = { __typename?: 'Query', userExplore: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string } }>, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type UserExploreTagsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserExploreTagsQuery = { __typename?: 'Query', userExploreTags: { __typename?: 'TagsPayload', tags: Array<{ __typename?: 'Tag', id: string, tagname: string }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type UserFeedQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -1063,6 +1107,62 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const TagArtworksDocument = gql`
+    query TagArtworks($tagname: String!, $skip: Int, $take: Int) {
+  tagArtworks(tagname: $tagname, skip: $skip, take: $take) {
+    artworks {
+      id
+      title
+      description
+      imageUrls
+      likesCount
+      createdAt
+      isLikedByLoggedInUser {
+        id
+      }
+      uploader {
+        id
+        username
+        avatarUrl
+      }
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useTagArtworksQuery__
+ *
+ * To run a query within a React component, call `useTagArtworksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTagArtworksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTagArtworksQuery({
+ *   variables: {
+ *      tagname: // value for 'tagname'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *   },
+ * });
+ */
+export function useTagArtworksQuery(baseOptions: Apollo.QueryHookOptions<TagArtworksQuery, TagArtworksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TagArtworksQuery, TagArtworksQueryVariables>(TagArtworksDocument, options);
+      }
+export function useTagArtworksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TagArtworksQuery, TagArtworksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TagArtworksQuery, TagArtworksQueryVariables>(TagArtworksDocument, options);
+        }
+export type TagArtworksQueryHookResult = ReturnType<typeof useTagArtworksQuery>;
+export type TagArtworksLazyQueryHookResult = ReturnType<typeof useTagArtworksLazyQuery>;
+export type TagArtworksQueryResult = Apollo.QueryResult<TagArtworksQuery, TagArtworksQueryVariables>;
 export const UserDocument = gql`
     query user($username: String!) {
   user(username: $username) {
@@ -1110,6 +1210,101 @@ export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQ
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const UserExploreDocument = gql`
+    query userExplore($limit: Int, $cursor: Int) {
+  userExplore(limit: $limit, cursor: $cursor) {
+    artworks {
+      id
+      title
+      description
+      imageUrls
+      likesCount
+      createdAt
+      isLikedByLoggedInUser {
+        id
+      }
+      uploader {
+        id
+        username
+        avatarUrl
+      }
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserExploreQuery__
+ *
+ * To run a query within a React component, call `useUserExploreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserExploreQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserExploreQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
+ *   },
+ * });
+ */
+export function useUserExploreQuery(baseOptions?: Apollo.QueryHookOptions<UserExploreQuery, UserExploreQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserExploreQuery, UserExploreQueryVariables>(UserExploreDocument, options);
+      }
+export function useUserExploreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserExploreQuery, UserExploreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserExploreQuery, UserExploreQueryVariables>(UserExploreDocument, options);
+        }
+export type UserExploreQueryHookResult = ReturnType<typeof useUserExploreQuery>;
+export type UserExploreLazyQueryHookResult = ReturnType<typeof useUserExploreLazyQuery>;
+export type UserExploreQueryResult = Apollo.QueryResult<UserExploreQuery, UserExploreQueryVariables>;
+export const UserExploreTagsDocument = gql`
+    query UserExploreTags {
+  userExploreTags {
+    tags {
+      id
+      tagname
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserExploreTagsQuery__
+ *
+ * To run a query within a React component, call `useUserExploreTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserExploreTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserExploreTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserExploreTagsQuery(baseOptions?: Apollo.QueryHookOptions<UserExploreTagsQuery, UserExploreTagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserExploreTagsQuery, UserExploreTagsQueryVariables>(UserExploreTagsDocument, options);
+      }
+export function useUserExploreTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserExploreTagsQuery, UserExploreTagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserExploreTagsQuery, UserExploreTagsQueryVariables>(UserExploreTagsDocument, options);
+        }
+export type UserExploreTagsQueryHookResult = ReturnType<typeof useUserExploreTagsQuery>;
+export type UserExploreTagsLazyQueryHookResult = ReturnType<typeof useUserExploreTagsLazyQuery>;
+export type UserExploreTagsQueryResult = Apollo.QueryResult<UserExploreTagsQuery, UserExploreTagsQueryVariables>;
 export const UserFeedDocument = gql`
     query userFeed($limit: Int, $cursor: Int) {
   userFeed(limit: $limit, cursor: $cursor) {

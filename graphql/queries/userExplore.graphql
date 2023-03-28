@@ -1,0 +1,24 @@
+query userExplore($limit: Int, $cursor: Int) {
+    userExplore(limit: $limit, cursor: $cursor) {
+        artworks {
+            id
+            title
+            description
+            imageUrls
+            likesCount
+            createdAt
+            isLikedByLoggedInUser {
+                id
+            }
+            uploader {
+                id
+                username
+                avatarUrl
+            }
+        }
+        hasMore
+        errors {
+            message
+        }
+    }
+}

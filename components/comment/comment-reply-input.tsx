@@ -29,7 +29,6 @@ export default function CommentReplyInput({ artworkId, parentCommentId, parentCo
                 },
                 refetchQueries: ['artwork'],
             });
-            console.log(response.data?.commentReply.comment);
             setReply('');
         } catch (error) {
             console.log(error);

@@ -11,7 +11,31 @@ const cache = new InMemoryCache({
         Query: {
             fields: {
                 // Name of our Query
+                tagArtworks: {
+                    keyArgs: ['tagname'],
+                    merge(
+                        existing: ArtworksPaginatedPayload | undefined,
+                        incoming: ArtworksPaginatedPayload
+                    ): ArtworksPaginatedPayload | undefined {
+                        return {
+                            ...incoming,
+                            artworks: [...(existing?.artworks || []), ...incoming.artworks],
+                        };
+                    },
+                },
                 userFeed: {
+                    keyArgs: [],
+                    merge(
+                        existing: ArtworksPaginatedPayload | undefined,
+                        incoming: ArtworksPaginatedPayload
+                    ): ArtworksPaginatedPayload | undefined {
+                        return {
+                            ...incoming,
+                            artworks: [...(existing?.artworks || []), ...incoming.artworks],
+                        };
+                    },
+                },
+                userExplore: {
                     keyArgs: [],
                     merge(
                         existing: ArtworksPaginatedPayload | undefined,

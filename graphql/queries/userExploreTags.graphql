@@ -1,0 +1,11 @@
+query UserExploreTags {
+  userExploreTags {
+    tags {
+      id
+      tagname
+    }
+    errors {
+      message
+    }
+  }
+}
