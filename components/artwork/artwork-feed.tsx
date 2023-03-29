@@ -1,20 +1,12 @@
 import ArtworkUploader from './artwork-uploader';
 import ArtworkDescription from './artwork-description';
 import ArtworkCarousel from './artwork-carousel';
-// import { Artwork, User, Comment } from '@/graphql/__generated__/graphql';
 import { getRelativeDate } from '@/lib/relativeTime';
 import ArtworkFeedRecentComments from './artwork-feed-recent-comments';
-import Link from 'next/link';
 import ArtworkLike from './artwork-like';
 import ArtworkUnlike from './artwork-unlike';
-// export type ArtworkFeedProps = Pick<
-//     Artwork,
-//     'id' | 'imageUrls' | 'title' | 'description' | 'isLikedByLoggedInUser' | 'likesCount' | 'createdAt'
-// > & {
-//     uploader: Pick<User, 'id' | 'username' | 'avatarUrl'>;
-// } & {
-//     topComment: Pick<Comment, 'id' | 'comment'>;
-// };
+import ArtworkFeedTitle from './artwork-feed-title';
+import ArtworkFeedComment from './artwork-feed-comment';
 
 type ArtworkFeedProps = {
     id: string;
@@ -63,22 +55,19 @@ export default function ArtworkFeed({
             <ArtworkUploader {...uploader} />
             <div className="mt-2">
                 <div className="flex flex-col gap-1 h-full">
-                    <span className="font-extrabold text-lg">{title}</span>
+                    <ArtworkFeedTitle id={id} title={title} />
                     <ArtworkCarousel imageUrls={imageUrls} />
-                    <div className="flex">
+                    <div className="flex gap-2">
                         {isLikedByLoggedInUser == null ? (
                             <ArtworkLike artworkId={id} uploaderId={uploader.id} />
                         ) : (
                             <ArtworkUnlike artworkId={id} likeId={isLikedByLoggedInUser.id} uploaderId={uploader.id} />
                         )}
+                        <ArtworkFeedComment id={id} />
                     </div>
                     <ArtworkDescription username={uploader.username} description={description} />
                     <ArtworkFeedRecentComments recentComments={recentComments} />
-                    <div>
-                        <Link className="text-pink-400" href={`/artwork/${id}`}>
-                            Add a comment!
-                        </Link>
-                    </div>
+
                     <div className="flex justify-between font-extrabold text-xs ">
                         <p>{likesCount ?? 'N/A'} Likes</p>
                         <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>

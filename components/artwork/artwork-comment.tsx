@@ -11,7 +11,7 @@ import CommentReply from '../comment/comment-reply';
 import CommentEditInput from '../comment/comment-edit-input';
 import CommentLike from '../comment/comment-like';
 import CommentUnlike from '../comment/comment-unlike';
-import Link from 'next/link';
+import CommentUsername from '../comment/comment-username';
 
 export type CommentType = {
     id: string;
@@ -42,13 +42,12 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
     return (
         <div className="">
             <div className="flex justify-between gap-1">
-                <div className="grow">
-                    <Link href={`/user/${comment.commenter.username}`} className="font-bold">
-                        {comment.commenter.username}{' '}
-                    </Link>
-                    <span>{comment.comment}</span>
+                <div className="flex gap-1 grow">
+                    <span>
+                        <CommentUsername username={comment.commenter.username} /> {comment.comment}
+                    </span>
                 </div>
-                <span className="flex self-center">
+                <span className="pt-0.5">
                     {comment.isLikedByLoggedInUser == null ? (
                         <CommentLike commentId={comment.id} commenterId={comment.commenter.id} />
                     ) : (

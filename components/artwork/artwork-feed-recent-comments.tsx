@@ -2,6 +2,7 @@ import { RecentCommentType } from './artwork-feed';
 import Link from 'next/link';
 import CommentLike from '../comment/comment-like';
 import CommentUnlike from '../comment/comment-unlike';
+import CommentUsername from '../comment/comment-username';
 
 type ArtworkFeedRecentCommentsProps = {
     recentComments: RecentCommentType[];
@@ -13,12 +14,9 @@ export default function ArtworkFeedRecentComments({ recentComments }: ArtworkFee
             {recentComments
                 .map((recentComment) => (
                     <div key={recentComment.id} className="flex justify-between">
-                        <p>
-                            <Link href={`/user/${recentComment.commenter.username}`} className="font-bold">
-                                {recentComment.commenter.username}
-                            </Link>{' '}
-                            {recentComment.comment}
-                        </p>
+                        <span>
+                            <CommentUsername username={recentComment.commenter.username} /> {recentComment.comment}
+                        </span>
                         <span className="flex self-center">
                             {recentComment.isLikedByLoggedInUser == null ? (
                                 <CommentLike commentId={recentComment.id} commenterId={recentComment.commenter.id} />

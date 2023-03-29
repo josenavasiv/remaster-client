@@ -61,7 +61,7 @@ export default function ArtworkDetails({
                         </div>
                     </div>
 
-                    <span className="font-extrabold text-lg">{title}</span>
+                    <span className="font-extrabold text-xl">{title}</span>
                     <ArtworkDescription username={uploader.username} description={description} />
                     <span className="text-xs font-bold text-black/60">{getRelativeDate(createdAt)}</span>
                     <ArtworkDetailsComments comments={comments} artworkId={id} />

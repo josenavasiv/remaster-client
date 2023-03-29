@@ -74,7 +74,10 @@ export default function CommentInput({ artworkId }: CommentInputProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-full flex gap-2 border-b-2 border-violet-200">
+        <form
+            onSubmit={handleSubmit}
+            className="w-full flex gap-2 border-b-2 border-pink-300 focus-within:border-pink-500"
+        >
             <input
                 className="w-full bg-transparent py-2"
                 type="text"

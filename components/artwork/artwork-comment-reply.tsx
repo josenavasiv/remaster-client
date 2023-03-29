@@ -1,5 +1,4 @@
 import { getRelativeDate } from '@/lib/relativeTime';
-import Link from 'next/link';
 import { useState } from 'react';
 import CommentDelete from '../comment/comment-delete';
 import CommentEdit from '../comment/comment-edit';
@@ -8,6 +7,7 @@ import CommentLike from '../comment/comment-like';
 import CommentReply from '../comment/comment-reply';
 import CommentReplyInput from '../comment/comment-reply-input';
 import CommentUnlike from '../comment/comment-unlike';
+import CommentUsername from '../comment/comment-username';
 import { LikeType } from './artwork-feed';
 
 export type ReplyType = {
@@ -45,16 +45,13 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
     return (
         <div>
             <div className="flex justify-between gap-1">
-                <div className="grow">
-                    <Link href={`/user/${reply.commenter.username}`} className="font-bold">
-                        {reply.commenter.username}{' '}
-                    </Link>
-                    <Link href={`/user/${reply.parentComment?.commenter.username}`} className="font-bold">
-                        @{reply.parentComment?.commenter.username}{' '}
-                    </Link>
-                    <span>{reply.comment}</span>
+                <div className="flex gap-1 grow">
+                    <span>
+                        <CommentUsername username={reply.commenter.username} />{' '}
+                        <CommentUsername username={reply.parentComment?.commenter.username!} isReply /> {reply.comment}
+                    </span>
                 </div>
-                <span className="flex self-center">
+                <span className="pt-0.5">
                     {reply.isLikedByLoggedInUser == null ? (
                         <CommentLike commentId={reply.id} commenterId={reply.commenter.id} />
                     ) : (
