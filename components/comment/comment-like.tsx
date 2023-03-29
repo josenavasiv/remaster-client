@@ -33,7 +33,7 @@ export default function CommentLike({ commentId, commenterId }: CommentLikeProps
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-[0.85rem]"
+                className="w-[0.85rem] text-pink-600"
             >
                 <path
                     strokeLinecap="round"

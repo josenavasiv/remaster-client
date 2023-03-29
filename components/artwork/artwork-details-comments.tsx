@@ -1,7 +1,7 @@
 import { CommentType } from './artwork-comment';
 import ArtworkComment from './artwork-comment';
 
-type ArtworkDetailsCommentsProps = { comments: CommentType[], artworkId: string; };
+type ArtworkDetailsCommentsProps = { comments: CommentType[]; artworkId: string };
 
 export default function ArtworkDetailsComments({ comments, artworkId }: ArtworkDetailsCommentsProps) {
     return (

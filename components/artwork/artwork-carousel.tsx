@@ -16,7 +16,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
         <div className="overflow-hidden relative rounded-md">
             <div
                 style={{ transform: `translateX(-${current * 100}%)` }}
-                className="flex transition-transform ease-out duration-500 w-[350px] h-[526px]"
+                className="flex transition-transform ease-in-out duration-300 w-[350px] h-[526px]"
             >
                 {imageUrls.map((imageUrl, i) => (
                     <Image

@@ -1,4 +1,5 @@
 import { getRelativeDate } from '@/lib/relativeTime';
+import Link from 'next/link';
 import { useState } from 'react';
 import CommentDelete from '../comment/comment-delete';
 import CommentEdit from '../comment/comment-edit';
@@ -45,11 +46,15 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
         <div>
             <div className="flex justify-between gap-1">
                 <div className="grow">
-                    <span className="font-bold">{reply.commenter.username} </span>
-                    <span className="font-bold">@{reply.parentComment?.commenter.username} </span>
+                    <Link href={`/user/${reply.commenter.username}`} className="font-bold">
+                        {reply.commenter.username}{' '}
+                    </Link>
+                    <Link href={`/user/${reply.parentComment?.commenter.username}`} className="font-bold">
+                        @{reply.parentComment?.commenter.username}{' '}
+                    </Link>
                     <span>{reply.comment}</span>
                 </div>
-                <span className="self-center">
+                <span className="flex self-center">
                     {reply.isLikedByLoggedInUser == null ? (
                         <CommentLike commentId={reply.id} commenterId={reply.commenter.id} />
                     ) : (

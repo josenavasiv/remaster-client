@@ -65,27 +65,23 @@ export default function ArtworkFeed({
                 <div className="flex flex-col gap-1 h-full">
                     <span className="font-extrabold text-lg">{title}</span>
                     <ArtworkCarousel imageUrls={imageUrls} />
-                    <div className="font-extrabold text-xs ">
-                        <p>{likesCount ?? 'N/A'} Likes</p>
-                        <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>
-                        <div className="self-center">
-                            {isLikedByLoggedInUser == null ? (
-                                <ArtworkLike artworkId={id} uploaderId={uploader.id} />
-                            ) : (
-                                <ArtworkUnlike
-                                    artworkId={id}
-                                    likeId={isLikedByLoggedInUser.id}
-                                    uploaderId={uploader.id}
-                                />
-                            )}
-                        </div>
+                    <div className="flex">
+                        {isLikedByLoggedInUser == null ? (
+                            <ArtworkLike artworkId={id} uploaderId={uploader.id} />
+                        ) : (
+                            <ArtworkUnlike artworkId={id} likeId={isLikedByLoggedInUser.id} uploaderId={uploader.id} />
+                        )}
                     </div>
-                    <ArtworkDescription description={description} />
+                    <ArtworkDescription username={uploader.username} description={description} />
                     <ArtworkFeedRecentComments recentComments={recentComments} />
                     <div>
                         <Link className="text-pink-400" href={`/artwork/${id}`}>
                             Add a comment!
                         </Link>
+                    </div>
+                    <div className="flex justify-between font-extrabold text-xs ">
+                        <p>{likesCount ?? 'N/A'} Likes</p>
+                        <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>
                     </div>
                 </div>
             </div>

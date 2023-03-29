@@ -4,6 +4,7 @@ import { ReactElement, ReactNode } from 'react';
 import Container from '@/components/common/container';
 import { useTagArtworksQuery } from '@/graphql/__generated__/graphql';
 import GridArtworks from '@/components/common/grid-artworks';
+import TagName from '@/components/tag/tag-name';
 import { useRouter } from 'next/router';
 
 export default function Tag() {
@@ -27,7 +28,9 @@ export default function Tag() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Container>
+                <TagName tagname={tag as string} />
                 {!data && loading && <div>TAG ARTWORKS LOADING</div>}
+
                 <button onClick={() => refetch()}>Check For New Posts</button>
 
                 {data?.tagArtworks.artworks && !error && (
