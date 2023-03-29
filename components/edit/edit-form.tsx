@@ -1,25 +1,25 @@
-import { useArtworkCreateMutation } from '@/graphql/__generated__/graphql';
+import { useArtworkUpdateMutation } from '@/graphql/__generated__/graphql';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import TextField from '../input/text-field';
 import TextAreaField from '../input/textarea-field';
 import validator from 'validator';
-import CreatePreviews from './create-previews';
 import toast from 'react-hot-toast';
 
-type CreateFormProps = {
+type EditFormProps = {
+    artworkId: string;
+    titleToEdit: string;
+    descriptionToEdit: string;
+    imageUrls: string[];
     closeModal: () => void;
 };
 
 // This includes the image uploading, previews, and everything
-export default function CreateForm({ closeModal }: CreateFormProps) {
+export default function EditForm({ artworkId, titleToEdit, descriptionToEdit, imageUrls, closeModal }: EditFormProps) {
     const router = useRouter();
-    const [artworkCreate, { data, loading, error }] = useArtworkCreateMutation();
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [imageFiles, setImageFiles] = useState<FileList>(); // Drill into preview component
-    // Will move into a custom hook for uploadToStorage
-    const [isStoring, SetIsStoring] = useState(false);
+    const [artworkUpdate, { data, loading, error }] = useArtworkUpdateMutation();
+    const [title, setTitle] = useState(titleToEdit);
+    const [description, setDescription] = useState(descriptionToEdit);
 
     const [errors, setErrors] = useState({
         title: false,
@@ -37,57 +37,31 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
             description: !isValidDescription,
         });
 
-        if (isValidTitle && isValidDescription && imageFiles) {
-            SetIsStoring(true);
-            const { urls } = await uploadImageBlobsToStorage(imageFiles);
-            SetIsStoring(false);
-
-            const response = await artworkCreate({
+        if (isValidTitle && isValidDescription) {
+            const response = await artworkUpdate({
                 variables: {
+                    artworkId,
                     title,
                     description,
-                    imageUrls: urls,
+                    imageUrls,
                 },
                 refetchQueries: ['userFeed'],
             });
 
-            if (response.data?.artworkCreate?.errors && response.data.artworkCreate.errors.length > 0) {
-                response.data.artworkCreate.errors.forEach((error) => {
+            if (response.data?.artworkUpdate?.errors && response.data.artworkUpdate.errors.length > 0) {
+                response.data.artworkUpdate.errors.forEach((error) => {
                     toast.error(error.message);
                 });
             } else {
-                toast.success(`Created ${response.data?.artworkCreate.artwork?.title}`);
+                toast.success(`Edited ${response.data?.artworkUpdate.artwork?.title}`);
                 closeModal();
                 if (router.pathname === '/') {
                     return;
                 } else {
-                    router.push(`/artwork/${response.data?.artworkCreate.artwork?.id}`);
+                    router.push(`/artwork/${response.data?.artworkUpdate.artwork?.id}`);
                 }
             }
         }
-    };
-
-    // console.log(imageFiles); Re-renders due to useState of TextField
-
-    // Returns array of urls
-    // Create into a custom hook
-    const uploadImageBlobsToStorage = async (imageFiles: FileList): Promise<{ urls: string[] }> => {
-        // UPLOAD IMAGES TO BACKEND ON FORM SUBMISSION
-        const imageBlobs = new FormData();
-        Array.from(imageFiles).map((f, i) => {
-            imageBlobs.append(`image${i}`, f);
-        });
-
-        const response = await fetch('http://localhost:4000/storage', {
-            credentials: 'include',
-            method: 'POST',
-            body: imageBlobs,
-        });
-
-        const imageUrls = await response.json();
-        console.log(imageUrls);
-
-        return imageUrls;
     };
 
     const validateDescription = (desc: string): Boolean => {
@@ -95,37 +69,36 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
     };
 
     return (
-        <div className="w-[350px] sm:w-[750px] bg-gray-200 p-5 rounded-xl">
+        <div className="w-[350px] bg-gray-200 p-5 rounded-xl">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
-                <div className="flex-1 self-center">
-                    <CreatePreviews imageFiles={imageFiles} setImageFiles={setImageFiles} />
-                </div>
                 <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
-                    <p className="">CREATE ARTWORK</p>
+                    <p className="text-center font-bold">Editing Artwork</p>
                     <div className="flex flex-col text-left">
                         <TextField
+                            value={title}
                             setValue={setTitle}
                             label="Title"
-                            placeholder="Title your masterpiece!"
+                            placeholder={title}
                             error={errors.title}
                             errorMessage="Title is invalid"
                             required={true}
                         />
                         <TextAreaField
+                            value={description}
                             setValue={setDescription}
                             label="Description"
-                            placeholder="Describe your artworks!"
+                            placeholder={description}
                             error={errors.description}
                             errorMessage="Description is invalid"
                             required={true}
                         />
                         <input
                             type="submit"
-                            value="Create Artwork"
+                            value="Edit Artwork"
                             className="w-full bg-violet-400 py-2 disabled:bg-violet-900 font-medium rounded-md hover:cursor-pointer"
-                            disabled={isStoring || loading}
+                            disabled={loading}
                         />
-                        {(isStoring || loading) && <div>LOADING...</div>}
+                        {loading && <div>LOADING...</div>}
                     </div>
                 </form>
             </div>

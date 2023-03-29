@@ -4,16 +4,18 @@ type TextAreaFieldProps = InputHTMLAttributes<HTMLTextAreaElement> & {
     label?: string;
     error?: boolean;
     errorMessage?: string;
+    value?: string;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
     className?: string;
 };
 
 const TextAreaField = React.forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(
-    ({ label, placeholder, setValue, error, errorMessage, required, className }: TextAreaFieldProps, ref) => {
+    ({ label, placeholder, setValue, error, errorMessage, required, className, value }: TextAreaFieldProps, ref) => {
         return (
             <div className="flex flex-col">
                 {label && <label className="font-bold">{label}</label>}
                 <textarea
+                    value={value ?? undefined}
                     onChange={setValue ? (e) => setValue(e.target.value) : undefined}
                     placeholder={placeholder}
                     ref={ref ?? undefined}

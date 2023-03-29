@@ -1,0 +1,13 @@
+mutation artworkUpdate($artworkId: ID!, $title: String, $description: String, $imageUrls: [String!]) {
+    artworkUpdate(artworkID: $artworkId, title: $title, description: $description, imageUrls: $imageUrls) {
+        artwork {
+            id
+            title
+            description
+            imageUrls
+        }
+        errors {
+            message
+        }
+    }
+}

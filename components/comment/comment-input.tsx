@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CommentFragment, CommentFragmentDoc, useCommentCreateMutation } from '@/graphql/__generated__/graphql';
 import validator from 'validator';
 import { gql } from '@apollo/client';
+import useUser from '@/lib/hooks/useUser';
 
 type CommentInputProps = {
     artworkId: string;
@@ -9,9 +10,12 @@ type CommentInputProps = {
 };
 
 export default function CommentInput({ artworkId }: CommentInputProps) {
+    const user = useUser();
     // const commentInputRef = useRef<HTMLInputElement>(null);
     const [commentCreate, { data, loading, error }] = useCommentCreateMutation();
     const [comment, setComment] = useState('');
+
+    if (!user) return null;
 
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();

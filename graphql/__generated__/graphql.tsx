@@ -320,6 +320,23 @@ export type ArtworkCreateMutationVariables = Exact<{
 
 export type ArtworkCreateMutation = { __typename?: 'Mutation', artworkCreate: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type ArtworkDeleteMutationVariables = Exact<{
+  artworkId: Scalars['ID'];
+}>;
+
+
+export type ArtworkDeleteMutation = { __typename?: 'Mutation', artworkDelete: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type ArtworkUpdateMutationVariables = Exact<{
+  artworkId: Scalars['ID'];
+  title?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  imageUrls?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+
+export type ArtworkUpdateMutation = { __typename?: 'Mutation', artworkUpdate: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string> } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
 export type CommentCreateMutationVariables = Exact<{
   artworkId: Scalars['ID'];
   comment: Scalars['String'];
@@ -563,6 +580,94 @@ export function useArtworkCreateMutation(baseOptions?: Apollo.MutationHookOption
 export type ArtworkCreateMutationHookResult = ReturnType<typeof useArtworkCreateMutation>;
 export type ArtworkCreateMutationResult = Apollo.MutationResult<ArtworkCreateMutation>;
 export type ArtworkCreateMutationOptions = Apollo.BaseMutationOptions<ArtworkCreateMutation, ArtworkCreateMutationVariables>;
+export const ArtworkDeleteDocument = gql`
+    mutation artworkDelete($artworkId: ID!) {
+  artworkDelete(artworkID: $artworkId) {
+    artwork {
+      id
+      title
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type ArtworkDeleteMutationFn = Apollo.MutationFunction<ArtworkDeleteMutation, ArtworkDeleteMutationVariables>;
+
+/**
+ * __useArtworkDeleteMutation__
+ *
+ * To run a mutation, you first call `useArtworkDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useArtworkDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [artworkDeleteMutation, { data, loading, error }] = useArtworkDeleteMutation({
+ *   variables: {
+ *      artworkId: // value for 'artworkId'
+ *   },
+ * });
+ */
+export function useArtworkDeleteMutation(baseOptions?: Apollo.MutationHookOptions<ArtworkDeleteMutation, ArtworkDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ArtworkDeleteMutation, ArtworkDeleteMutationVariables>(ArtworkDeleteDocument, options);
+      }
+export type ArtworkDeleteMutationHookResult = ReturnType<typeof useArtworkDeleteMutation>;
+export type ArtworkDeleteMutationResult = Apollo.MutationResult<ArtworkDeleteMutation>;
+export type ArtworkDeleteMutationOptions = Apollo.BaseMutationOptions<ArtworkDeleteMutation, ArtworkDeleteMutationVariables>;
+export const ArtworkUpdateDocument = gql`
+    mutation artworkUpdate($artworkId: ID!, $title: String, $description: String, $imageUrls: [String!]) {
+  artworkUpdate(
+    artworkID: $artworkId
+    title: $title
+    description: $description
+    imageUrls: $imageUrls
+  ) {
+    artwork {
+      id
+      title
+      description
+      imageUrls
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type ArtworkUpdateMutationFn = Apollo.MutationFunction<ArtworkUpdateMutation, ArtworkUpdateMutationVariables>;
+
+/**
+ * __useArtworkUpdateMutation__
+ *
+ * To run a mutation, you first call `useArtworkUpdateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useArtworkUpdateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [artworkUpdateMutation, { data, loading, error }] = useArtworkUpdateMutation({
+ *   variables: {
+ *      artworkId: // value for 'artworkId'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      imageUrls: // value for 'imageUrls'
+ *   },
+ * });
+ */
+export function useArtworkUpdateMutation(baseOptions?: Apollo.MutationHookOptions<ArtworkUpdateMutation, ArtworkUpdateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ArtworkUpdateMutation, ArtworkUpdateMutationVariables>(ArtworkUpdateDocument, options);
+      }
+export type ArtworkUpdateMutationHookResult = ReturnType<typeof useArtworkUpdateMutation>;
+export type ArtworkUpdateMutationResult = Apollo.MutationResult<ArtworkUpdateMutation>;
+export type ArtworkUpdateMutationOptions = Apollo.BaseMutationOptions<ArtworkUpdateMutation, ArtworkUpdateMutationVariables>;
 export const CommentCreateDocument = gql`
     mutation commentCreate($artworkId: ID!, $comment: String!) {
   commentCreate(artworkID: $artworkId, comment: $comment) {

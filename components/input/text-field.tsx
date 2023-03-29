@@ -5,16 +5,18 @@ type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
     error?: boolean;
     errorMessage?: string;
     setValue?: React.Dispatch<React.SetStateAction<string>>;
+    value?: string;
     className?: string;
 };
 
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
-    ({ type, label, placeholder, setValue, error, errorMessage, required }: TextFieldProps, ref) => {
+    ({ type, label, placeholder, setValue, error, errorMessage, required, value }: TextFieldProps, ref) => {
         return (
             <div className="flex flex-col">
                 {label && <label className="font-bold">{label}</label>}
                 <input
                     type={type}
+                    value={value ?? undefined}
                     onChange={setValue ? (e) => setValue(e.target.value) : undefined}
                     placeholder={placeholder}
                     ref={ref ?? undefined}

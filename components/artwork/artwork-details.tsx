@@ -9,6 +9,8 @@ import CommentInput from '../comment/comment-input';
 import { LikeType } from './artwork-feed';
 import ArtworkLike from './artwork-like';
 import ArtworkUnlike from './artwork-unlike';
+import ArtworkDelete from './artwork-delete';
+import ArtworkEdit from './artwork-edit';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -48,7 +50,7 @@ export default function ArtworkDetails({
                 <div className="flex flex-col gap-2 lg:w-96 max-w-[350px] h-[526px]">
                     <div className="flex justify-between">
                         <ArtworkUploader {...uploader} />
-                        <div className="self-center">
+                        <div className="flex gap-2">
                             {isLikedByLoggedInUser == null ? (
                                 <ArtworkLike artworkId={id} uploaderId={uploader.id} />
                             ) : (
@@ -58,12 +60,24 @@ export default function ArtworkDetails({
                                     uploaderId={uploader.id}
                                 />
                             )}
+                            <ArtworkEdit
+                                artworkId={id}
+                                uploaderId={uploader.id}
+                                title={title}
+                                description={description}
+                                imageUrls={imageUrls}
+                            />
+                            <ArtworkDelete artworkId={id} uploaderId={uploader.id} />
                         </div>
                     </div>
 
                     <span className="font-extrabold text-xl">{title}</span>
                     <ArtworkDescription username={uploader.username} description={description} />
-                    <span className="text-xs font-bold text-black/60">{getRelativeDate(createdAt)}</span>
+                    <div className="flex gap-3">
+                        <span className="text-xs font-bold text-black/60">{getRelativeDate(createdAt)}</span>
+                        <span className="text-xs font-bold text-black/60">{likesCount} likes</span>
+                    </div>
+
                     <ArtworkDetailsComments comments={comments} artworkId={id} />
                     <CommentInput artworkId={id} />
                 </div>

@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
 type ArtworkFeedCommentProps = {
-    id: string;
+    artworkId: string;
 };
 
-export default function ArtworkFeedComment({ id }: ArtworkFeedCommentProps) {
+export default function ArtworkFeedComment({ artworkId }: ArtworkFeedCommentProps) {
     return (
-        <Link className="text-pink-400" href={`/artwork/${id}`}>
+        <Link className="text-pink-400" href={`/artwork/${artworkId}`}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

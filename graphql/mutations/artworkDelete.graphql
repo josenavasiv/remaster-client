@@ -1,0 +1,11 @@
+mutation artworkDelete($artworkId: ID!) {
+    artworkDelete(artworkID: $artworkId) {
+        artwork {
+            id
+            title
+        }
+        errors {
+            message
+        }
+    }
+}

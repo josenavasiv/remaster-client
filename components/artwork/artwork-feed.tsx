@@ -7,6 +7,7 @@ import ArtworkLike from './artwork-like';
 import ArtworkUnlike from './artwork-unlike';
 import ArtworkFeedTitle from './artwork-feed-title';
 import ArtworkFeedComment from './artwork-feed-comment';
+import ArtworkFeedOptions from './artwork-feed-options';
 
 type ArtworkFeedProps = {
     id: string;
@@ -57,20 +58,19 @@ export default function ArtworkFeed({
                 <div className="flex flex-col gap-1 h-full">
                     <ArtworkFeedTitle id={id} title={title} />
                     <ArtworkCarousel imageUrls={imageUrls} />
-                    <div className="flex gap-2">
-                        {isLikedByLoggedInUser == null ? (
-                            <ArtworkLike artworkId={id} uploaderId={uploader.id} />
-                        ) : (
-                            <ArtworkUnlike artworkId={id} likeId={isLikedByLoggedInUser.id} uploaderId={uploader.id} />
-                        )}
-                        <ArtworkFeedComment id={id} />
-                    </div>
+                    <ArtworkFeedOptions
+                        artworkId={id}
+                        uploaderId={uploader.id}
+                        isLikedByLoggedInUser={isLikedByLoggedInUser}
+                        title={title}
+                        description={description}
+                        imageUrls={imageUrls}
+                    />
                     <ArtworkDescription username={uploader.username} description={description} />
                     <ArtworkFeedRecentComments recentComments={recentComments} />
-
-                    <div className="flex justify-between font-extrabold text-xs ">
-                        <p>{likesCount ?? 'N/A'} Likes</p>
-                        <p>{getRelativeDate(createdAt) ?? 'N/A'}</p>
+                    <div className="flex justify-between text-xs font-bold text-black/60">
+                        <p>{likesCount} Likes</p>
+                        <p>{getRelativeDate(createdAt)}</p>
                     </div>
                 </div>
             </div>
