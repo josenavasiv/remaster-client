@@ -18,7 +18,7 @@ export default function UserDetails({ username, isFollowedByLoggedInUser, avatar
                 width={150}
                 height={150}
                 alt={`${username}'s Avatar`}
-                className="rounded-full m-auto aspect-square"
+                className="rounded-full m-auto aspect-square object-cover"
                 priority
             />
             <div className="flex gap-2">

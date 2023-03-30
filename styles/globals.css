@@ -36,10 +36,12 @@ textarea {
     outline: none;
 }
 
-.sidebar {
-    writing-mode: vertical-lr;
-    text-orientation: upright;
-    font-size: 4rem;
-    font-weight: 900;
-    text-align: center;
+@media screen and (min-width: 640px) {
+    .sidebar {
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        font-size: 3rem;
+        font-weight: 900;
+        text-align: center;
+    }
 }

@@ -12,7 +12,7 @@ export default function ArtworkUploader({ id, username, avatarUrl }: ArtworkUplo
                 width={42}
                 height={42}
                 alt={`${username}'s Avatar`}
-                className="rounded-full my-auto aspect-square"
+                className="rounded-full my-auto aspect-square object-cover"
             />
             <span className="font-bold my-auto">{username}</span>
         </Link>

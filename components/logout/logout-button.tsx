@@ -16,5 +16,9 @@ export default function LogoutButton({}: LogoutButtonProps) {
 
     if (!user) return null;
 
-    return <button onClick={handleLogout}>Logout</button>;
+    return (
+        <button className="font-bold" onClick={handleLogout}>
+            Logout
+        </button>
+    );
 }
