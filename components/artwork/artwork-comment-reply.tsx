@@ -34,6 +34,7 @@ type ArtworkCommentReplyProps = {
 export type parentCommentType = {
     id: string;
     commenter: {
+        id: string;
         username: string;
     };
 };
@@ -77,7 +78,7 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
                     parentComment={{
                         // Essentially replying to this comment -> Notifcations later
                         id: reply.id,
-                        commenter: { username: reply.commenter.username },
+                        commenter: { id: reply.commenter.id, username: reply.commenter.username },
                     }}
                 />
             )}

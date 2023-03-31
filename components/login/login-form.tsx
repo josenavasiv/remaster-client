@@ -10,7 +10,9 @@ type LoginFormProps = {};
 
 export default function LoginForm({}: LoginFormProps) {
     const router = useRouter();
-    const [userLogin, { data, loading, error }] = useUserLoginMutation();
+    const [userLogin, { data, loading, error, client }] = useUserLoginMutation();
+    client.clearStore(); // Everytime we get to this page we reset the entire cache
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -45,6 +47,7 @@ export default function LoginForm({}: LoginFormProps) {
                         },
                     });
                 },
+                refetchQueries: ['userFeed'],
             });
 
             if (response.data?.userLogin?.errors && response.data.userLogin.errors.length > 0) {

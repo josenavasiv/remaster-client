@@ -25,6 +25,7 @@ fragment Comment on Comment {
         parentComment {
             id
             commenter {
+                id
                 username
             }
         }

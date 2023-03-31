@@ -152,6 +152,8 @@ export type MutationCommentReplyArgs = {
   artworkID: Scalars['ID'];
   comment: Scalars['String'];
   parentCommentID: Scalars['ID'];
+  replyingToCommentID?: InputMaybe<Scalars['ID']>;
+  replyingToUserID?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -200,15 +202,23 @@ export type Node = {
   id: Scalars['ID'];
 };
 
-export type Notifiable = Artwork | Comment | User;
-
 export type Notification = Node & {
   __typename?: 'Notification';
+  artwork?: Maybe<Artwork>;
+  comment?: Maybe<Comment>;
+  createdAt: Scalars['String'];
   id: Scalars['ID'];
   isRead: Scalars['Boolean'];
-  notifiedOf: Notifiable;
+  notificationType: NotificationType;
   notifier: User;
-  type: NotificationType;
+  notifierArtwork?: Maybe<Artwork>;
+  notifierComment?: Maybe<Comment>;
+};
+
+export type NotificationPayload = {
+  __typename?: 'NotificationPayload';
+  errors: Array<Error>;
+  notification?: Maybe<Notification>;
 };
 
 export enum NotificationType {
@@ -220,10 +230,18 @@ export enum NotificationType {
   Uploaded = 'UPLOADED'
 }
 
+export type NotificationsPaginatedPayload = {
+  __typename?: 'NotificationsPaginatedPayload';
+  errors: Array<Error>;
+  hasMore: Scalars['Boolean'];
+  notifications: Array<Notification>;
+};
+
 export type Query = {
   __typename?: 'Query';
   artwork: ArtworkPayload;
   hello?: Maybe<Scalars['String']>;
+  notifications: NotificationsPaginatedPayload;
   tagArtworks: ArtworksPaginatedPayload;
   user: UserPayload;
   userExplore: ArtworksPaginatedPayload;
@@ -235,6 +253,12 @@ export type Query = {
 
 export type QueryArtworkArgs = {
   artworkID: Scalars['ID'];
+};
+
+
+export type QueryNotificationsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -259,6 +283,11 @@ export type QueryUserExploreArgs = {
 export type QueryUserFeedArgs = {
   cursor?: InputMaybe<Scalars['Int']>;
   limit?: InputMaybe<Scalars['Int']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  newNotification: Notification;
 };
 
 export type Tag = Node & {
@@ -309,7 +338,7 @@ export type UsersSuggestedPayload = {
   user: Array<User>;
 };
 
-export type CommentFragment = { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null };
+export type CommentFragment = { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', id: string, username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null };
 
 export type ArtworkCreateMutationVariables = Exact<{
   title: Scalars['String'];
@@ -343,7 +372,7 @@ export type CommentCreateMutationVariables = Exact<{
 }>;
 
 
-export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', id: string, username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type CommentDeleteMutationVariables = Exact<{
   commentId: Scalars['ID'];
@@ -356,6 +385,8 @@ export type CommentReplyMutationVariables = Exact<{
   artworkId: Scalars['ID'];
   comment: Scalars['String'];
   parentCommentId: Scalars['ID'];
+  replyingToUserId?: InputMaybe<Scalars['ID']>;
+  replyingToCommentId?: InputMaybe<Scalars['ID']>;
 }>;
 
 
@@ -427,12 +458,17 @@ export type ArtworkQueryVariables = Exact<{
 }>;
 
 
-export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', id: string, username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HelloQuery = { __typename?: 'Query', hello?: string | null };
+
+export type NotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NotificationsQuery = { __typename?: 'Query', notifications: { __typename?: 'NotificationsPaginatedPayload', hasMore: boolean, notifications: Array<{ __typename?: 'Notification', id: string, isRead: boolean, createdAt: string, notificationType: NotificationType, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type TagArtworksQueryVariables = Exact<{
   tagname: Scalars['String'];
@@ -476,6 +512,11 @@ export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UserLoggedInQuery = { __typename?: 'Query', userLoggedIn: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type NewNotificationSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewNotificationSubscription = { __typename?: 'Subscription', newNotification: { __typename?: 'Notification', id: string, notificationType: NotificationType, isRead: boolean, createdAt: string, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null } };
+
 export const CommentFragmentDoc = gql`
     fragment Comment on Comment {
   id
@@ -504,6 +545,7 @@ export const CommentFragmentDoc = gql`
     parentComment {
       id
       commenter {
+        id
         username
       }
     }
@@ -747,11 +789,13 @@ export type CommentDeleteMutationHookResult = ReturnType<typeof useCommentDelete
 export type CommentDeleteMutationResult = Apollo.MutationResult<CommentDeleteMutation>;
 export type CommentDeleteMutationOptions = Apollo.BaseMutationOptions<CommentDeleteMutation, CommentDeleteMutationVariables>;
 export const CommentReplyDocument = gql`
-    mutation commentReply($artworkId: ID!, $comment: String!, $parentCommentId: ID!) {
+    mutation commentReply($artworkId: ID!, $comment: String!, $parentCommentId: ID!, $replyingToUserId: ID, $replyingToCommentId: ID) {
   commentReply(
     artworkID: $artworkId
     comment: $comment
     parentCommentID: $parentCommentId
+    replyingToUserID: $replyingToUserId
+    replyingToCommentID: $replyingToCommentId
   ) {
     comment {
       id
@@ -799,6 +843,8 @@ export type CommentReplyMutationFn = Apollo.MutationFunction<CommentReplyMutatio
  *      artworkId: // value for 'artworkId'
  *      comment: // value for 'comment'
  *      parentCommentId: // value for 'parentCommentId'
+ *      replyingToUserId: // value for 'replyingToUserId'
+ *      replyingToCommentId: // value for 'replyingToCommentId'
  *   },
  * });
  */
@@ -1212,6 +1258,72 @@ export function useHelloLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hell
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
+export const NotificationsDocument = gql`
+    query notifications {
+  notifications {
+    notifications {
+      id
+      isRead
+      createdAt
+      notificationType
+      notifier {
+        id
+        username
+        avatarUrl
+      }
+      artwork {
+        id
+        title
+        imageUrls
+      }
+      comment {
+        id
+        comment
+      }
+      notifierArtwork {
+        id
+        title
+        imageUrls
+      }
+      notifierComment {
+        id
+        comment
+      }
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useNotificationsQuery__
+ *
+ * To run a query within a React component, call `useNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNotificationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNotificationsQuery(baseOptions?: Apollo.QueryHookOptions<NotificationsQuery, NotificationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NotificationsQuery, NotificationsQueryVariables>(NotificationsDocument, options);
+      }
+export function useNotificationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NotificationsQuery, NotificationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NotificationsQuery, NotificationsQueryVariables>(NotificationsDocument, options);
+        }
+export type NotificationsQueryHookResult = ReturnType<typeof useNotificationsQuery>;
+export type NotificationsLazyQueryHookResult = ReturnType<typeof useNotificationsLazyQuery>;
+export type NotificationsQueryResult = Apollo.QueryResult<NotificationsQuery, NotificationsQueryVariables>;
 export const TagArtworksDocument = gql`
     query TagArtworks($tagname: String!, $skip: Int, $take: Int) {
   tagArtworks(tagname: $tagname, skip: $skip, take: $take) {
@@ -1518,3 +1630,58 @@ export function useUserLoggedInLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type UserLoggedInQueryHookResult = ReturnType<typeof useUserLoggedInQuery>;
 export type UserLoggedInLazyQueryHookResult = ReturnType<typeof useUserLoggedInLazyQuery>;
 export type UserLoggedInQueryResult = Apollo.QueryResult<UserLoggedInQuery, UserLoggedInQueryVariables>;
+export const NewNotificationDocument = gql`
+    subscription newNotification {
+  newNotification {
+    id
+    notificationType
+    isRead
+    createdAt
+    notifier {
+      id
+      username
+      avatarUrl
+    }
+    artwork {
+      id
+      title
+      imageUrls
+    }
+    comment {
+      id
+      comment
+    }
+    notifierArtwork {
+      id
+      title
+      imageUrls
+    }
+    notifierComment {
+      id
+      comment
+    }
+  }
+}
+    `;
+
+/**
+ * __useNewNotificationSubscription__
+ *
+ * To run a query within a React component, call `useNewNotificationSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewNotificationSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewNotificationSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewNotificationSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewNotificationSubscription, NewNotificationSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<NewNotificationSubscription, NewNotificationSubscriptionVariables>(NewNotificationDocument, options);
+      }
+export type NewNotificationSubscriptionHookResult = ReturnType<typeof useNewNotificationSubscription>;
+export type NewNotificationSubscriptionResult = Apollo.SubscriptionResult<NewNotificationSubscription>;

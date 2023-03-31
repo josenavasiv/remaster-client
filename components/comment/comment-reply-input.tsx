@@ -26,6 +26,8 @@ export default function CommentReplyInput({ artworkId, parentCommentId, parentCo
                     artworkId,
                     parentCommentId,
                     comment: reply,
+                    replyingToCommentId: parentComment.id,
+                    replyingToUserId: parentComment.commenter.id,
                 },
                 refetchQueries: ['artwork'],
             });

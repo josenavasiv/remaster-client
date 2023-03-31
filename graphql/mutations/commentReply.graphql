@@ -1,5 +1,17 @@
-mutation commentReply($artworkId: ID!, $comment: String!, $parentCommentId: ID!) {
-    commentReply(artworkID: $artworkId, comment: $comment, parentCommentID: $parentCommentId) {
+mutation commentReply(
+    $artworkId: ID!
+    $comment: String!
+    $parentCommentId: ID!
+    $replyingToUserId: ID
+    $replyingToCommentId: ID
+) {
+    commentReply(
+        artworkID: $artworkId
+        comment: $comment
+        parentCommentID: $parentCommentId
+        replyingToUserID: $replyingToUserId
+        replyingToCommentID: $replyingToCommentId
+    ) {
         comment {
             id
             comment

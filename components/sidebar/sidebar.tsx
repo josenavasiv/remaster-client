@@ -6,6 +6,7 @@ import SidebarHome from './sidebar-home';
 import SidebarExplore from './sidebar-explore';
 import SidebarCreate from './sidebar-create';
 import SidebarSearch from './sidebar-search';
+import Notifications from '../notifications/notifications';
 
 type SideBarProps = {};
 
@@ -35,6 +36,8 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                     )}
 
                     <LogoutButton />
+                    {user && <Notifications />}
+
                     <SidebarUser />
                 </span>
             </div>

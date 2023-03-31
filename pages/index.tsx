@@ -4,7 +4,6 @@ import { CommonLayout } from '@/components/layout/common-layout';
 import { HomeLayout } from '@/components/layout/home-layout';
 import { ReactElement, ReactNode } from 'react';
 import HomeMainFeedContainer from '@/components/home/home-main-feed-container';
-import { toast } from 'react-hot-toast';
 import ArtworkFeed from '@/components/artwork/artwork-feed';
 
 export default function Home() {

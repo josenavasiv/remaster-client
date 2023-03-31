@@ -88,7 +88,10 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                 <CommentReplyInput
                     artworkId={artworkId}
                     parentCommentId={comment.id}
-                    parentComment={{ id: comment.id, commenter: { username: comment.commenter.username } }}
+                    parentComment={{
+                        id: comment.id,
+                        commenter: { id: comment.commenter.id, username: comment.commenter.username },
+                    }}
                 />
             )}
 
