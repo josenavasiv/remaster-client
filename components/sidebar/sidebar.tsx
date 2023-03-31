@@ -5,6 +5,7 @@ import SidebarUser from './sidebar-user';
 import SidebarHome from './sidebar-home';
 import SidebarExplore from './sidebar-explore';
 import SidebarCreate from './sidebar-create';
+import SidebarSearch from './sidebar-search';
 
 type SideBarProps = {};
 
@@ -19,6 +20,7 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                 </Link>
                 <span className="flex w-full sm:flex-col sm:h-full justify-around sm:justify-end sm:gap-10 sm:pb-4">
                     <SidebarHome />
+                    <SidebarSearch />
                     <SidebarExplore />
                     <SidebarCreate />
                     {!user && (
@@ -31,6 +33,7 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                             LOGIN
                         </Link>
                     )}
+
                     <LogoutButton />
                     <SidebarUser />
                 </span>
