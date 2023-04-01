@@ -7,6 +7,7 @@ import { useModal } from '@/lib/hooks/useModal';
 import Modal from '../modal/modal';
 import Notification from './notification';
 import NotificationToaster from '@/lib/notifications/NotificationToaster';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 type NotificationsProps = {};
 
@@ -53,6 +54,27 @@ export default function Notifications({}: NotificationsProps) {
         return unreadNum > 10 ? '10' : `${unreadNum}`;
     };
 
+    const [sentryRef] = useInfiniteScroll({
+        loading,
+        hasNextPage: data?.notifications.hasMore ?? true,
+        onLoadMore: () =>
+            fetchMore({
+                variables: {
+                    take: 10,
+                    ...(data?.notifications.notifications && {
+                        skip: data.notifications.notifications.length,
+                    }),
+                },
+            }),
+        // When there is an error, we stop infinite loading.
+        // It can be reactivated by setting "error" state as undefined.
+        disabled: !!error,
+        // `rootMargin` is passed to `IntersectionObserver`.
+        // We can use it to trigger 'onLoadMore' when the sentry comes near to become
+        // visible, instead of becoming fully visible on the screen.
+        rootMargin: '0px 0px 400px 0px',
+    });
+
     return (
         <>
             <button className="relative self-center sm:self-auto" onClick={openModal}>
@@ -87,7 +109,8 @@ export default function Notifications({}: NotificationsProps) {
                         {/* Eventually will be moved into an infinite scroll component */}
                         {data && data?.notifications.hasMore && (
                             <button
-                                className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 rounded-md"
+                                ref={sentryRef}
+                                className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 rounded-md invisible"
                                 onClick={() => {
                                     fetchMore({
                                         variables: {

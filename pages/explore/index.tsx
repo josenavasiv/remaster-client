@@ -5,6 +5,7 @@ import ExploreContainer from '@/components/explore/explore-container';
 import { useUserExploreTagsQuery, useUserExploreQuery } from '@/graphql/__generated__/graphql';
 import GridArtworks from '@/components/common/grid-artworks';
 import Tag from '@/components/common/tag';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 export default function Explore() {
     const {
@@ -22,6 +23,29 @@ export default function Explore() {
         notifyOnNetworkStatusChange: true,
         fetchPolicy: 'network-only',
         nextFetchPolicy: 'cache-first',
+    });
+
+    const [sentryRef] = useInfiniteScroll({
+        loading: artworks_loading,
+        hasNextPage: artworks_data?.userExplore.hasMore ?? true,
+        onLoadMore: () =>
+            fetchMore({
+                variables: {
+                    limit: 10,
+                    ...(artworks_data?.userExplore.artworks && {
+                        cursor: parseInt(
+                            artworks_data.userExplore.artworks[artworks_data.userExplore.artworks.length - 1].id
+                        ),
+                    }),
+                },
+            }),
+        // When there is an error, we stop infinite loading.
+        // It can be reactivated by setting "error" state as undefined.
+        disabled: !!artworks_error,
+        // `rootMargin` is passed to `IntersectionObserver`.
+        // We can use it to trigger 'onLoadMore' when the sentry comes near to become
+        // visible, instead of becoming fully visible on the screen.
+        rootMargin: '0px 0px 400px 0px',
     });
 
     return (
@@ -50,7 +74,8 @@ export default function Explore() {
                 {/* Eventually will be moved into an infinite scroll component */}
                 {artworks_data && artworks_data?.userExplore.hasMore && (
                     <button
-                        className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
+                        ref={sentryRef}
+                        className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md invisible"
                         onClick={() => {
                             fetchMore({
                                 variables: {
