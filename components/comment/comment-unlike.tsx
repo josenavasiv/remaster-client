@@ -1,5 +1,6 @@
 import { useLikeCommentDeleteMutation } from '@/graphql/__generated__/graphql';
 import useUser from '@/lib/hooks/useUser';
+import { gql } from '@apollo/client';
 import toast from 'react-hot-toast';
 
 type CommentUnlikeProps = {
@@ -16,7 +17,40 @@ export default function CommentUnlike({ commentId, likeId, commenterId }: Commen
         try {
             const response = await likeCommentDelete({
                 variables: { commentId, likeId },
-                refetchQueries: ['artwork'],
+				update: (cache, { data }) => {
+                    const commentLikesData = cache.readFragment<{
+                        id: number;
+                        likesCount: number;
+                    }>({
+                        id: 'Comment:' + commentId,
+                        fragment: gql`
+                            fragment CommentLikeRead on Comment {
+                                id
+                                likesCount
+                            }
+                        `,
+                    });
+
+                    cache.writeFragment<{
+                        isLikedByLoggedInUser: null
+                        likesCount: number;
+                    }>({
+                        id: 'Comment:' + commentId,
+                        fragment: gql`
+                            fragment CommentLikeWrite on Comment {
+                                isLikedByLoggedInUser {
+                                    id
+                                }
+                                likesCount
+                            }
+                        `,
+                        data: {
+                            isLikedByLoggedInUser: null,
+                            likesCount: commentLikesData?.likesCount! - 1,
+                        },
+                    });
+                },
+                // refetchQueries: ['artwork'],
             });
             toast.success(`Unliked!`);
         } catch (error) {
