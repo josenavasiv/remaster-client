@@ -69,11 +69,11 @@ export default function Notification({ notification }: NotificationProps) {
                         {notificationFormat(notification)}
                     </div>
                 </div>
-                <div className="flex justify-between px-0.5 pt-0.5 text-[10px] font-bold text-black/60">
-                    <span className="">{getRelativeDate(notification.createdAt)}</span>
-                    {!notification.isRead && <NotificationMarkAsRead notificationId={notification.id} />}
-                </div>
             </Link>
+            <div className="flex justify-between px-0.5 pt-0.5 text-[10px] font-bold text-black/60">
+                <span className="">{getRelativeDate(notification.createdAt)}</span>
+                {!notification.isRead && <NotificationMarkAsRead notificationId={notification.id} />}
+            </div>
         </div>
     );
 }

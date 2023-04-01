@@ -50,7 +50,7 @@ export default function Notifications({}: NotificationsProps) {
             if (!notification.isRead) unreadNum++;
         });
 
-        return unreadNum > 10 ? '10+' : `${unreadNum}`;
+        return unreadNum > 10 ? '10' : `${unreadNum}`;
     };
 
     return (
@@ -70,10 +70,11 @@ export default function Notifications({}: NotificationsProps) {
                         d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
                     />
                 </svg>
-
-                <span className="absolute top-[8px] left-[14.5px] sm:left-[36.5px] text-xs font-black">
-                    {unreadNotifications(data?.notifications?.notifications)}
-                </span>
+                {Number(unreadNotifications(data?.notifications?.notifications)) > 0 && (
+                    <span className="absolute -top-1 left-[29.5px] sm:-top-1 sm:left-[51.5px] text-[12px] font-bold z-10 bg-pink-500 rounded-full w-5 h-5">
+                        {unreadNotifications(data?.notifications?.notifications)}
+                    </span>
+                )}
             </button>
             <Modal isOpen={isOpen} closeModal={closeModal}>
                 <div className="w-[350px] h-[440px] bg-gray-200 p-5 rounded-xl flex flex-col">
