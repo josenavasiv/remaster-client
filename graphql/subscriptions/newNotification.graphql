@@ -1,31 +1,5 @@
 subscription newNotification {
     newNotification {
-        id
-        notificationType
-        isRead
-        createdAt
-        notifier {
-            id
-            username
-            avatarUrl
-        }
-        artwork {
-            id
-            title
-            imageUrls
-        }
-        comment {
-            id
-            comment
-        }
-        notifierArtwork {
-            id
-            title
-            imageUrls
-        }
-        notifierComment {
-            id
-            comment
-        }
+        ...Notification
     }
 }

@@ -23,7 +23,12 @@ export default function Home() {
             </Head>
             <HomeMainFeedContainer>
                 {!data && loading && <div>ARTWORKS LOADING</div>}
-                <button onClick={() => refetch()}>Check For New Posts</button>
+                <button
+                    className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
+                    onClick={() => refetch()}
+                >
+                    Check For New Artworks
+                </button>
                 {data?.userFeed.artworks &&
                     !error &&
                     data?.userFeed.artworks.map((artwork) => (
@@ -43,7 +48,7 @@ export default function Home() {
                 {/* Eventually will be moved into an infinite scroll component */}
                 {data && data?.userFeed.hasMore && (
                     <button
-                        className="w-26 mx-auto text-pink-500 bg-black px-2 py-1 rounded-md"
+                        className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 rounded-md"
                         onClick={() => {
                             fetchMore({
                                 variables: {
@@ -53,7 +58,7 @@ export default function Home() {
                             });
                         }}
                     >
-                        Load More Posts
+                        Load More Artworks
                     </button>
                 )}
             </HomeMainFeedContainer>

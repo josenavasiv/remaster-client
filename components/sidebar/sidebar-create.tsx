@@ -8,7 +8,7 @@ export default function SidebarCreate({}: SidebarCreateProps) {
     const { isOpen, openModal, closeModal } = useModal();
     return (
         <>
-            <button className="self-center" onClick={openModal}>
+            <button className="self-center " onClick={openModal}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"

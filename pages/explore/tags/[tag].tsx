@@ -31,7 +31,12 @@ export default function Tag() {
                 <TagName tagname={tag as string} />
                 {!data && loading && <div>TAG ARTWORKS LOADING</div>}
 
-                <button onClick={() => refetch()}>Check For New Posts</button>
+                <button
+                    className="  self-end font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
+                    onClick={() => refetch()}
+                >
+                    Check For New Posts
+                </button>
 
                 {data?.tagArtworks.artworks && !error && (
                     <>
@@ -41,7 +46,7 @@ export default function Tag() {
                 {/* Eventually will be moved into an infinite scroll component */}
                 {data && data?.tagArtworks.hasMore && (
                     <button
-                        className="w-26 mx-auto text-pink-500 bg-black px-2 py-1 rounded-md"
+                        className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
                         onClick={() => {
                             fetchMore({
                                 variables: {

@@ -1,0 +1,29 @@
+fragment Notification on Notification {
+    id
+    isRead
+    createdAt
+    notificationType
+    notifier {
+        id
+        username
+        avatarUrl
+    }
+    artwork {
+        id
+        title
+        imageUrls
+    }
+    comment {
+        id
+        comment
+    }
+    notifierArtwork {
+        id
+        title
+        imageUrls
+    }
+    notifierComment {
+        id
+        comment
+    }
+}

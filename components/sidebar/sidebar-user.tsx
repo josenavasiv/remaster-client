@@ -12,8 +12,8 @@ export default function SidebarUser({}: SidebarUserProps) {
             <Image
                 src={user.avatarUrl}
                 alt={user.username}
-                height={34}
-                width={34}
+                height={36}
+                width={36}
                 className="rounded-full my-auto aspect-square object-cover self-center"
             />
             <span className="font-bold self-center hidden sm:block">{user.username}</span>

@@ -13,7 +13,7 @@ export function CommonLayout({ children }: CommonLayoutProps): JSX.Element {
             <SideBar />
             <div className="flex h-screen w-full max-w-[900px] mx-auto p-4 pb-16 sm:pb-0 pt-16 sm:pt-8">
                 <>{children}</>
-                <Toaster />
+                <Toaster position="top-left" reverseOrder={true} />
             </div>
 
             <MobileNavbar />

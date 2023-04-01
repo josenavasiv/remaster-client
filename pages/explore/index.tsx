@@ -50,7 +50,7 @@ export default function Explore() {
                 {/* Eventually will be moved into an infinite scroll component */}
                 {artworks_data && artworks_data?.userExplore.hasMore && (
                     <button
-                        className="w-26 mx-auto text-pink-500 bg-black px-2 py-1 rounded-md"
+                        className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
                         onClick={() => {
                             fetchMore({
                                 variables: {
@@ -64,7 +64,7 @@ export default function Explore() {
                             });
                         }}
                     >
-                        Load More Posts
+                        Explore More Artworks
                     </button>
                 )}
             </ExploreContainer>

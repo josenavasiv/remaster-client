@@ -1,33 +1,7 @@
-query notifications {
-    notifications {
+query notifications($skip: Int, $take: Int) {
+    notifications(skip: $skip, take: $take) {
         notifications {
-            id
-            isRead
-			createdAt
-            notificationType
-            notifier {
-                id
-                username
-                avatarUrl
-            }
-            artwork {
-                id
-                title
-                imageUrls
-            }
-            comment {
-                id
-                comment
-            }
-            notifierArtwork {
-                id
-                title
-                imageUrls
-            }
-            notifierComment {
-                id
-                comment
-            }
+            ...Notification
         }
         hasMore
         errors {

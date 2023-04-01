@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, HttpLink, split } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
-import { ArtworksPaginatedPayload } from '@/graphql/__generated__/graphql';
+import { ArtworksPaginatedPayload, NotificationsPaginatedPayload } from '@/graphql/__generated__/graphql';
 
 const wsLink =
     typeof window !== 'undefined'
@@ -35,6 +35,18 @@ const cache = new InMemoryCache({
         Query: {
             fields: {
                 // Name of our Query
+                notifications: {
+                    keyArgs: [],
+                    merge(
+                        existing: NotificationsPaginatedPayload | undefined,
+                        incoming: NotificationsPaginatedPayload
+                    ): NotificationsPaginatedPayload | undefined {
+                        return {
+                            ...incoming,
+                            notifications: [...(existing?.notifications || []), ...incoming.notifications],
+                        };
+                    },
+                },
                 tagArtworks: {
                     keyArgs: ['tagname'],
                     merge(

@@ -111,6 +111,7 @@ export type Mutation = {
   likeArtworkDelete: LikePayload;
   likeCommentCreate: LikePayload;
   likeCommentDelete: LikePayload;
+  notificationMarkAsRead: NotificationPayload;
   userLogin: UserPayload;
   userLogout: Scalars['Boolean'];
   userRegister: UserPayload;
@@ -182,6 +183,11 @@ export type MutationLikeCommentCreateArgs = {
 export type MutationLikeCommentDeleteArgs = {
   commentID: Scalars['ID'];
   likeID: Scalars['ID'];
+};
+
+
+export type MutationNotificationMarkAsReadArgs = {
+  notificationID: Scalars['ID'];
 };
 
 
@@ -340,6 +346,8 @@ export type UsersSuggestedPayload = {
 
 export type CommentFragment = { __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', id: string, username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null };
 
+export type NotificationFragment = { __typename?: 'Notification', id: string, isRead: boolean, createdAt: string, notificationType: NotificationType, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null };
+
 export type ArtworkCreateMutationVariables = Exact<{
   title: Scalars['String'];
   description: Scalars['String'];
@@ -430,6 +438,13 @@ export type LikeCommentDeleteMutationVariables = Exact<{
 
 export type LikeCommentDeleteMutation = { __typename?: 'Mutation', likeCommentDelete: { __typename?: 'LikePayload', like?: { __typename?: 'Like', id: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type NotificationMarkAsReadMutationVariables = Exact<{
+  notificationId: Scalars['ID'];
+}>;
+
+
+export type NotificationMarkAsReadMutation = { __typename?: 'Mutation', notificationMarkAsRead: { __typename?: 'NotificationPayload', notification?: { __typename?: 'Notification', id: string, isRead: boolean, createdAt: string, notificationType: NotificationType, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null } | null } };
+
 export type UserLoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -465,7 +480,10 @@ export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type HelloQuery = { __typename?: 'Query', hello?: string | null };
 
-export type NotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+export type NotificationsQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+}>;
 
 
 export type NotificationsQuery = { __typename?: 'Query', notifications: { __typename?: 'NotificationsPaginatedPayload', hasMore: boolean, notifications: Array<{ __typename?: 'Notification', id: string, isRead: boolean, createdAt: string, notificationType: NotificationType, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null }>, errors: Array<{ __typename?: 'Error', message: string }> } };
@@ -515,7 +533,7 @@ export type UserLoggedInQuery = { __typename?: 'Query', userLoggedIn: { __typena
 export type NewNotificationSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NewNotificationSubscription = { __typename?: 'Subscription', newNotification: { __typename?: 'Notification', id: string, notificationType: NotificationType, isRead: boolean, createdAt: string, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null } };
+export type NewNotificationSubscription = { __typename?: 'Subscription', newNotification: { __typename?: 'Notification', id: string, isRead: boolean, createdAt: string, notificationType: NotificationType, notifier: { __typename?: 'User', id: string, username: string, avatarUrl: string }, artwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, comment?: { __typename?: 'Comment', id: string, comment: string } | null, notifierArtwork?: { __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string> } | null, notifierComment?: { __typename?: 'Comment', id: string, comment: string } | null } };
 
 export const CommentFragmentDoc = gql`
     fragment Comment on Comment {
@@ -554,6 +572,37 @@ export const CommentFragmentDoc = gql`
   updatedAt
   isLikedByLoggedInUser {
     id
+  }
+}
+    `;
+export const NotificationFragmentDoc = gql`
+    fragment Notification on Notification {
+  id
+  isRead
+  createdAt
+  notificationType
+  notifier {
+    id
+    username
+    avatarUrl
+  }
+  artwork {
+    id
+    title
+    imageUrls
+  }
+  comment {
+    id
+    comment
+  }
+  notifierArtwork {
+    id
+    title
+    imageUrls
+  }
+  notifierComment {
+    id
+    comment
   }
 }
     `;
@@ -1049,6 +1098,41 @@ export function useLikeCommentDeleteMutation(baseOptions?: Apollo.MutationHookOp
 export type LikeCommentDeleteMutationHookResult = ReturnType<typeof useLikeCommentDeleteMutation>;
 export type LikeCommentDeleteMutationResult = Apollo.MutationResult<LikeCommentDeleteMutation>;
 export type LikeCommentDeleteMutationOptions = Apollo.BaseMutationOptions<LikeCommentDeleteMutation, LikeCommentDeleteMutationVariables>;
+export const NotificationMarkAsReadDocument = gql`
+    mutation notificationMarkAsRead($notificationId: ID!) {
+  notificationMarkAsRead(notificationID: $notificationId) {
+    notification {
+      ...Notification
+    }
+  }
+}
+    ${NotificationFragmentDoc}`;
+export type NotificationMarkAsReadMutationFn = Apollo.MutationFunction<NotificationMarkAsReadMutation, NotificationMarkAsReadMutationVariables>;
+
+/**
+ * __useNotificationMarkAsReadMutation__
+ *
+ * To run a mutation, you first call `useNotificationMarkAsReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNotificationMarkAsReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [notificationMarkAsReadMutation, { data, loading, error }] = useNotificationMarkAsReadMutation({
+ *   variables: {
+ *      notificationId: // value for 'notificationId'
+ *   },
+ * });
+ */
+export function useNotificationMarkAsReadMutation(baseOptions?: Apollo.MutationHookOptions<NotificationMarkAsReadMutation, NotificationMarkAsReadMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<NotificationMarkAsReadMutation, NotificationMarkAsReadMutationVariables>(NotificationMarkAsReadDocument, options);
+      }
+export type NotificationMarkAsReadMutationHookResult = ReturnType<typeof useNotificationMarkAsReadMutation>;
+export type NotificationMarkAsReadMutationResult = Apollo.MutationResult<NotificationMarkAsReadMutation>;
+export type NotificationMarkAsReadMutationOptions = Apollo.BaseMutationOptions<NotificationMarkAsReadMutation, NotificationMarkAsReadMutationVariables>;
 export const UserLoginDocument = gql`
     mutation userLogin($username: String!, $password: String!) {
   userLogin(username: $username, password: $password) {
@@ -1259,36 +1343,10 @@ export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloLazyQueryHookResult = ReturnType<typeof useHelloLazyQuery>;
 export type HelloQueryResult = Apollo.QueryResult<HelloQuery, HelloQueryVariables>;
 export const NotificationsDocument = gql`
-    query notifications {
-  notifications {
+    query notifications($skip: Int, $take: Int) {
+  notifications(skip: $skip, take: $take) {
     notifications {
-      id
-      isRead
-      createdAt
-      notificationType
-      notifier {
-        id
-        username
-        avatarUrl
-      }
-      artwork {
-        id
-        title
-        imageUrls
-      }
-      comment {
-        id
-        comment
-      }
-      notifierArtwork {
-        id
-        title
-        imageUrls
-      }
-      notifierComment {
-        id
-        comment
-      }
+      ...Notification
     }
     hasMore
     errors {
@@ -1296,7 +1354,7 @@ export const NotificationsDocument = gql`
     }
   }
 }
-    `;
+    ${NotificationFragmentDoc}`;
 
 /**
  * __useNotificationsQuery__
@@ -1310,6 +1368,8 @@ export const NotificationsDocument = gql`
  * @example
  * const { data, loading, error } = useNotificationsQuery({
  *   variables: {
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
  *   },
  * });
  */
@@ -1633,36 +1693,10 @@ export type UserLoggedInQueryResult = Apollo.QueryResult<UserLoggedInQuery, User
 export const NewNotificationDocument = gql`
     subscription newNotification {
   newNotification {
-    id
-    notificationType
-    isRead
-    createdAt
-    notifier {
-      id
-      username
-      avatarUrl
-    }
-    artwork {
-      id
-      title
-      imageUrls
-    }
-    comment {
-      id
-      comment
-    }
-    notifierArtwork {
-      id
-      title
-      imageUrls
-    }
-    notifierComment {
-      id
-      comment
-    }
+    ...Notification
   }
 }
-    `;
+    ${NotificationFragmentDoc}`;
 
 /**
  * __useNewNotificationSubscription__
