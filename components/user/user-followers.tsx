@@ -36,8 +36,6 @@ export default function UserFollowers({ username }: UserFollowersProps) {
         rootMargin: '0px 0px 400px 0px',
     });
 
-    console.log(data);
-
     if (!data || error) return null;
 
     return (

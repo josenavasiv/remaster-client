@@ -38,6 +38,7 @@ export default function User() {
                 {data?.user.user && !error && (
                     <>
                         <UserDetails
+                            id={data.user.user.id}
                             username={data.user.user.username}
                             avatarUrl={data.user.user.avatarUrl}
                             isFollowedByLoggedInUser={data?.user.user.isFollowedByLoggedInUser}

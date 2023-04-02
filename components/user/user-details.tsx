@@ -1,8 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import UserModal from './user-modal';
+import UserFollow from './user-follow';
+import UserUnfollow from './user-unfollow';
 
 type UserDetailsTypes = {
+    id: string;
     username: string;
     isFollowedByLoggedInUser: FollowType | null | undefined;
     avatarUrl: string;
@@ -17,7 +20,7 @@ type FollowType = {
     };
 };
 
-export default function UserDetails({ username, isFollowedByLoggedInUser, avatarUrl }: UserDetailsTypes) {
+export default function UserDetails({ id, username, isFollowedByLoggedInUser, avatarUrl }: UserDetailsTypes) {
     return (
         <div className="flex flex-col mx-auto gap-3 mb-5">
             <Image
@@ -28,11 +31,11 @@ export default function UserDetails({ username, isFollowedByLoggedInUser, avatar
                 className="rounded-full m-auto aspect-square object-cover"
                 priority
             />
-            <div className="flex gap-2">
-                <span className="font-bold">{username}</span>
-                {isFollowedByLoggedInUser == null ? <span>CANT FOLLOW OWN</span> : <span>NOT FOLLOWING</span>}
+            <span className="font-bold self-center">{username}</span>
+            <div className="flex gap-2 self-center">
+                <UserModal username={username} />
+                {isFollowedByLoggedInUser == null ? <UserFollow userId={id} /> : <UserUnfollow userId={id} />}
             </div>
-            <UserModal username={username} />
         </div>
     );
 }
