@@ -1,0 +1,19 @@
+mutation followUserCreate($userId: ID!) {
+  followUserCreate(userID: $userId) {
+    follow {
+      following {
+        id
+        username
+        avatarUrl
+      }
+      follower {
+        id
+        username
+        avatarUrl
+      }
+    }
+    errors {
+      message
+    }
+  }
+}

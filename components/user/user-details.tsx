@@ -1,13 +1,22 @@
 import React from 'react';
-import { User } from '@/graphql/__generated__/graphql';
+// import { User, Follow } from '@/graphql/__generated__/graphql';
 import Image from 'next/image';
 
 // type UserDetailsProps = Pick<User, 'username' | 'isFollowedByLoggedInUser' | 'avatarUrl'>;
 
 type UserDetailsTypes = {
     username: string;
-    isFollowedByLoggedInUser: boolean | null | undefined;
+    isFollowedByLoggedInUser: FollowType | null | undefined;
     avatarUrl: string;
+};
+
+type FollowType = {
+    follower: {
+        id: string;
+    };
+    following: {
+        id: string;
+    };
 };
 
 export default function UserDetails({ username, isFollowedByLoggedInUser, avatarUrl }: UserDetailsTypes) {

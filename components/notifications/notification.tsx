@@ -34,6 +34,8 @@ export const notificationFormat = (notification: NotificationFragment): JSX.Elem
                     replied to your comment on <span className="font-bold">{notification.artwork?.title}</span>
                 </span>
             );
+        case NotificationType.Followed:
+            return <span>followed you</span>;
         case NotificationType.Uploaded:
             return <span>uploaded their artwork {notification.notifierArtwork?.title}</span>;
         case NotificationType.Tagged:
@@ -49,6 +51,8 @@ const notificationLink = (notification: NotificationFragment): string => {
         case NotificationType.Commented:
         case NotificationType.Replied:
             return `/artwork/${notification.artwork?.id}`;
+        case NotificationType.Followed:
+            return `/user/${notification.notifier.username}`;
         case NotificationType.Uploaded:
             return '/';
         case NotificationType.Tagged:

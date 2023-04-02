@@ -11,7 +11,14 @@ query user($username: String!) {
                 title
                 description
             }
-            isFollowedByLoggedInUser
+            isFollowedByLoggedInUser {
+                follower {
+                    id
+                }
+                following {
+                    id
+                }
+            }
         }
     }
 }

@@ -1,0 +1,13 @@
+query userFollowers($username: String!) {
+    userFollowers(username: $username) {
+        users {
+            id
+            username
+            avatarUrl
+        }
+        hasMore
+        errors {
+            message
+        }
+    }
+}

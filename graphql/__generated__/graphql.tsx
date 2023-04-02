@@ -75,7 +75,12 @@ export type Follow = {
   __typename?: 'Follow';
   follower: User;
   following: User;
-  id: Scalars['ID'];
+};
+
+export type FollowPayload = {
+  __typename?: 'FollowPayload';
+  errors: Array<Error>;
+  follow?: Maybe<Follow>;
 };
 
 export type Like = {
@@ -107,6 +112,8 @@ export type Mutation = {
   commentDelete: CommentPayload;
   commentReply: CommentPayload;
   commentUpdate: CommentPayload;
+  followUserCreate: FollowPayload;
+  followUserDelete: FollowPayload;
   likeArtworkCreate: LikePayload;
   likeArtworkDelete: LikePayload;
   likeCommentCreate: LikePayload;
@@ -161,6 +168,16 @@ export type MutationCommentReplyArgs = {
 export type MutationCommentUpdateArgs = {
   comment: Scalars['String'];
   commentID: Scalars['ID'];
+};
+
+
+export type MutationFollowUserCreateArgs = {
+  userID: Scalars['ID'];
+};
+
+
+export type MutationFollowUserDeleteArgs = {
+  userID: Scalars['ID'];
 };
 
 
@@ -253,6 +270,9 @@ export type Query = {
   userExplore: ArtworksPaginatedPayload;
   userExploreTags: TagsPayload;
   userFeed: ArtworksPaginatedPayload;
+  userFollowers: UsersPaginatedPayload;
+  userFollowings: UsersPaginatedPayload;
+  userLikes: ArtworksPaginatedPayload;
   userLoggedIn: UserPayload;
 };
 
@@ -291,6 +311,27 @@ export type QueryUserFeedArgs = {
   limit?: InputMaybe<Scalars['Int']>;
 };
 
+
+export type QueryUserFollowersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  username: Scalars['String'];
+};
+
+
+export type QueryUserFollowingsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  username: Scalars['String'];
+};
+
+
+export type QueryUserLikesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+  username: Scalars['String'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   newNotification: Notification;
@@ -321,13 +362,8 @@ export type User = Node & {
   artworks: Array<Artwork>;
   avatarUrl: Scalars['String'];
   email: Scalars['String'];
-  followedTags: Array<Tag>;
-  followers: Array<Follow>;
-  following: Array<Follow>;
   id: Scalars['ID'];
-  isFollowedByLoggedInUser?: Maybe<Scalars['Boolean']>;
-  likedArtworks: Array<Artwork>;
-  likes: Array<Like>;
+  isFollowedByLoggedInUser?: Maybe<Follow>;
   notifications: Array<Notification>;
   username: Scalars['String'];
 };
@@ -336,6 +372,13 @@ export type UserPayload = {
   __typename?: 'UserPayload';
   errors: Array<Error>;
   user?: Maybe<User>;
+};
+
+export type UsersPaginatedPayload = {
+  __typename?: 'UsersPaginatedPayload';
+  errors: Array<Error>;
+  hasMore: Scalars['Boolean'];
+  users: Array<User>;
 };
 
 export type UsersSuggestedPayload = {
@@ -407,6 +450,20 @@ export type CommentUpdateMutationVariables = Exact<{
 
 
 export type CommentUpdateMutation = { __typename?: 'Mutation', commentUpdate: { __typename?: 'CommentPayload', comment?: { __typename?: 'Comment', id: string, comment: string } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type FollowUserCreateMutationVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type FollowUserCreateMutation = { __typename?: 'Mutation', followUserCreate: { __typename?: 'FollowPayload', follow?: { __typename?: 'Follow', following: { __typename?: 'User', id: string, username: string, avatarUrl: string }, follower: { __typename?: 'User', id: string, username: string, avatarUrl: string } } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type FollowUserDeleteMutationVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type FollowUserDeleteMutation = { __typename?: 'Mutation', followUserDelete: { __typename?: 'FollowPayload', follow?: { __typename?: 'Follow', following: { __typename?: 'User', id: string, username: string, avatarUrl: string }, follower: { __typename?: 'User', id: string, username: string, avatarUrl: string } } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type LikeArtworkCreateMutationVariables = Exact<{
   artworkId: Scalars['ID'];
@@ -502,7 +559,7 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string, isFollowedByLoggedInUser?: boolean | null, artworks: Array<{ __typename?: 'Artwork', id: string, imageUrls: Array<string>, likesCount: number, title: string, description: string }> } | null } };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserPayload', user?: { __typename?: 'User', id: string, username: string, avatarUrl: string, artworks: Array<{ __typename?: 'Artwork', id: string, imageUrls: Array<string>, likesCount: number, title: string, description: string }>, isFollowedByLoggedInUser?: { __typename?: 'Follow', follower: { __typename?: 'User', id: string }, following: { __typename?: 'User', id: string } } | null } | null } };
 
 export type UserExploreQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -524,6 +581,20 @@ export type UserFeedQueryVariables = Exact<{
 
 
 export type UserFeedQuery = { __typename?: 'Query', userFeed: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, likesCount: number, createdAt: string, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, recentComments: Array<{ __typename?: 'Comment', id: string, comment: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type UserFollowersQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UsersPaginatedPayload', hasMore: boolean, users: Array<{ __typename?: 'User', id: string, username: string, avatarUrl: string }>, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type UserFollowingsQueryVariables = Exact<{
+  username: Scalars['String'];
+}>;
+
+
+export type UserFollowingsQuery = { __typename?: 'Query', userFollowings: { __typename?: 'UsersPaginatedPayload', hasMore: boolean, users: Array<{ __typename?: 'User', id: string, username: string, avatarUrl: string }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -944,6 +1015,100 @@ export function useCommentUpdateMutation(baseOptions?: Apollo.MutationHookOption
 export type CommentUpdateMutationHookResult = ReturnType<typeof useCommentUpdateMutation>;
 export type CommentUpdateMutationResult = Apollo.MutationResult<CommentUpdateMutation>;
 export type CommentUpdateMutationOptions = Apollo.BaseMutationOptions<CommentUpdateMutation, CommentUpdateMutationVariables>;
+export const FollowUserCreateDocument = gql`
+    mutation followUserCreate($userId: ID!) {
+  followUserCreate(userID: $userId) {
+    follow {
+      following {
+        id
+        username
+        avatarUrl
+      }
+      follower {
+        id
+        username
+        avatarUrl
+      }
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type FollowUserCreateMutationFn = Apollo.MutationFunction<FollowUserCreateMutation, FollowUserCreateMutationVariables>;
+
+/**
+ * __useFollowUserCreateMutation__
+ *
+ * To run a mutation, you first call `useFollowUserCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFollowUserCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [followUserCreateMutation, { data, loading, error }] = useFollowUserCreateMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useFollowUserCreateMutation(baseOptions?: Apollo.MutationHookOptions<FollowUserCreateMutation, FollowUserCreateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FollowUserCreateMutation, FollowUserCreateMutationVariables>(FollowUserCreateDocument, options);
+      }
+export type FollowUserCreateMutationHookResult = ReturnType<typeof useFollowUserCreateMutation>;
+export type FollowUserCreateMutationResult = Apollo.MutationResult<FollowUserCreateMutation>;
+export type FollowUserCreateMutationOptions = Apollo.BaseMutationOptions<FollowUserCreateMutation, FollowUserCreateMutationVariables>;
+export const FollowUserDeleteDocument = gql`
+    mutation followUserDelete($userId: ID!) {
+  followUserDelete(userID: $userId) {
+    follow {
+      following {
+        id
+        username
+        avatarUrl
+      }
+      follower {
+        id
+        username
+        avatarUrl
+      }
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type FollowUserDeleteMutationFn = Apollo.MutationFunction<FollowUserDeleteMutation, FollowUserDeleteMutationVariables>;
+
+/**
+ * __useFollowUserDeleteMutation__
+ *
+ * To run a mutation, you first call `useFollowUserDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFollowUserDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [followUserDeleteMutation, { data, loading, error }] = useFollowUserDeleteMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useFollowUserDeleteMutation(baseOptions?: Apollo.MutationHookOptions<FollowUserDeleteMutation, FollowUserDeleteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FollowUserDeleteMutation, FollowUserDeleteMutationVariables>(FollowUserDeleteDocument, options);
+      }
+export type FollowUserDeleteMutationHookResult = ReturnType<typeof useFollowUserDeleteMutation>;
+export type FollowUserDeleteMutationResult = Apollo.MutationResult<FollowUserDeleteMutation>;
+export type FollowUserDeleteMutationOptions = Apollo.BaseMutationOptions<FollowUserDeleteMutation, FollowUserDeleteMutationVariables>;
 export const LikeArtworkCreateDocument = gql`
     mutation likeArtworkCreate($artworkId: ID!) {
   likeArtworkCreate(artworkID: $artworkId) {
@@ -1454,7 +1619,14 @@ export const UserDocument = gql`
         title
         description
       }
-      isFollowedByLoggedInUser
+      isFollowedByLoggedInUser {
+        follower {
+          id
+        }
+        following {
+          id
+        }
+      }
     }
   }
 }
@@ -1649,6 +1821,92 @@ export function useUserFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<U
 export type UserFeedQueryHookResult = ReturnType<typeof useUserFeedQuery>;
 export type UserFeedLazyQueryHookResult = ReturnType<typeof useUserFeedLazyQuery>;
 export type UserFeedQueryResult = Apollo.QueryResult<UserFeedQuery, UserFeedQueryVariables>;
+export const UserFollowersDocument = gql`
+    query userFollowers($username: String!) {
+  userFollowers(username: $username) {
+    users {
+      id
+      username
+      avatarUrl
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserFollowersQuery__
+ *
+ * To run a query within a React component, call `useUserFollowersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserFollowersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserFollowersQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserFollowersQuery(baseOptions: Apollo.QueryHookOptions<UserFollowersQuery, UserFollowersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserFollowersQuery, UserFollowersQueryVariables>(UserFollowersDocument, options);
+      }
+export function useUserFollowersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserFollowersQuery, UserFollowersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserFollowersQuery, UserFollowersQueryVariables>(UserFollowersDocument, options);
+        }
+export type UserFollowersQueryHookResult = ReturnType<typeof useUserFollowersQuery>;
+export type UserFollowersLazyQueryHookResult = ReturnType<typeof useUserFollowersLazyQuery>;
+export type UserFollowersQueryResult = Apollo.QueryResult<UserFollowersQuery, UserFollowersQueryVariables>;
+export const UserFollowingsDocument = gql`
+    query userFollowings($username: String!) {
+  userFollowings(username: $username) {
+    users {
+      id
+      username
+      avatarUrl
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserFollowingsQuery__
+ *
+ * To run a query within a React component, call `useUserFollowingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserFollowingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserFollowingsQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserFollowingsQuery(baseOptions: Apollo.QueryHookOptions<UserFollowingsQuery, UserFollowingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserFollowingsQuery, UserFollowingsQueryVariables>(UserFollowingsDocument, options);
+      }
+export function useUserFollowingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserFollowingsQuery, UserFollowingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserFollowingsQuery, UserFollowingsQueryVariables>(UserFollowingsDocument, options);
+        }
+export type UserFollowingsQueryHookResult = ReturnType<typeof useUserFollowingsQuery>;
+export type UserFollowingsLazyQueryHookResult = ReturnType<typeof useUserFollowingsLazyQuery>;
+export type UserFollowingsQueryResult = Apollo.QueryResult<UserFollowingsQuery, UserFollowingsQueryVariables>;
 export const UserLoggedInDocument = gql`
     query UserLoggedIn {
   userLoggedIn {
