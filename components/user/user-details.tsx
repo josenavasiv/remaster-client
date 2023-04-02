@@ -1,8 +1,6 @@
 import React from 'react';
-// import { User, Follow } from '@/graphql/__generated__/graphql';
 import Image from 'next/image';
-
-// type UserDetailsProps = Pick<User, 'username' | 'isFollowedByLoggedInUser' | 'avatarUrl'>;
+import UserModal from './user-modal';
 
 type UserDetailsTypes = {
     username: string;
@@ -34,6 +32,7 @@ export default function UserDetails({ username, isFollowedByLoggedInUser, avatar
                 <span className="font-bold">{username}</span>
                 {isFollowedByLoggedInUser == null ? <span>CANT FOLLOW OWN</span> : <span>NOT FOLLOWING</span>}
             </div>
+            <UserModal username={username} />
         </div>
     );
 }

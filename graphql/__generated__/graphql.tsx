@@ -596,6 +596,15 @@ export type UserFollowingsQueryVariables = Exact<{
 
 export type UserFollowingsQuery = { __typename?: 'Query', userFollowings: { __typename?: 'UsersPaginatedPayload', hasMore: boolean, users: Array<{ __typename?: 'User', id: string, username: string, avatarUrl: string }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
+export type UserLikesQueryVariables = Exact<{
+  username: Scalars['String'];
+  skip?: InputMaybe<Scalars['Int']>;
+  take?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UserLikesQuery = { __typename?: 'Query', userLikes: { __typename?: 'ArtworksPaginatedPayload', hasMore: boolean, artworks: Array<{ __typename?: 'Artwork', id: string, imageUrls: Array<string>, likesCount: number, title: string, description: string }>, errors: Array<{ __typename?: 'Error', message: string }> } };
+
 export type UserLoggedInQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1907,6 +1916,53 @@ export function useUserFollowingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type UserFollowingsQueryHookResult = ReturnType<typeof useUserFollowingsQuery>;
 export type UserFollowingsLazyQueryHookResult = ReturnType<typeof useUserFollowingsLazyQuery>;
 export type UserFollowingsQueryResult = Apollo.QueryResult<UserFollowingsQuery, UserFollowingsQueryVariables>;
+export const UserLikesDocument = gql`
+    query userLikes($username: String!, $skip: Int, $take: Int) {
+  userLikes(username: $username, skip: $skip, take: $take) {
+    artworks {
+      id
+      imageUrls
+      likesCount
+      title
+      description
+    }
+    hasMore
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserLikesQuery__
+ *
+ * To run a query within a React component, call `useUserLikesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserLikesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserLikesQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *   },
+ * });
+ */
+export function useUserLikesQuery(baseOptions: Apollo.QueryHookOptions<UserLikesQuery, UserLikesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserLikesQuery, UserLikesQueryVariables>(UserLikesDocument, options);
+      }
+export function useUserLikesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserLikesQuery, UserLikesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserLikesQuery, UserLikesQueryVariables>(UserLikesDocument, options);
+        }
+export type UserLikesQueryHookResult = ReturnType<typeof useUserLikesQuery>;
+export type UserLikesLazyQueryHookResult = ReturnType<typeof useUserLikesLazyQuery>;
+export type UserLikesQueryResult = Apollo.QueryResult<UserLikesQuery, UserLikesQueryVariables>;
 export const UserLoggedInDocument = gql`
     query UserLoggedIn {
   userLoggedIn {

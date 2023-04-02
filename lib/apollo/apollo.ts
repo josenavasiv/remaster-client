@@ -83,6 +83,18 @@ const cache = new InMemoryCache({
                         };
                     },
                 },
+                userLikes: {
+                    keyArgs: ['username'],
+                    merge(
+                        existing: ArtworksPaginatedPayload | undefined,
+                        incoming: ArtworksPaginatedPayload
+                    ): ArtworksPaginatedPayload | undefined {
+                        return {
+                            ...incoming,
+                            artworks: [...(existing?.artworks || []), ...incoming.artworks],
+                        };
+                    },
+                },
             },
         },
     },

@@ -1,0 +1,15 @@
+query userLikes($username: String!, $skip: Int, $take: Int) {
+    userLikes(username: $username, skip: $skip, take: $take) {
+        artworks {
+            id
+            imageUrls
+            likesCount
+            title
+            description
+        }
+        hasMore
+        errors {
+            message
+        }
+    }
+}

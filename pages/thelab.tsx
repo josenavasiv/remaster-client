@@ -1,13 +1,12 @@
 import Head from 'next/head';
-import Modal from '@/components/modal/modal';
-import { useModal } from '@/lib/hooks/useModal';
 import Link from 'next/link';
-
-import CreateForm from '@/components/create/create-form';
+import { Tab } from '@headlessui/react';
 
 export default function TheLab() {
-    // Preview Component
-    const { isOpen, openModal, closeModal } = useModal();
+    const categories = ['Artworks', 'Likes'];
+    function classNames(...classes: any) {
+        return classes.filter(Boolean).join(' ');
+    }
 
     return (
         <>
@@ -21,14 +20,27 @@ export default function TheLab() {
                 <p>Blog</p>
                 <Link href={'/'}>HOME</Link>
 
-                <button className="bg-purple-200" onClick={openModal}>
-                    OPEN MODAL
-                </button>
-                <Modal isOpen={isOpen} closeModal={closeModal}>
-                    <div className="flex flex-col text-center bg-cyan-200">
-                        <CreateForm />
-                    </div>
-                </Modal>
+                <Tab.Group>
+                    <Tab.List className="flex p-1 gap-10 w-full justify-center">
+                        {categories.map((category) => (
+                            <Tab
+                                key={category}
+                                className={({ selected }) =>
+                                    classNames(
+                                        'w-16 font-bold text-black border-b-2 focus:outline-none',
+                                        selected ? ' text-[#DE5D82] border-b-2 border-[#DE5D82]' : ''
+                                    )
+                                }
+                            >
+                                {category}
+                            </Tab>
+                        ))}
+                    </Tab.List>
+                    <Tab.Panels>
+                        <Tab.Panel>Content 1</Tab.Panel>
+                        <Tab.Panel>Content 2</Tab.Panel>
+                    </Tab.Panels>
+                </Tab.Group>
             </div>
         </>
     );
