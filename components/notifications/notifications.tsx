@@ -15,7 +15,7 @@ export default function Notifications({}: NotificationsProps) {
     const { isOpen, openModal, closeModal } = useModal();
     const { data, loading, error, refetch, fetchMore } = useNotificationsQuery({
         notifyOnNetworkStatusChange: true,
-        fetchPolicy: 'network-only',
+        // fetchPolicy: 'network-only',
         nextFetchPolicy: 'cache-first',
     });
     // Only run subscription if user is logged-in

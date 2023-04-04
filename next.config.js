@@ -4,6 +4,7 @@ const nextConfig = {
     images: {
         domains: ['images.unsplash.com', 'app-artworks.sfo3.digitaloceanspaces.com'],
     },
+    output: 'standalone',
 };
 
 module.exports = nextConfig;

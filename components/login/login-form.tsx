@@ -33,6 +33,7 @@ export default function LoginForm({}: LoginFormProps) {
         });
 
         if (isValidUsername && isValidPassword) {
+            client.clearStore();
             const response = await userLogin({
                 variables: {
                     username,
@@ -47,7 +48,6 @@ export default function LoginForm({}: LoginFormProps) {
                         },
                     });
                 },
-                refetchQueries: ['userFeed'],
             });
 
             if (response.data?.userLogin?.errors && response.data.userLogin.errors.length > 0) {

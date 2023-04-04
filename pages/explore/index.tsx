@@ -12,7 +12,10 @@ export default function Explore() {
         data: tags_data,
         loading: tags_loading,
         error: tags_error,
-    } = useUserExploreTagsQuery({ fetchPolicy: 'network-only', nextFetchPolicy: 'cache-first' });
+    } = useUserExploreTagsQuery({
+        // fetchPolicy: 'network-only',
+        nextFetchPolicy: 'cache-first',
+    });
 
     const {
         data: artworks_data,
@@ -21,7 +24,7 @@ export default function Explore() {
         fetchMore,
     } = useUserExploreQuery({
         notifyOnNetworkStatusChange: true,
-        fetchPolicy: 'network-only',
+        // fetchPolicy: 'network-only',
         nextFetchPolicy: 'cache-first',
     });
 

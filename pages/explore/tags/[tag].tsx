@@ -15,7 +15,7 @@ export default function Tag() {
             tagname: tag as string,
         },
         notifyOnNetworkStatusChange: true,
-        fetchPolicy: 'network-only',
+        // fetchPolicy: 'network-only',
         nextFetchPolicy: 'cache-first',
     });
 

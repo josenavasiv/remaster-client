@@ -9,7 +9,7 @@ type UserLikesProps = {
 export default function UserLikes({ username }: UserLikesProps) {
     const { data, loading, error, fetchMore } = useUserLikesQuery({
         variables: { username },
-        fetchPolicy: 'network-only',
+        // fetchPolicy: 'network-only',
         nextFetchPolicy: 'cache-first',
     });
 

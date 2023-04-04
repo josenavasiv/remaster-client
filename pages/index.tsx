@@ -10,7 +10,7 @@ import useInfiniteScroll from 'react-infinite-scroll-hook';
 export default function Home() {
     const { data, loading, error, fetchMore, refetch } = useUserFeedQuery({
         notifyOnNetworkStatusChange: true,
-        fetchPolicy: 'network-only',
+        // fetchPolicy: 'network-only',
         nextFetchPolicy: 'cache-first',
     });
 
