@@ -4,7 +4,7 @@ type SidebarHomeProps = {};
 
 export default function SidebarHome({}: SidebarHomeProps) {
     return (
-        <span className="sm:mx-auto self-center text-center">
+        <span className="sm:mx-auto self-center text-center hidden sm:block">
             <Link href={'/'} className="">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-[38px]">
                     <path
