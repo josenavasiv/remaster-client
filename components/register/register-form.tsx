@@ -11,7 +11,7 @@ type RegisterFormProps = {};
 
 export default function RegisterForm({}: RegisterFormProps) {
     const router = useRouter();
-    const [userRegister, { data, loading, error }] = useUserRegisterMutation();
+    const [userRegister, { data, loading, error, client }] = useUserRegisterMutation();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -64,6 +64,7 @@ export default function RegisterForm({}: RegisterFormProps) {
                         },
                     });
                 },
+                refetchQueries: ['userFeed', 'notifications'],
             });
 
             if (response.data?.userRegister?.errors && response.data.userRegister.errors.length > 0) {
@@ -135,10 +136,10 @@ export default function RegisterForm({}: RegisterFormProps) {
                     type="submit"
                     value="Register"
                     className="w-full bg-violet-400 py-2 disabled:bg-violet-900 font-medium rounded-md hover:cursor-pointer"
-					disabled={isStoring || loading}
+                    disabled={isStoring || loading}
                 />
             </form>
-			{(isStoring || loading) && <div>LOADING...</div>}
+            {(isStoring || loading) && <div>LOADING...</div>}
             <p className="text-center mt-4">
                 Have an account?{' '}
                 <Link className="font-bold text-violet-800" href={'/login'}>
