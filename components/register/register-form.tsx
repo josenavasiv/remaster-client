@@ -88,7 +88,8 @@ export default function RegisterForm({}: RegisterFormProps) {
             imageBlobs.append(`image${i}`, f);
         });
 
-        const response = await fetch('http://localhost:4000/storage', {
+        const response = await fetch('https://bantlads.com/storage', {
+        // const response = await fetch('http://localhost:4000/storage', {
             credentials: 'include',
             method: 'POST',
             body: imageBlobs,
