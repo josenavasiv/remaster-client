@@ -1,11 +1,15 @@
 import Modal from '@/components/modal/modal';
 import { useModal } from '@/lib/hooks/useModal';
+import useUser from '@/lib/hooks/useUser';
 import CreateForm from '../create/create-form';
 
 type SidebarCreateProps = {};
 
 export default function SidebarCreate({}: SidebarCreateProps) {
+    const user = useUser();
     const { isOpen, openModal, closeModal } = useModal();
+
+    if (!user) return null;
     return (
         <>
             <button className="self-center " onClick={openModal}>
