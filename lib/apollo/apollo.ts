@@ -8,8 +8,8 @@ const wsLink =
     typeof window !== 'undefined'
         ? new GraphQLWsLink(
               createClient({
-                  url: 'ws://bantlads.com/',
-                //   url: 'ws://localhost:4000/graphql',
+                  url: 'wss://bantlads.com/',
+                  //   url: 'ws://localhost:4000/graphql',
               })
           )
         : null;
