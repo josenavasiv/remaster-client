@@ -27,6 +27,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
                         height={526}
                         className="object-contain bg-black aspect-square"
                         priority
+                        unoptimized={isGif(imageUrl) ? true : undefined}
                     />
                     // <Image
                     //     key={imageUrl}
@@ -83,4 +84,12 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
             </div>
         </div>
     );
+}
+
+function isGif(str: string): boolean {
+    const arr = str.split('.');
+    if (arr[arr.length - 1] == 'gif') {
+        return true;
+    }
+    return false;
 }
