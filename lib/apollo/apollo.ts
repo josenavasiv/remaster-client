@@ -8,15 +8,20 @@ const wsLink =
     typeof window !== 'undefined'
         ? new GraphQLWsLink(
               createClient({
-                  url: 'wss://bantlads.com/',
-                  //   url: 'ws://localhost:4000/graphql',
+                  url:
+                      process.env.NODE_ENV == 'production'
+                          ? (process.env.NEXT_PUBLIC_WSS as string)
+                          : (process.env.NEXT_PUBLIC_DEVELOPMENT_WSS as string),
               })
           )
         : null;
 
 const httpLink = new HttpLink({
-    uri: 'https://bantlads.com/',
-    // uri: 'http://localhost:4000/graphql',
+    uri:
+        process.env.NODE_ENV == 'production'
+            ? (process.env.NEXT_PUBLIC_URI as string)
+            : (process.env.NEXT_PUBLIC_DEVELOPMENT_URI as string),
+
     credentials: 'include',
 });
 

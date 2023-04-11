@@ -78,12 +78,17 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
             imageBlobs.append(`image${i}`, f);
         });
 
-        const response = await fetch('https://bantlads.com/storage', {
-            // const response = await fetch('http://localhost:4000/storage', {
-            credentials: 'include',
-            method: 'POST',
-            body: imageBlobs,
-        });
+        const response = await fetch(
+            process.env.NODE_ENV == 'production'
+                ? (process.env.NEXT_PUBLIC_STORAGE as string)
+                : (process.env.NEXT_PUBLIC_DEVELOPMENT_STORAGE as string),
+            {
+                // const response = await fetch('http://localhost:4000/storage', {
+                credentials: 'include',
+                method: 'POST',
+                body: imageBlobs,
+            }
+        );
 
         const imageUrls = await response.json();
         console.log(imageUrls);
