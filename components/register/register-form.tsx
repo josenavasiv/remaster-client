@@ -55,17 +55,19 @@ export default function RegisterForm({}: RegisterFormProps) {
                     password,
                     avatarUrl,
                 },
-                update: (cache, { data }) => {
-                    cache.writeQuery<UserLoggedInQuery>({
-                        query: UserLoggedInDocument,
-                        data: {
-                            __typename: 'Query',
-                            userLoggedIn: data?.userRegister!,
-                        },
-                    });
-                },
-                refetchQueries: ['userFeed', 'notifications'],
+                // update: (cache, { data }) => {
+                //     cache.writeQuery<UserLoggedInQuery>({
+                //         query: UserLoggedInDocument,
+                //         data: {
+                //             __typename: 'Query',
+                //             userLoggedIn: data?.userRegister!,
+                //         },
+                //     });
+                // },
+                // refetchQueries: ['userFeed', 'notifications'],
             });
+
+            await client.resetStore();
 
             if (response.data?.userRegister?.errors && response.data.userRegister.errors.length > 0) {
                 response.data.userRegister.errors.forEach((error) => {

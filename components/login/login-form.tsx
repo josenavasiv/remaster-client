@@ -11,7 +11,6 @@ type LoginFormProps = {};
 export default function LoginForm({}: LoginFormProps) {
     const router = useRouter();
     const [userLogin, { data, loading, error, client }] = useUserLoginMutation();
-    client.clearStore(); // Everytime we get to this page we reset the entire cache
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -38,17 +37,18 @@ export default function LoginForm({}: LoginFormProps) {
                     username,
                     password,
                 },
-                update: (cache, { data }) => {
-                    cache.writeQuery<UserLoggedInQuery>({
-                        query: UserLoggedInDocument,
-                        data: {
-                            __typename: 'Query',
-                            userLoggedIn: data?.userLogin!,
-                        },
-                    });
-                },
-                refetchQueries: ['userFeed', 'notifications'],
+                // update: (cache, { data }) => {
+                //     cache.writeQuery<UserLoggedInQuery>({
+                //         query: UserLoggedInDocument,
+                //         data: {
+                //             __typename: 'Query',
+                //             userLoggedIn: data?.userLogin!,
+                //         },
+                //     });
+                // },
+                // refetchQueries: ['userFeed', 'notifications'],
             });
+			await client.resetStore(); // Everytime we get to this page we reset the entire cache
 
             if (response.data?.userLogin?.errors && response.data.userLogin.errors.length > 0) {
                 response.data.userLogin.errors.forEach((error) => {
