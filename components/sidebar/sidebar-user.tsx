@@ -8,7 +8,10 @@ export default function SidebarUser({}: SidebarUserProps) {
     const user = useUser();
     if (!user) return null;
     return (
-        <Link href={`/user/${user.username}`} className="flex sm:flex-col gap-1 sm:mx-auto text-center">
+        <Link
+            href={`/user/${user.username}`}
+            className="flex sm:flex-col gap-1 sm:mx-auto text-center pointer-events-auto"
+        >
             <Image
                 src={user.avatarUrl}
                 alt={user.username}

@@ -4,7 +4,7 @@ type SidebarSearchProps = {};
 
 export default function SidebarSearch({}: SidebarSearchProps) {
     return (
-        <span className="sm:mx-auto self-center text-center">
+        <span className="sm:mx-auto self-center text-center pointer-events-auto">
             <Link href={'/search'} className="">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-[38px]">
                     <path

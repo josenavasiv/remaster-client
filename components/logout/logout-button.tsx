@@ -17,7 +17,7 @@ export default function LogoutButton({}: LogoutButtonProps) {
     if (!user) return null;
 
     return (
-        <button className="font-bold hidden sm:block" onClick={handleLogout}>
+        <button className="font-bold hidden sm:block pointer-events-auto" onClick={handleLogout}>
             Logout
         </button>
     );

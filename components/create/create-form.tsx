@@ -37,6 +37,11 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
             description: !isValidDescription,
         });
 
+        if (!imageFiles) {
+            toast.error('Please provide artworks to upload');
+            return;
+        }
+
         if (isValidTitle && isValidDescription && imageFiles) {
             SetIsStoring(true);
             const { urls } = await uploadImageBlobsToStorage(imageFiles);
@@ -101,13 +106,13 @@ export default function CreateForm({ closeModal }: CreateFormProps) {
     };
 
     return (
-        <div className="w-[350px] sm:w-[750px] bg-gray-200 p-5 rounded-xl">
+        <div className="w-[350px] sm:w-[750px] bg-[#f4ead5] p-5 rounded-xl">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <div className="flex-1 self-center">
                     <CreatePreviews imageFiles={imageFiles} setImageFiles={setImageFiles} />
                 </div>
                 <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
-                    <p className="">CREATE ARTWORK</p>
+                    <p className="font-bold">CREATE ARTWORK</p>
                     <div className="flex flex-col text-left">
                         <TextField
                             setValue={setTitle}

@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import { CommonLayout } from '@/components/layout/common-layout';
 import { ReactElement, ReactNode } from 'react';
-import UserContainer from '@/components/user/user-container';
 import UserDetails from '@/components/user/user-details';
 import UserArtworks from '@/components/user/user-artworks';
 import { useRouter } from 'next/router';
 import { useUserQuery } from '@/graphql/__generated__/graphql';
 import { Tab } from '@headlessui/react';
+import { MainLayout } from '@/components/layout/main-layout';
+import MainContainer from '@/components/common/main-container';
 
 import UserLikes from '@/components/user/user-likes';
 
@@ -33,7 +34,7 @@ export default function User() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <UserContainer>
+            <MainContainer>
                 {!data && loading && <div>USER LOADING</div>}
                 {data?.user.user && !error && (
                     <>
@@ -50,7 +51,7 @@ export default function User() {
                                         key={category}
                                         className={({ selected }) =>
                                             classNames(
-                                                'w-16 font-bold border-b-2 focus:outline-none',
+                                                'w-16 font-bold focus:outline-none',
                                                 selected ? ' text-[#DE5D82] border-b-2 border-[#DE5D82]' : ''
                                             )
                                         }
@@ -71,9 +72,13 @@ export default function User() {
                         </Tab.Group>
                     </>
                 )}
-            </UserContainer>
+            </MainContainer>
         </>
     );
 }
 
-User.getLayout = (page: ReactElement): ReactNode => <CommonLayout>{page}</CommonLayout>;
+User.getLayout = (page: ReactElement): ReactNode => (
+    <CommonLayout>
+        <MainLayout>{page}</MainLayout>
+    </CommonLayout>
+);

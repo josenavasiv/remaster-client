@@ -48,14 +48,14 @@ export default function LoginForm({}: LoginFormProps) {
                 // },
                 // refetchQueries: ['userFeed', 'notifications'],
             });
-			await client.resetStore(); // Everytime we get to this page we reset the entire cache
+            await client.resetStore(); // Everytime we get to this page we reset the entire cache
 
             if (response.data?.userLogin?.errors && response.data.userLogin.errors.length > 0) {
                 response.data.userLogin.errors.forEach((error) => {
                     toast.error(error.message);
                 });
             } else {
-                toast.success('SUCCESSFULLY LOGGED IN!');
+                toast.success(`Logged in as ${username}`);
                 router.push('/');
             }
         }
@@ -63,7 +63,7 @@ export default function LoginForm({}: LoginFormProps) {
 
     return (
         <div className="w-[350px] bg-gray-200 p-5 rounded-xl">
-            <p className="text-center">REMASTER LOGIN</p>
+            <p className="font-bold text-center">LOGIN</p>
             <form onSubmit={onLogin} className="flex flex-col gap-2">
                 <TextField
                     setValue={setUsername}

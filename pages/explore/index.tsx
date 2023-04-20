@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import { CommonLayout } from '@/components/layout/common-layout';
 import { ReactElement, ReactNode } from 'react';
-import ExploreContainer from '@/components/explore/explore-container';
 import { useUserExploreTagsQuery, useUserExploreQuery } from '@/graphql/__generated__/graphql';
 import GridArtworks from '@/components/common/grid-artworks';
 import Tag from '@/components/common/tag';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
+import { MainLayout } from '@/components/layout/main-layout';
+import MainContainer from '@/components/common/main-container';
 
 export default function Explore() {
     const {
@@ -59,7 +60,7 @@ export default function Explore() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <ExploreContainer>
+            <MainContainer>
                 {!artworks_data && artworks_loading && <div>EXPLORE ARTWORKS LOADING</div>}
                 {!tags_data && tags_loading && <div>EXPLORE TAGS LOADING</div>}
                 {tags_data?.userExploreTags.tags && !tags_error && (
@@ -95,9 +96,13 @@ export default function Explore() {
                         Explore More Artworks
                     </button>
                 )}
-            </ExploreContainer>
+            </MainContainer>
         </>
     );
 }
 
-Explore.getLayout = (page: ReactElement): ReactNode => <CommonLayout>{page}</CommonLayout>;
+Explore.getLayout = (page: ReactElement): ReactNode => (
+    <CommonLayout>
+        <MainLayout>{page}</MainLayout>
+    </CommonLayout>
+);

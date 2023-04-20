@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import { CommonLayout } from '@/components/layout/common-layout';
 import { ReactElement, ReactNode } from 'react';
-import Container from '@/components/common/container';
 import { useTagArtworksQuery } from '@/graphql/__generated__/graphql';
 import GridArtworks from '@/components/common/grid-artworks';
 import TagName from '@/components/tag/tag-name';
 import { useRouter } from 'next/router';
+import { MainLayout } from '@/components/layout/main-layout';
+import MainContainer from '@/components/common/main-container';
 
 export default function Tag() {
     const router = useRouter();
@@ -27,12 +28,12 @@ export default function Tag() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Container>
+            <MainContainer>
                 <TagName tagname={tag as string} />
                 {!data && loading && <div>TAG ARTWORKS LOADING</div>}
 
                 <button
-                    className="  self-end font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
+                    className="self-end font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
                     onClick={() => refetch()}
                 >
                     Check For New Posts
@@ -59,9 +60,13 @@ export default function Tag() {
                         Load More Artworks
                     </button>
                 )}
-            </Container>
+            </MainContainer>
         </>
     );
 }
 
-Tag.getLayout = (page: ReactElement): ReactNode => <CommonLayout>{page}</CommonLayout>;
+Tag.getLayout = (page: ReactElement): ReactNode => (
+    <CommonLayout>
+        <MainLayout>{page}</MainLayout>
+    </CommonLayout>
+);

@@ -51,7 +51,8 @@ export default function Notifications({}: NotificationsProps) {
             if (!notification.isRead) unreadNum++;
         });
 
-        return unreadNum > 10 ? '10' : `${unreadNum}`;
+        return `${unreadNum}`;
+        // return unreadNum > 10 ? '10' : `${unreadNum}`;
     };
 
     const [sentryRef] = useInfiniteScroll({
@@ -77,7 +78,10 @@ export default function Notifications({}: NotificationsProps) {
 
     return (
         <>
-            <button className="relative self-center sm:self-auto" onClick={openModal}>
+            <button
+                className="relative self-center sm:self-auto pointer-events-auto text-[#334970]"
+                onClick={openModal}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import { useUserFeedQuery } from '@/graphql/__generated__/graphql';
 import { CommonLayout } from '@/components/layout/common-layout';
-import { HomeLayout } from '@/components/layout/home-layout';
 import { ReactElement, ReactNode } from 'react';
-import HomeMainFeedContainer from '@/components/home/home-main-feed-container';
+import { MainLayout } from '@/components/layout/main-layout';
+import MainContainer from '@/components/common/main-container';
 import ArtworkFeed from '@/components/artwork/artwork-feed';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 
@@ -43,10 +43,10 @@ export default function Home() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <HomeMainFeedContainer>
+            <MainContainer>
                 {!data && loading && <div>ARTWORKS LOADING</div>}
                 <button
-                    className="w-26 mx-auto font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
+                    className="w-26 mx-auto font-bold bg-[#B13E77] text-[#f4ead5] px-2 py-1 mb-2 rounded-md"
                     onClick={() => refetch()}
                 >
                     Check For New Artworks
@@ -84,13 +84,13 @@ export default function Home() {
                         Load More Artworks
                     </button>
                 )}
-            </HomeMainFeedContainer>
+            </MainContainer>
         </>
     );
 }
 
 Home.getLayout = (page: ReactElement): ReactNode => (
     <CommonLayout>
-        <HomeLayout>{page}</HomeLayout>
+        <MainLayout>{page}</MainLayout>
     </CommonLayout>
 );

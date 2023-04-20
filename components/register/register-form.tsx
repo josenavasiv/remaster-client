@@ -110,7 +110,7 @@ export default function RegisterForm({}: RegisterFormProps) {
 
     return (
         <div className="w-[350px] bg-gray-200 p-5 rounded-xl">
-            <p className="text-center mb-2">REMASTER REGISTER</p>
+            <p className="font-bold text-center mb-2">REGISTER</p>
             <form onSubmit={onRegister} className="flex flex-col gap-2">
                 <TextField
                     setValue={setUsername}
