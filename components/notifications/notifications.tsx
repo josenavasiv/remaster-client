@@ -97,7 +97,7 @@ export default function Notifications({}: NotificationsProps) {
                     />
                 </svg>
                 {Number(unreadNotifications(data?.notifications?.notifications)) > 0 && (
-                    <span className="absolute -top-1 left-[29.5px] sm:-top-1 sm:left-[51.5px] text-[12px] font-bold z-10 bg-pink-500 rounded-full w-5 h-5">
+                    <span className="absolute -top-1 left-[29.5px] sm:-top-1 sm:left-[51.5px] text-[12px] font-bold z-10 bg-[#E94E77] rounded-full w-5 h-5">
                         {unreadNotifications(data?.notifications?.notifications)}
                     </span>
                 )}

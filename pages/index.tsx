@@ -46,7 +46,7 @@ export default function Home() {
             <MainContainer>
                 {!data && loading && <div>ARTWORKS LOADING</div>}
                 <button
-                    className="w-26 mx-auto font-bold bg-[#B13E77] text-[#f4ead5] px-2 py-1 mb-2 rounded-md"
+                    className="w-26 mx-auto font-bold bg-[#E94E77] text-[#f4ead5] px-2 py-1 mb-2 rounded-md"
                     onClick={() => refetch()}
                 >
                     Check For New Artworks

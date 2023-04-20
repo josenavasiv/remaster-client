@@ -49,7 +49,7 @@ export default function ArtworkDelete({ artworkId, uploaderId }: ArtworkDeletePr
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-7 text-pink-600"
+                    className="w-7 text-[#E94E77]"
                 >
                     <path
                         strokeLinecap="round"

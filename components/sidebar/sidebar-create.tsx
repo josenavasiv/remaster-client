@@ -12,7 +12,7 @@ export default function SidebarCreate({}: SidebarCreateProps) {
     if (!user) return null;
     return (
         <>
-            <button className="self-center pointer-events-auto text-[#B13E77]" onClick={openModal}>
+            <button className="self-center pointer-events-auto text-[#E94E77]" onClick={openModal}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"

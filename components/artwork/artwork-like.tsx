@@ -71,7 +71,7 @@ export default function ArtworkLike({ artworkId, uploaderId }: ArtworkLikeProps)
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-8 text-pink-600"
+                className="w-8 text-[#E94E77]"
             >
                 <path
                     strokeLinecap="round"

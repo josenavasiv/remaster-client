@@ -10,7 +10,7 @@ type ArtworkEditProps = {
     uploaderId: string;
     title: string;
     description: string;
-	imageUrls: string[];
+    imageUrls: string[];
 };
 
 export default function ArtworkEdit({ artworkId, uploaderId, title, description, imageUrls }: ArtworkEditProps) {
@@ -30,7 +30,7 @@ export default function ArtworkEdit({ artworkId, uploaderId, title, description,
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-7 text-pink-600"
+                    className="w-7 text-[#E94E77]"
                 >
                     <path
                         strokeLinecap="round"
@@ -45,7 +45,7 @@ export default function ArtworkEdit({ artworkId, uploaderId, title, description,
                     closeModal={closeModal}
                     titleToEdit={title}
                     descriptionToEdit={description}
-					imageUrls={imageUrls}
+                    imageUrls={imageUrls}
                 />
             </Modal>
         </>
