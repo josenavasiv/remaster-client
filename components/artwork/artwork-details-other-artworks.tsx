@@ -8,11 +8,13 @@ type ArtworkDetailsOtherArtworksProps = {
 
 const ArtworkDetailsOtherArtworks = ({ artworkId }: ArtworkDetailsOtherArtworksProps) => {
     const { data, loading, error } = useArtworkUploaderOtherArtworksQuery({
-        variables: { artworkId, take: 6 },
+        variables: { artworkId: artworkId, take: 6 },
         fetchPolicy: 'cache-and-network',
     });
 
     if (!data && loading) return <div>loading other artworks...</div>;
+
+    if (error) console.log(error);
 
     if (data && !error) return <GridArtworks artworks={data?.artworkUploaderOtherArtworks.artworks} />;
 
