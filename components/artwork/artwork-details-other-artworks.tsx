@@ -8,7 +8,7 @@ type ArtworkDetailsOtherArtworksProps = {
 
 const ArtworkDetailsOtherArtworks = ({ artworkId }: ArtworkDetailsOtherArtworksProps) => {
     const { data, loading, error } = useArtworkUploaderOtherArtworksQuery({
-        variables: { artworkId },
+        variables: { artworkId, take: 6 },
         fetchPolicy: 'cache-and-network',
     });
 
