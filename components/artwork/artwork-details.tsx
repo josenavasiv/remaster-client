@@ -83,6 +83,12 @@ export default function ArtworkDetails({
                     <CommentInput artworkId={id} />
                 </div>
             </div>
+            <div className="flex flex-col gap-2">
+                <span>
+                    Other artworks by <span className="font-bold">{uploader.username}</span>
+                </span>
+                <ArtworkDetailsOtherArtworks artworkId={id} />
+            </div>
         </div>
     );
 }

@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { useArtworkQuery } from '@/graphql/__generated__/graphql';
 import { MainLayout } from '@/components/layout/main-layout';
 import MainContainer from '@/components/common/main-container';
-import ArtworkDetailsOtherArtworks from '@/components/artwork/artwork-details-other-artworks';
 
 export default function Artwork() {
     const router = useRouter();
@@ -40,8 +39,6 @@ export default function Artwork() {
                         errors={data.artwork.errors}
                     />
                 )}
-
-                <ArtworkDetailsOtherArtworks artworkId={id as string} />
             </MainContainer>
         </>
     );

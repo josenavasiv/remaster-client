@@ -16,12 +16,7 @@ const ArtworkDetailsOtherArtworks = ({ artworkId }: ArtworkDetailsOtherArtworksP
 
     if (error) console.log(error);
 
-    if (data && !error)
-        return (
-            <div className="w-full flex self-center max-w-[350px] lg:max-w-[700px]">
-                <GridArtworks artworks={data?.artworkUploaderOtherArtworks.artworks} />
-            </div>
-        );
+    if (data && !error) return <GridArtworks artworks={data?.artworkUploaderOtherArtworks.artworks} />;
 
     return null;
 };
