@@ -8,7 +8,7 @@ type ArtworkDetailsOtherArtworksProps = {
 
 const ArtworkDetailsOtherArtworks = ({ artworkId }: ArtworkDetailsOtherArtworksProps) => {
     const { data, loading, error } = useArtworkUploaderOtherArtworksQuery({
-        variables: { artworkId: artworkId, take: 6 },
+        variables: { artworkId: artworkId as string, take: 6 },
         fetchPolicy: 'cache-and-network',
     });
 
@@ -16,7 +16,12 @@ const ArtworkDetailsOtherArtworks = ({ artworkId }: ArtworkDetailsOtherArtworksP
 
     if (error) console.log(error);
 
-    if (data && !error) return <GridArtworks artworks={data?.artworkUploaderOtherArtworks.artworks} />;
+    if (data && !error)
+        return (
+            <div className="w-full flex self-center max-w-[350px] lg:max-w-[700px]">
+                <GridArtworks artworks={data?.artworkUploaderOtherArtworks.artworks} />
+            </div>
+        );
 
     return null;
 };
