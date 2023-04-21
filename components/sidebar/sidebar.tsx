@@ -7,11 +7,16 @@ import SidebarExplore from './sidebar-explore';
 import SidebarCreate from './sidebar-create';
 import SidebarSearch from './sidebar-search';
 import Notifications from '../notifications/notifications';
+import { useUserLoginMutation } from '@/graphql/__generated__/graphql';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 type SideBarProps = {};
 
 export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
     const user = useUser();
+    const [userLogin, { data, loading, error, client }] = useUserLoginMutation();
+    const router = useRouter();
 
     return (
         <div className="flex w-0 shrink-0 sm:w-16 pointer-events-none text-[#334970]">
@@ -46,6 +51,31 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                         <Link className="font-bold text-center pointer-events-auto" href={'/login'}>
                             LOGIN
                         </Link>
+                    )}
+                    {!user && (
+                        <button
+                            className="font-bold text-center pointer-events-auto"
+                            onClick={async () => {
+                                const response = await userLogin({
+                                    variables: {
+                                        username: 'demo',
+                                        password: 'qwerty',
+                                    },
+                                });
+                                await client.resetStore(); // Everytime we get to this page we reset the entire cache
+
+                                if (response.data?.userLogin?.errors && response.data.userLogin.errors.length > 0) {
+                                    response.data.userLogin.errors.forEach((error) => {
+                                        toast.error(error.message);
+                                    });
+                                } else {
+                                    toast.success(`Logged in as demo`);
+                                    router.push('/');
+                                }
+                            }}
+                        >
+                            LOGIN AS DEMO
+                        </button>
                     )}
 
                     <LogoutButton />
