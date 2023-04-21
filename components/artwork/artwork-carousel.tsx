@@ -86,7 +86,7 @@ export default function ArtworkCarousel({ imageUrls }: ArtworkCarouselProps) {
     );
 }
 
-function isGif(str: string): boolean {
+export function isGif(str: string): boolean {
     const arr = str.split('.');
     if (arr[arr.length - 1] == 'gif') {
         return true;
