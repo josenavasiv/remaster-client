@@ -11,6 +11,7 @@ import ArtworkLike from './artwork-like';
 import ArtworkUnlike from './artwork-unlike';
 import ArtworkDelete from './artwork-delete';
 import ArtworkEdit from './artwork-edit';
+import ArtworkDetailsOtherArtworks from './artwork-details-other-artworks';
 
 type ArtworkDetailsProps = {
     id: string;
@@ -82,7 +83,12 @@ export default function ArtworkDetails({
                     <CommentInput artworkId={id} />
                 </div>
             </div>
-            <div className="">OTHER ARTWORKS BY THE UPLOADER</div>
+            <div className="flex flex-col gap-2">
+                <span>
+                    Other artworks by <span className="font-bold">{uploader.username}</span>
+                </span>
+                <ArtworkDetailsOtherArtworks artworkId={id} />
+            </div>
         </div>
     );
 }

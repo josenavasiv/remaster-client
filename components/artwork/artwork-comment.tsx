@@ -85,7 +85,7 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
             </div>
 
             {showReplies && (
-                <div className="flex flex-col gap-2 ml-9">
+                <div className="flex flex-col gap-2 ml-9 pt-1">
                     {comment?.replies.map((reply) => (
                         <ArtworkCommentReply key={reply.id} reply={reply} artworkId={artworkId} />
                     ))}

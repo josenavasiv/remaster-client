@@ -45,6 +45,12 @@ export type ArtworksPaginatedPayload = {
   hasMore: Scalars['Boolean'];
 };
 
+export type ArtworksPayload = {
+  __typename?: 'ArtworksPayload';
+  artworks: Array<Artwork>;
+  errors: Array<Error>;
+};
+
 export type Comment = Node & {
   __typename?: 'Comment';
   artwork: Artwork;
@@ -263,6 +269,7 @@ export type NotificationsPaginatedPayload = {
 export type Query = {
   __typename?: 'Query';
   artwork: ArtworkPayload;
+  artworkUploaderOtherArtworks: ArtworksPayload;
   hello?: Maybe<Scalars['String']>;
   notifications: NotificationsPaginatedPayload;
   tagArtworks: ArtworksPaginatedPayload;
@@ -279,6 +286,12 @@ export type Query = {
 
 export type QueryArtworkArgs = {
   artworkID: Scalars['ID'];
+};
+
+
+export type QueryArtworkUploaderOtherArtworksArgs = {
+  artworkID: Scalars['ID'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -531,6 +544,14 @@ export type ArtworkQueryVariables = Exact<{
 
 
 export type ArtworkQuery = { __typename?: 'Query', artwork: { __typename?: 'ArtworkPayload', artwork?: { __typename?: 'Artwork', id: string, title: string, description: string, imageUrls: Array<string>, createdAt: string, likesCount: number, uploader: { __typename?: 'User', id: string, username: string, avatarUrl: string }, comments: Array<{ __typename?: 'Comment', id: string, comment: string, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, replies: Array<{ __typename?: 'Comment', id: string, comment: string, parentCommentId?: string | null, likesCount: number, createdAt: string, updatedAt: string, commenter: { __typename?: 'User', id: string, username: string, avatarUrl: string }, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null, parentComment?: { __typename?: 'Comment', id: string, commenter: { __typename?: 'User', id: string, username: string } } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null }>, isLikedByLoggedInUser?: { __typename?: 'Like', id: string } | null } | null, errors: Array<{ __typename?: 'Error', message: string }> } };
+
+export type ArtworkUploaderOtherArtworksQueryVariables = Exact<{
+  artworkId: Scalars['ID'];
+  take?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ArtworkUploaderOtherArtworksQuery = { __typename?: 'Query', artworkUploaderOtherArtworks: { __typename?: 'ArtworksPayload', artworks: Array<{ __typename?: 'Artwork', id: string, title: string, imageUrls: Array<string>, likesCount: number, description: string }>, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type HelloQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1484,6 +1505,51 @@ export function useArtworkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ar
 export type ArtworkQueryHookResult = ReturnType<typeof useArtworkQuery>;
 export type ArtworkLazyQueryHookResult = ReturnType<typeof useArtworkLazyQuery>;
 export type ArtworkQueryResult = Apollo.QueryResult<ArtworkQuery, ArtworkQueryVariables>;
+export const ArtworkUploaderOtherArtworksDocument = gql`
+    query artworkUploaderOtherArtworks($artworkId: ID!, $take: Int) {
+  artworkUploaderOtherArtworks(artworkID: $artworkId, take: $take) {
+    artworks {
+      id
+      title
+      imageUrls
+      likesCount
+      description
+    }
+    errors {
+      message
+    }
+  }
+}
+    `;
+
+/**
+ * __useArtworkUploaderOtherArtworksQuery__
+ *
+ * To run a query within a React component, call `useArtworkUploaderOtherArtworksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArtworkUploaderOtherArtworksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useArtworkUploaderOtherArtworksQuery({
+ *   variables: {
+ *      artworkId: // value for 'artworkId'
+ *      take: // value for 'take'
+ *   },
+ * });
+ */
+export function useArtworkUploaderOtherArtworksQuery(baseOptions: Apollo.QueryHookOptions<ArtworkUploaderOtherArtworksQuery, ArtworkUploaderOtherArtworksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ArtworkUploaderOtherArtworksQuery, ArtworkUploaderOtherArtworksQueryVariables>(ArtworkUploaderOtherArtworksDocument, options);
+      }
+export function useArtworkUploaderOtherArtworksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ArtworkUploaderOtherArtworksQuery, ArtworkUploaderOtherArtworksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ArtworkUploaderOtherArtworksQuery, ArtworkUploaderOtherArtworksQueryVariables>(ArtworkUploaderOtherArtworksDocument, options);
+        }
+export type ArtworkUploaderOtherArtworksQueryHookResult = ReturnType<typeof useArtworkUploaderOtherArtworksQuery>;
+export type ArtworkUploaderOtherArtworksLazyQueryHookResult = ReturnType<typeof useArtworkUploaderOtherArtworksLazyQuery>;
+export type ArtworkUploaderOtherArtworksQueryResult = Apollo.QueryResult<ArtworkUploaderOtherArtworksQuery, ArtworkUploaderOtherArtworksQueryVariables>;
 export const HelloDocument = gql`
     query hello {
   hello

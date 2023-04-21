@@ -12,7 +12,10 @@ const timeDifference = (current: number, previous: Date) => {
 
     var elapsed = current - previous.getTime();
 
-    if (elapsed < msPerMinute) {
+    if (elapsed <= 0) {
+        return 'Just Now';
+    } else if (elapsed < msPerMinute) {
+        if (Math.round(elapsed / 1000) == 0) return 'Just Now';
         return Math.round(elapsed / 1000) + 's';
     } else if (elapsed < msPerHour) {
         return Math.round(elapsed / msPerMinute) + 'm';

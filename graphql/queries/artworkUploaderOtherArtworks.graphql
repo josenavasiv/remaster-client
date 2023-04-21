@@ -1,0 +1,14 @@
+query artworkUploaderOtherArtworks($artworkId: ID!, $take: Int) {
+    artworkUploaderOtherArtworks(artworkID: $artworkId, take: $take) {
+        artworks {
+            id
+            title
+            imageUrls
+            likesCount
+            description
+        }
+        errors {
+            message
+        }
+    }
+}
