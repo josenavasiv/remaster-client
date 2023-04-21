@@ -13,23 +13,29 @@ This is the frontend for my full stack web app! This is a prototype for a social
 
 ## Currently Features
 
-- Authentication via a GraphQL API and Express Sessions
-- React components typed with TypeScript
-- Users can create, delete and update artworks (images and gifs)
-- Users can create, delete and update comments and reply to other comments
-- Users can follow each other
-- Users can view other user profiles
-- Responsive design
+-   Authentication via a GraphQL API and Express Sessions
+-   React components typed with TypeScript
+-   Users can create, delete and update artworks (images and gifs)
+-   Users can create, delete and update comments and reply to other comments
+-   Users can follow each other
+-   Users can view other user profiles
+-   Responsive design
+
+## TODO
+
+-   Current styling needs an overhaul
+-   Requires some major code refactoring
+-   Proper error handling
 
 ## Built With
 
-- [Next.js](https://nextjs.org)
-- [Apollo Client](https://www.apollographql.com/docs/react)
-- [TypeScript](https://www.typescriptlang.org)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Headless UI](https://headlessui.com)
-- [React Hot Toast](https://react-hot-toast.com)
-- [Framer Motion](https://framer.com)
+-   [Next.js](https://nextjs.org)
+-   [Apollo Client](https://www.apollographql.com/docs/react)
+-   [TypeScript](https://www.typescriptlang.org)
+-   [Tailwind CSS](https://tailwindcss.com)
+-   [Headless UI](https://headlessui.com)
+-   [React Hot Toast](https://react-hot-toast.com)
+-   [Framer Motion](https://framer.com)
 
 ## Live
 
