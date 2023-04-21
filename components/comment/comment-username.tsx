@@ -7,7 +7,7 @@ type CommentUsernameProps = {
 
 export default function CommentUsername({ username, isReply }: CommentUsernameProps) {
     return (
-        <Link className="font-bold" href={`/user/${username}`}>
+        <Link className="font-bold my-auto" href={`/user/${username}`}>
             {isReply ? `@${username}` : username}
         </Link>
     );

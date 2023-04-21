@@ -9,6 +9,7 @@ import CommentReplyInput from '../comment/comment-reply-input';
 import CommentUnlike from '../comment/comment-unlike';
 import CommentUsername from '../comment/comment-username';
 import { LikeType } from './artwork-feed';
+import CommenterCommenterAvatar from '../comment/comment-commenter-avatar';
 
 export type ReplyType = {
     id: string;
@@ -44,11 +45,17 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
     const [isEditing, setIsEditing] = useState(false);
 
     return (
-        <div>
+        <div className="bg-violet-100 p-3 rounded-lg">
             <div className="flex justify-between gap-1">
-                <div className="flex gap-1 grow">
+                <div className="flex flex-col gap-1 grow">
+                    <span className="flex gap-2">
+                        <CommenterCommenterAvatar
+                            username={reply.commenter.username}
+                            avatarUrl={reply.commenter.avatarUrl}
+                        />
+                        <CommentUsername username={reply.commenter.username} />
+                    </span>
                     <span>
-                        <CommentUsername username={reply.commenter.username} />{' '}
                         <CommentUsername username={reply.parentComment?.commenter.username!} isReply /> {reply.comment}
                     </span>
                 </div>
@@ -63,13 +70,15 @@ export default function ArtworkCommentReply({ reply, artworkId }: ArtworkComment
                         />
                     )}
                 </span>
+                <span className="pt-0.5 flex gap-1 self-start">
+                    <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={reply.commenter.id} />
+                    <CommentDelete commentId={reply.id} commenterId={reply.commenter.id} />
+                </span>
             </div>
             <div className="flex gap-2 text-[0.7rem] text-black/60">
-                <p>{reply.likesCount ?? 'N/A'} Likes</p>
                 <p>{getRelativeDate(reply.createdAt) ?? 'N/A'}</p>
+                <p>{reply.likesCount ?? 'N/A'} Likes</p>
                 <CommentReply isReplying={isReplying} setIsReplying={setIsReplying} commenterId={reply.commenter.id} />
-                <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={reply.commenter.id} />
-                <CommentDelete commentId={reply.id} commenterId={reply.commenter.id} />
             </div>
             {isReplying && (
                 <CommentReplyInput

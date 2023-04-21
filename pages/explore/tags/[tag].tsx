@@ -7,6 +7,7 @@ import TagName from '@/components/tag/tag-name';
 import { useRouter } from 'next/router';
 import { MainLayout } from '@/components/layout/main-layout';
 import MainContainer from '@/components/common/main-container';
+import toast from 'react-hot-toast';
 
 export default function Tag() {
     const router = useRouter();
@@ -29,15 +30,20 @@ export default function Tag() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <MainContainer>
-                <TagName tagname={tag as string} />
-                {!data && loading && <div>TAG ARTWORKS LOADING</div>}
+                <div className="flex justify-between pb-3">
+                    <TagName tagname={tag as string} />
+                    {!data && loading && <div>TAG ARTWORKS LOADING</div>}
 
-                <button
-                    className="self-end font-bold text-black bg-pink-300 px-2 py-1 mb-2 rounded-md"
-                    onClick={() => refetch()}
-                >
-                    Check For New Posts
-                </button>
+                    <button
+                        className="self-end font-bold bg-[#E94E77] text-[#f4ead5] px-2 py-1 mb-2 rounded-md"
+                        onClick={() => {
+                            refetch();
+                            toast.success('Refreshed!');
+                        }}
+                    >
+                        Check For New Artworks
+                    </button>
+                </div>
 
                 {data?.tagArtworks.artworks && !error && (
                     <>

@@ -6,6 +6,7 @@ import { MainLayout } from '@/components/layout/main-layout';
 import MainContainer from '@/components/common/main-container';
 import ArtworkFeed from '@/components/artwork/artwork-feed';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
+import { toast } from 'react-hot-toast';
 
 export default function Home() {
     const { data, loading, error, fetchMore, refetch } = useUserFeedQuery({
@@ -47,7 +48,10 @@ export default function Home() {
                 {!data && loading && <div>ARTWORKS LOADING</div>}
                 <button
                     className="w-26 mx-auto font-bold bg-[#E94E77] text-[#f4ead5] px-2 py-1 mb-2 rounded-md"
-                    onClick={() => refetch()}
+                    onClick={() => {
+                        refetch();
+                        toast.success('Refreshed!');
+                    }}
                 >
                     Check For New Artworks
                 </button>

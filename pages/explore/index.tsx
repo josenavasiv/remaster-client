@@ -64,7 +64,7 @@ export default function Explore() {
                 {!artworks_data && artworks_loading && <div>EXPLORE ARTWORKS LOADING</div>}
                 {!tags_data && tags_loading && <div>EXPLORE TAGS LOADING</div>}
                 {tags_data?.userExploreTags.tags && !tags_error && (
-                    <div className="flex flex-wrap gap-1 w-full mb-5">
+                    <div className="flex flex-wrap gap-1 w-full mb-5 text-[#334970]">
                         {tags_data?.userExploreTags.tags.map((tag) => (
                             <Tag key={tag.tagname} id={tag.id} tagname={tag.tagname} />
                         ))}

@@ -45,7 +45,7 @@ export default function CommentEditInput({ commentId, comment }: CommentEditInpu
                 autoFocus
             />
             {editedComment && (
-                <button className="font-medium text-pink-500" type="submit">
+                <button className="font-medium text-[#E94E77]" type="submit">
                     Edit
                 </button>
             )}

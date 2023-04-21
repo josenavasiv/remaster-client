@@ -12,6 +12,7 @@ import CommentEditInput from '../comment/comment-edit-input';
 import CommentLike from '../comment/comment-like';
 import CommentUnlike from '../comment/comment-unlike';
 import CommentUsername from '../comment/comment-username';
+import CommenterCommenterAvatar from '../comment/comment-commenter-avatar';
 
 export type CommentType = {
     id: string;
@@ -40,12 +41,17 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
     const [isEditing, setIsEditing] = useState(false);
 
     return (
-        <div className="">
-            <div className="flex justify-between gap-1">
-                <div className="flex gap-1 grow">
-                    <span>
-                        <CommentUsername username={comment.commenter.username} /> {comment.comment}
+        <div className="bg-rose-200 p-3 rounded-lg">
+            <div className="flex justify-between">
+                <div className="flex flex-col gap-1 grow">
+                    <span className="flex gap-2">
+                        <CommenterCommenterAvatar
+                            username={comment.commenter.username}
+                            avatarUrl={comment.commenter.avatarUrl}
+                        />
+                        <CommentUsername username={comment.commenter.username} />
                     </span>
+                    <span>{comment.comment}</span>
                 </div>
                 <span className="pt-0.5">
                     {comment.isLikedByLoggedInUser == null ? (
@@ -58,8 +64,12 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                         />
                     )}
                 </span>
+                <span className="pt-0.5 flex gap-1 self-start">
+                    <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={comment.commenter.id} />
+                    <CommentDelete commentId={comment.id} commenterId={comment.commenter.id} />
+                </span>
             </div>
-            <div className="flex gap-1.5 text-[0.7rem] pb-2 text-black/60">
+            <div className="flex gap-1.5 text-[0.7rem] text-black/60">
                 <p>{getRelativeDate(comment.createdAt) ?? 'N/A'}</p>
                 <p>{comment.likesCount ?? 'N/A'} Likes</p>
                 <CommentReply
@@ -72,12 +82,10 @@ export default function ArtworkComment({ comment, artworkId }: ArtworkCommentPro
                         {showReplies ? 'Hide' : 'Show'} Replies ({comment.replies.length})
                     </button>
                 )}
-                <CommentEdit isEditing={isEditing} setIsEditing={setIsEditing} commenterId={comment.commenter.id} />
-                <CommentDelete commentId={comment.id} commenterId={comment.commenter.id} />
             </div>
 
             {showReplies && (
-                <div className="flex flex-col gap-2 pb-2 ml-8">
+                <div className="flex flex-col gap-2 ml-9">
                     {comment?.replies.map((reply) => (
                         <ArtworkCommentReply key={reply.id} reply={reply} artworkId={artworkId} />
                     ))}

@@ -8,6 +8,7 @@ import ArtworkUnlike from './artwork-unlike';
 import ArtworkFeedTitle from './artwork-feed-title';
 import ArtworkFeedComment from './artwork-feed-comment';
 import ArtworkFeedOptions from './artwork-feed-options';
+import Link from 'next/link';
 
 type ArtworkFeedProps = {
     id: string;
@@ -56,7 +57,6 @@ export default function ArtworkFeed({
             <ArtworkUploader {...uploader} />
             <div className="mt-2">
                 <div className="flex flex-col gap-1 h-full">
-                    <ArtworkFeedTitle id={id} title={title} />
                     <ArtworkCarousel imageUrls={imageUrls} />
                     <ArtworkFeedOptions
                         artworkId={id}
@@ -66,6 +66,7 @@ export default function ArtworkFeed({
                         description={description}
                         imageUrls={imageUrls}
                     />
+                    <ArtworkFeedTitle id={id} title={title} />
                     <ArtworkDescription username={uploader.username} description={description} />
                     <ArtworkFeedRecentComments recentComments={recentComments} />
                     <div className="flex justify-between text-xs font-bold text-black/60">

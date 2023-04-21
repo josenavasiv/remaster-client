@@ -1,6 +1,6 @@
 import { linkifyTags } from '@/lib/linkifyTags';
 import { Fragment } from 'react';
-import CommentUsername from '../comment/comment-username';
+// import CommentUsername from '../comment/comment-username';
 
 interface ArtworkDescriptionProps {
     description: string;
@@ -12,7 +12,7 @@ export default function ArtworkDescription({ description, username }: ArtworkDes
     return (
         <div className="">
             <span>
-                <CommentUsername username={username} />{' '}
+                {/* <CommentUsername username={username} />{' '} */}
                 {words.map((word, index) => (
                     <Fragment key={index}>{linkifyTags(word)} </Fragment>
                 ))}
