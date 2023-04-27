@@ -1,11 +1,13 @@
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 type SidebarSearchProps = {};
 
 export default function SidebarSearch({}: SidebarSearchProps) {
     return (
         <span className="sm:mx-auto self-center text-center pointer-events-auto">
-            <Link href={'/search'} className="">
+            {/* <Link href={'/search'} className=""> */}
+            <span className="cursor-pointer" onClick={() => toast.error('Search functionality soon!')}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-[38px]">
                     <path
                         fillRule="evenodd"
@@ -13,7 +15,8 @@ export default function SidebarSearch({}: SidebarSearchProps) {
                         clipRule="evenodd"
                     />
                 </svg>
-            </Link>
+            </span>
+            {/* </Link> */}
         </span>
     );
 }

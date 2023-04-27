@@ -43,12 +43,12 @@ export default function SideBar(SideBarProps: SideBarProps): JSX.Element {
                     <SidebarExplore />
                     <SidebarCreate />
                     {!user && (
-                        <Link className="font-bold text-center pointer-events-auto" href={'/register'}>
+                        <Link className="font-bold text-center pointer-events-auto self-center" href={'/register'}>
                             REGISTER
                         </Link>
                     )}
                     {!user && (
-                        <Link className="font-bold text-center pointer-events-auto" href={'/login'}>
+                        <Link className="font-bold text-center pointer-events-auto self-center" href={'/login'}>
                             LOGIN
                         </Link>
                     )}
